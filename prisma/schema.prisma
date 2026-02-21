@@ -12,3 +12,93 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  password  String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+
+  progresses Progress[]
+  results    TestResult[]
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Course {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  type        CourseType
+  createdAt   DateTime @default(now())
+
+  lessons Lesson[]
+  tests   Test[]
+}
+
+enum CourseType {
+  S
+  P
+}
+
+model Lesson {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  videoUrl  String?
+  order     Int
+
+  course   Course @relation(fields: [courseId], references: [id])
+  courseId String
+
+  progresses Progress[]
+}
+
+model Question {
+  id        String   @id @default(uuid())
+  text      String
+  options   Json     // ["A", "B", "C", "D"]
+  correct   Int      // index správnej odpovede
+  createdAt DateTime @default(now())
+
+  test   Test @relation(fields: [testId], references: [id])
+  testId String
+}
+
+model Test {
+  id        String   @id @default(uuid())
+  title     String
+  course    Course   @relation(fields: [courseId], references: [id])
+  courseId  String
+
+  questions Question[]
+  results   TestResult[]
+}
+
+model TestResult {
+  id        String   @id @default(uuid())
+  score     Int
+  createdAt DateTime @default(now())
+
+  user   User @relation(fields: [userId], references: [id])
+  userId String
+
+  test   Test @relation(fields: [testId], references: [id])
+  testId String
+}
+
+model Progress {
+  id        String   @id @default(uuid())
+  completed Boolean  @default(false)
+
+  user   User @relation(fields: [userId], references: [id])
+  userId String
+
+  lesson   Lesson @relation(fields: [lessonId], references: [id])
+  lessonId String
+}
