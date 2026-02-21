@@ -73,6 +73,7 @@ model Question {
 model Test {
   id        String   @id @default(uuid())
   title     String
+  passScore Int      @default(75) // minimálne % na úspešné absolvovanie
   course    Course   @relation(fields: [courseId], references: [id])
   courseId  String
 
@@ -82,7 +83,8 @@ model Test {
 
 model TestResult {
   id        String   @id @default(uuid())
-  score     Int
+  score     Int      // dosiahnuté % (0–100)
+  passed    Boolean  // true ak score >= test.passScore
   createdAt DateTime @default(now())
 
   user   User @relation(fields: [userId], references: [id])
