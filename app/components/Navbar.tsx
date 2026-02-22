@@ -6,19 +6,7 @@ import { useSession, signOut } from 'next-auth/react'
 import { COLORS } from '@/data/colors'
 import { SITE } from '@/data/site'
 import ShieldIcon from '@/app/components/icons/ShieldIcon'
-
-type NavItem = { href: string; label: string; badge?: string }
-
-const sluzbyLinks: NavItem[] = [
-  { href: '/sluzby/strazna-sluzba', label: 'Strážna služba' },
-  { href: '/sluzby/detektivna-sluzba', label: 'Detektívna služba' },
-  { href: '/sluzby/odborna-priprava', label: 'Odborná príprava a poradenstvo' },
-]
-
-const courseLinks: NavItem[] = [
-  { href: '/kurzy/s', label: 'Preukaz typu S', badge: 'S' },
-  { href: '/kurzy/p', label: 'Preukaz typu P', badge: 'P' },
-]
+import { NAV, navLinks, sluzbyLinks, courseLinks, type NavItem } from '@/data/navbar'
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -49,13 +37,13 @@ export default function Navbar() {
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-8">
-            <Link href="/o-firme" className="text-gray-200 hover:text-white font-medium transition-colors">
-              O firme
+            <Link href={navLinks[0].href} className="text-gray-200 hover:text-white font-medium transition-colors">
+              {navLinks[0].label}
             </Link>
             <NavDropdown label="Služby" items={sluzbyLinks} />
             <NavDropdown label="Kurzy" items={courseLinks} />
-            <Link href="/zakon" className="text-gray-200 hover:text-white font-medium transition-colors">
-              Legislatíva
+            <Link href={navLinks[1].href} className="text-gray-200 hover:text-white font-medium transition-colors">
+              {navLinks[1].label}
             </Link>
           </div>
 
@@ -74,23 +62,23 @@ export default function Navbar() {
                     className="text-xs font-bold px-2 py-0.5 rounded"
                     style={{ backgroundColor: COLORS.accent, color: COLORS.primary }}
                   >
-                    ADMIN
+                    {NAV.adminBadge}
                   </span>
                 )}
                 <button
-                  onClick={() => signOut({ callbackUrl: '/prihlasenie' })}
+                  onClick={() => signOut({ callbackUrl: NAV.signOutCallbackUrl })}
                   className="text-sm font-semibold px-4 py-2 rounded-md border border-white/30 text-white hover:bg-white/10 transition-colors"
                 >
-                  Odhlásiť sa
+                  {NAV.signOut}
                 </button>
               </>
             ) : (
               <Link
-                href="/prihlasenie"
+                href={NAV.signInHref}
                 className="font-semibold px-4 py-2 rounded-md hover:opacity-90 transition-opacity"
                 style={{ backgroundColor: COLORS.accent, color: COLORS.primary }}
               >
-                Prihlásiť sa
+                {NAV.signIn}
               </Link>
             )}
           </div>
@@ -99,7 +87,7 @@ export default function Navbar() {
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="md:hidden text-white p-1"
-            aria-label="Otvoriť menu"
+            aria-label={NAV.mobileMenuAriaLabel}
           >
             {mobileOpen ? <XIcon /> : <HamburgerIcon />}
           </button>
@@ -110,11 +98,11 @@ export default function Navbar() {
       {mobileOpen && (
         <div className="md:hidden px-4 pb-4 flex flex-col gap-2" style={{ backgroundColor: COLORS.navMobileBg }}>
           <Link
-            href="/o-firme"
+            href={navLinks[0].href}
             className="text-gray-200 py-2.5 border-b border-white/10 font-medium"
             onClick={closeMobile}
           >
-            O firme
+            {navLinks[0].label}
           </Link>
 
           <MobileDropdown
@@ -136,11 +124,11 @@ export default function Navbar() {
           />
 
           <Link
-            href="/zakon"
+            href={navLinks[1].href}
             className="text-gray-200 py-2.5 border-b border-white/10 font-medium"
             onClick={closeMobile}
           >
-            Legislatíva
+            {navLinks[1].label}
           </Link>
 
           {/* Mobile auth */}
@@ -153,25 +141,25 @@ export default function Navbar() {
                     className="text-xs font-bold px-2 py-0.5 rounded"
                     style={{ backgroundColor: COLORS.accent, color: COLORS.primary }}
                   >
-                    ADMIN
+                    {NAV.adminBadge}
                   </span>
                 )}
               </div>
               <button
-                onClick={() => signOut({ callbackUrl: '/prihlasenie' })}
+                onClick={() => signOut({ callbackUrl: NAV.signOutCallbackUrl })}
                 className="mt-1 font-semibold px-4 py-2.5 rounded-md text-center border border-white/30 text-white"
               >
-                Odhlásiť sa
+                {NAV.signOut}
               </button>
             </>
           ) : (
             <Link
-              href="/prihlasenie"
+              href={NAV.signInHref}
               className="mt-2 font-semibold px-4 py-2.5 rounded-md text-center"
               style={{ backgroundColor: COLORS.accent, color: COLORS.primary }}
               onClick={closeMobile}
             >
-              Prihlásiť sa
+              {NAV.signIn}
             </Link>
           )}
         </div>

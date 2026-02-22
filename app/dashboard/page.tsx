@@ -1,49 +1,6 @@
 import Link from 'next/link'
 import { COLORS } from '@/data/colors'
-
-const courses = [
-  {
-    type: 'S',
-    title: 'Preukaz typu S',
-    subtitle: 'Strážnik',
-    description:
-      'Základný kurz pre fyzickú ochranu osôb a majetku. Po absolvovaní budete pripravení na odbornú skúšku pred MV SR.',
-    lessons: 12,
-    duration: '24 hodín',
-    href: '/kurzy/s',
-  },
-  {
-    type: 'P',
-    title: 'Preukaz typu P',
-    subtitle: 'Vedúci strážnik / Manažér bezpečnosti',
-    description:
-      'Rozšírený kurz pre vedúcich pracovníkov SBS. Nadstavba na typ S — organizácia, riadenie a zodpovednosť.',
-    lessons: 8,
-    duration: '16 hodín',
-    href: '/kurzy/p',
-  },
-]
-
-const infoCards = [
-  {
-    icon: '📋',
-    title: 'Zákon o SBS',
-    description: 'Zákon č. 473/2005 Z.z. o poskytovaní služieb v oblasti súkromnej bezpečnosti',
-    href: '/zakon',
-  },
-  {
-    icon: '🏢',
-    title: 'O firme',
-    description: 'Charakteristika spoločnosti, licencie a oblasti pôsobenia',
-    href: '/o-firme',
-  },
-  {
-    icon: '❓',
-    title: 'Časté otázky',
-    description: 'Odpovede na najčastejšie otázky týkajúce sa preukazov a skúšok',
-    href: '/faq',
-  },
-]
+import { HERO, SECTIONS, courses, infoCards } from '@/data/dashboard'
 
 export default function DashboardPage() {
   return (
@@ -53,11 +10,10 @@ export default function DashboardPage() {
       <div style={{ backgroundColor: COLORS.primary }} className="py-12 px-4">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-3xl font-bold text-white">
-            Vitajte v SBS Akademii
+            {HERO.title}
           </h1>
           <p className="mt-2 text-gray-300 max-w-xl">
-            Pripravte sa na získanie preukazu odbornej spôsobilosti podľa zákona č. 473/2005 Z.z.
-            Absolvujte kurz online, kedykoľvek a odkiaľkoľvek.
+            {HERO.subtitle}
           </p>
         </div>
       </div>
@@ -67,7 +23,7 @@ export default function DashboardPage() {
         {/* Courses */}
         <section>
           <h2 className="text-xl font-semibold mb-6" style={{ color: COLORS.primary }}>
-            Dostupné kurzy
+            {SECTIONS.courses}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {courses.map((course) => (
@@ -79,7 +35,7 @@ export default function DashboardPage() {
         {/* Info cards */}
         <section>
           <h2 className="text-xl font-semibold mb-6" style={{ color: COLORS.primary }}>
-            Užitočné informácie
+            {SECTIONS.infoCards}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {infoCards.map((card) => (
