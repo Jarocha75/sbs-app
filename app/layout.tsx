@@ -3,6 +3,7 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Providers from "./components/Providers";
+import { SITE } from "@/data/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -10,8 +11,8 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "SBS Akademia — Príprava na preukaz S a P",
-  description: "Online príprava pre pracovníkov SBS na získanie preukazu typu S a P podľa zákona č. 473/2005 Z.z.",
+  title: `${SITE.name} — ${SITE.tagline}`,
+  description: SITE.description,
 };
 
 export default function RootLayout({

@@ -1,54 +1,78 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useSession, signOut } from 'next-auth/react'
+import { COLORS } from '@/data/colors'
+import { SITE } from '@/data/site'
+import ShieldIcon from '@/app/components/icons/ShieldIcon'
 
-const navLinks = [
-  { href: '/kurzy', label: 'Kurzy' },
-  { href: '/o-firme', label: 'O firme' },
-  { href: '/zakon', label: 'Zákon SBS' },
+type NavItem = { href: string; label: string; badge?: string }
+
+const sluzbyLinks: NavItem[] = [
+  { href: '/sluzby/strazna-sluzba', label: 'Strážna služba' },
+  { href: '/sluzby/detektivna-sluzba', label: 'Detektívna služba' },
+  { href: '/sluzby/odborna-priprava', label: 'Odborná príprava a poradenstvo' },
+]
+
+const courseLinks: NavItem[] = [
+  { href: '/kurzy/s', label: 'Preukaz typu S', badge: 'S' },
+  { href: '/kurzy/p', label: 'Preukaz typu P', badge: 'P' },
 ]
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
   const { data: session } = useSession()
 
+  function toggleMobileSection(name: string) {
+    setMobileExpanded((prev) => (prev === name ? null : name))
+  }
+
+  function closeMobile() {
+    setMobileOpen(false)
+    setMobileExpanded(null)
+  }
+
   return (
-    <nav className="sticky top-0 z-50 shadow-lg" style={{ backgroundColor: '#1e3a5f' }}>
+    <nav className="sticky top-0 z-50 shadow-lg" style={{ backgroundColor: COLORS.primary }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
-            <ShieldIcon />
-            <span className="font-bold text-xl tracking-wide" style={{ color: '#c9a84c' }}>
-              SBS Akademia
+            <ShieldIcon size={30} variant="inverted" />
+            <span className="font-bold text-xl tracking-wide" style={{ color: COLORS.accent }}>
+              {SITE.name}
             </span>
           </Link>
 
-          {/* Desktop links */}
+          {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-gray-200 hover:text-white font-medium transition-colors"
-              >
-                {link.label}
-              </Link>
-            ))}
+            <Link href="/o-firme" className="text-gray-200 hover:text-white font-medium transition-colors">
+              O firme
+            </Link>
+            <NavDropdown label="Služby" items={sluzbyLinks} />
+            <NavDropdown label="Kurzy" items={courseLinks} />
+            <Link href="/zakon" className="text-gray-200 hover:text-white font-medium transition-colors">
+              Legislatíva
+            </Link>
           </div>
 
-          {/* Desktop auth sekcia */}
+          {/* Desktop auth */}
           <div className="hidden md:flex items-center gap-3">
             {session ? (
               <>
-                <span className="text-gray-300 text-sm">{session.user.name ?? session.user.email}</span>
+                <Link
+                  href="/dashboard"
+                  className="text-gray-300 text-sm hover:text-white transition-colors"
+                >
+                  {session.user.name ?? session.user.email}
+                </Link>
                 {session.user.role === 'ADMIN' && (
                   <span
                     className="text-xs font-bold px-2 py-0.5 rounded"
-                    style={{ backgroundColor: '#c9a84c', color: '#1e3a5f' }}
+                    style={{ backgroundColor: COLORS.accent, color: COLORS.primary }}
                   >
                     ADMIN
                   </span>
@@ -64,7 +88,7 @@ export default function Navbar() {
               <Link
                 href="/prihlasenie"
                 className="font-semibold px-4 py-2 rounded-md hover:opacity-90 transition-opacity"
-                style={{ backgroundColor: '#c9a84c', color: '#1e3a5f' }}
+                style={{ backgroundColor: COLORS.accent, color: COLORS.primary }}
               >
                 Prihlásiť sa
               </Link>
@@ -84,18 +108,42 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden px-4 pb-4 flex flex-col gap-2" style={{ backgroundColor: '#16305a' }}>
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-gray-200 py-2.5 border-b border-white/10 font-medium"
-              onClick={() => setMobileOpen(false)}
-            >
-              {link.label}
-            </Link>
-          ))}
+        <div className="md:hidden px-4 pb-4 flex flex-col gap-2" style={{ backgroundColor: COLORS.navMobileBg }}>
+          <Link
+            href="/o-firme"
+            className="text-gray-200 py-2.5 border-b border-white/10 font-medium"
+            onClick={closeMobile}
+          >
+            O firme
+          </Link>
 
+          <MobileDropdown
+            label="Služby"
+            name="sluzby"
+            items={sluzbyLinks}
+            expanded={mobileExpanded === 'sluzby'}
+            onToggle={toggleMobileSection}
+            onClose={closeMobile}
+          />
+
+          <MobileDropdown
+            label="Kurzy"
+            name="kurzy"
+            items={courseLinks}
+            expanded={mobileExpanded === 'kurzy'}
+            onToggle={toggleMobileSection}
+            onClose={closeMobile}
+          />
+
+          <Link
+            href="/zakon"
+            className="text-gray-200 py-2.5 border-b border-white/10 font-medium"
+            onClick={closeMobile}
+          >
+            Legislatíva
+          </Link>
+
+          {/* Mobile auth */}
           {session ? (
             <>
               <div className="py-2 text-gray-300 text-sm flex items-center gap-2">
@@ -103,7 +151,7 @@ export default function Navbar() {
                 {session.user.role === 'ADMIN' && (
                   <span
                     className="text-xs font-bold px-2 py-0.5 rounded"
-                    style={{ backgroundColor: '#c9a84c', color: '#1e3a5f' }}
+                    style={{ backgroundColor: COLORS.accent, color: COLORS.primary }}
                   >
                     ADMIN
                   </span>
@@ -120,8 +168,8 @@ export default function Navbar() {
             <Link
               href="/prihlasenie"
               className="mt-2 font-semibold px-4 py-2.5 rounded-md text-center"
-              style={{ backgroundColor: '#c9a84c', color: '#1e3a5f' }}
-              onClick={() => setMobileOpen(false)}
+              style={{ backgroundColor: COLORS.accent, color: COLORS.primary }}
+              onClick={closeMobile}
             >
               Prihlásiť sa
             </Link>
@@ -132,14 +180,130 @@ export default function Navbar() {
   )
 }
 
-function ShieldIcon() {
+// ── Desktop dropdown ─────────────────────────────────────────────────────────
+
+function NavDropdown({ label, items }: { label: string; items: NavItem[] }) {
+  const [open, setOpen] = useState(false)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  function handleMouseEnter() {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    setOpen(true)
+  }
+
+  function handleMouseLeave() {
+    timeoutRef.current = setTimeout(() => setOpen(false), 150)
+  }
+
   return (
-    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path
-        d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z"
-        fill="#c9a84c"
-      />
-      <path d="M10 13l-2-2 1.41-1.41L10 10.17l4.59-4.58L16 7l-6 6z" fill="#1e3a5f" />
+    <div className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      <button className="flex items-center gap-1 text-gray-200 hover:text-white font-medium transition-colors">
+        {label}
+        <ChevronIcon rotated={open} />
+      </button>
+
+      {open && (
+        <div className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-lg py-1.5 min-w-50 border border-gray-100">
+          {items.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium transition-all duration-150 border-l-2 border-transparent hover:border-l-2"
+              style={{ color: COLORS.primary }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderLeftColor = COLORS.accent
+                e.currentTarget.style.backgroundColor = COLORS.subtleBg
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderLeftColor = 'transparent'
+                e.currentTarget.style.backgroundColor = ''
+              }}
+              onClick={() => setOpen(false)}
+            >
+              {item.badge && (
+                <span
+                  className="w-6 h-6 rounded-full text-xs font-bold flex items-center justify-center shrink-0"
+                  style={{ backgroundColor: COLORS.primary, color: COLORS.accent }}
+                >
+                  {item.badge}
+                </span>
+              )}
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ── Mobile dropdown ───────────────────────────────────────────────────────────
+
+function MobileDropdown({
+  label,
+  name,
+  items,
+  expanded,
+  onToggle,
+  onClose,
+}: {
+  label: string
+  name: string
+  items: NavItem[]
+  expanded: boolean
+  onToggle: (name: string) => void
+  onClose: () => void
+}) {
+  return (
+    <div className="border-b border-white/10">
+      <button
+        onClick={() => onToggle(name)}
+        className="w-full flex items-center justify-between text-gray-200 py-2.5 font-medium"
+      >
+        <span>{label}</span>
+        <ChevronIcon rotated={expanded} />
+      </button>
+
+      {expanded && (
+        <div className="pl-4 pb-2 flex flex-col gap-1">
+          {items.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="py-2 px-2 rounded-md text-sm font-medium flex items-center gap-2 transition-all duration-150 hover:bg-white/10 hover:text-white"
+              style={{ color: COLORS.accent }}
+              onClick={onClose}
+            >
+              {item.badge && (
+                <span
+                  className="w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center shrink-0"
+                  style={{ backgroundColor: COLORS.accent, color: COLORS.primary }}
+                >
+                  {item.badge}
+                </span>
+              )}
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ── Ikony ─────────────────────────────────────────────────────────────────────
+
+function ChevronIcon({ rotated = false }: { rotated?: boolean }) {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      className={`transition-transform duration-200 ${rotated ? 'rotate-180' : ''}`}
+    >
+      <path d="M7 10l5 5 5-5z" />
     </svg>
   )
 }

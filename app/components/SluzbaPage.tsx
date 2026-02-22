@@ -1,0 +1,123 @@
+"use client";
+
+import type { SluzbaData } from "@/data/sluzby";
+import { COLORS } from "@/data/colors";
+
+const BADGE_TEXT = "Zákon č. 473/2005 Z.z.";
+const CARD_HEADING = "Predmety činnosti";
+const SOURCE_TEXT =
+  "Zdroj: Zákon č. 473/2005 Z.z. o poskytovaní služieb v oblasti súkromnej bezpečnosti";
+
+type Props = {
+  data: SluzbaData;
+  icon: React.ReactNode;
+};
+
+export default function SluzbaPage({ data, icon }: Props) {
+  return (
+    <main className="min-h-screen" style={{ backgroundColor: COLORS.pageBg }}>
+      {/* Hero */}
+      <div style={{ backgroundColor: COLORS.primary }} className="py-12 px-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center gap-3 mb-3">
+            <span
+              className="text-xs font-semibold px-3 py-1 rounded-full"
+              style={{ backgroundColor: COLORS.accent, color: COLORS.primary }}
+            >
+              {BADGE_TEXT}
+            </span>
+          </div>
+          <h1 className="text-3xl font-bold text-white">{data.title}</h1>
+          <p className="mt-2 text-gray-300 max-w-xl">{data.description}</p>
+        </div>
+      </div>
+
+      {/* Obsah */}
+      <div className="max-w-4xl mx-auto px-4 py-10 space-y-6">
+        {/* Karta — predmety činnosti */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          {/* Hlavička karty */}
+          <div
+            className="px-6 py-4 flex items-center gap-3 border-b border-gray-100"
+            style={{ backgroundColor: COLORS.cardHeaderBg }}
+          >
+            <div
+              className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+              style={{ backgroundColor: COLORS.primary }}
+            >
+              {icon}
+            </div>
+            <div>
+              <h2
+                className="font-bold text-base"
+                style={{ color: COLORS.primary }}
+              >
+                {CARD_HEADING}
+              </h2>
+              <p className="text-xs text-gray-400">{data.cardSubtitle}</p>
+            </div>
+          </div>
+
+          {/* Zoznam činností */}
+          <ul className="divide-y divide-gray-50">
+            {data.cinnosti.map((item) => (
+              <li
+                key={item.id}
+                className="flex items-start gap-4 px-6 py-4 transition-colors"
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.backgroundColor = COLORS.rowHoverBg)
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor = "")
+                }
+              >
+                <span
+                  className="w-7 h-7 rounded-full text-xs font-bold flex items-center justify-center shrink-0 mt-0.5"
+                  style={{
+                    backgroundColor: COLORS.primary,
+                    color: COLORS.accent,
+                  }}
+                >
+                  {item.id}
+                </span>
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  {item.text}
+                </p>
+              </li>
+            ))}
+          </ul>
+
+          {/* Päta karty */}
+          <div
+            className="px-6 py-3 flex items-center gap-2 border-t border-gray-100"
+            style={{ backgroundColor: COLORS.cardHeaderBg }}
+          >
+            <InfoIcon />
+            <p className="text-xs text-gray-400">{SOURCE_TEXT}</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+function InfoIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+      className="shrink-0"
+    >
+      <circle cx="12" cy="12" r="10" stroke="#9ca3af" strokeWidth="2" />
+      <path
+        d="M12 8v4m0 4h.01"
+        stroke="#9ca3af"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}

@@ -3,6 +3,9 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { COLORS } from '@/data/colors'
+import { SITE } from '@/data/site'
+import ShieldIcon from '@/app/components/icons/ShieldIcon'
 
 export default function RegisterPage() {
   const [error, setError] = useState('')
@@ -45,14 +48,14 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-10" style={{ backgroundColor: '#f0f4f8' }}>
+    <div className="min-h-screen flex items-center justify-center px-4 py-10" style={{ backgroundColor: COLORS.pageBg }}>
       <div className="bg-white rounded-xl shadow-md w-full max-w-md p-8">
 
         {/* Hlavička */}
         <div className="text-center mb-8">
-          <ShieldIcon />
-          <h1 className="text-2xl font-bold mt-3" style={{ color: '#1e3a5f' }}>Registrácia</h1>
-          <p className="text-gray-400 text-sm mt-1">Vytvorte si účet v SBS Akademii</p>
+          <ShieldIcon size={48} centered />
+          <h1 className="text-2xl font-bold mt-3" style={{ color: COLORS.primary }}>Registrácia</h1>
+          <p className="text-gray-400 text-sm mt-1">Vytvorte si účet v {SITE.name}</p>
         </div>
 
         {/* Chyba */}
@@ -65,7 +68,7 @@ export default function RegisterPage() {
         {/* Formulár */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: '#1e3a5f' }}>
+            <label className="block text-sm font-medium mb-1.5" style={{ color: COLORS.primary }}>
               Meno a priezvisko
             </label>
             <input
@@ -78,7 +81,7 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: '#1e3a5f' }}>
+            <label className="block text-sm font-medium mb-1.5" style={{ color: COLORS.primary }}>
               Email <span className="text-red-500">*</span>
             </label>
             <input
@@ -92,7 +95,7 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: '#1e3a5f' }}>
+            <label className="block text-sm font-medium mb-1.5" style={{ color: COLORS.primary }}>
               Heslo <span className="text-red-500">*</span>
             </label>
             <input
@@ -107,7 +110,7 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: '#1e3a5f' }}>
+            <label className="block text-sm font-medium mb-1.5" style={{ color: COLORS.primary }}>
               Potvrdenie hesla <span className="text-red-500">*</span>
             </label>
             <input
@@ -124,7 +127,7 @@ export default function RegisterPage() {
             type="submit"
             disabled={loading}
             className="w-full py-2.5 rounded-lg font-semibold text-white hover:opacity-90 transition-opacity disabled:opacity-60 mt-2"
-            style={{ backgroundColor: '#1e3a5f' }}
+            style={{ backgroundColor: COLORS.primary }}
           >
             {loading ? 'Registrujem...' : 'Zaregistrovať sa'}
           </button>
@@ -132,7 +135,7 @@ export default function RegisterPage() {
 
         <p className="text-center text-sm text-gray-400 mt-6">
           Máte už účet?{' '}
-          <Link href="/prihlasenie" className="font-semibold hover:underline" style={{ color: '#1e3a5f' }}>
+          <Link href="/prihlasenie" className="font-semibold hover:underline" style={{ color: COLORS.primary }}>
             Prihláste sa
           </Link>
         </p>
@@ -141,13 +144,3 @@ export default function RegisterPage() {
   )
 }
 
-function ShieldIcon() {
-  return (
-    <div className="flex justify-center">
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z" fill="#1e3a5f" />
-        <path d="M10 13l-2-2 1.41-1.41L10 10.17l4.59-4.58L16 7l-6 6z" fill="#c9a84c" />
-      </svg>
-    </div>
-  )
-}

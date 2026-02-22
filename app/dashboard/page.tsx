@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { COLORS } from '@/data/colors'
 
 const courses = [
   {
@@ -46,10 +47,10 @@ const infoCards = [
 
 export default function DashboardPage() {
   return (
-    <main className="min-h-screen" style={{ backgroundColor: '#f0f4f8' }}>
+    <main className="min-h-screen" style={{ backgroundColor: COLORS.pageBg }}>
 
       {/* Hero banner */}
-      <div style={{ backgroundColor: '#1e3a5f' }} className="py-12 px-4">
+      <div style={{ backgroundColor: COLORS.primary }} className="py-12 px-4">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-3xl font-bold text-white">
             Vitajte v SBS Akademii
@@ -65,7 +66,7 @@ export default function DashboardPage() {
 
         {/* Courses */}
         <section>
-          <h2 className="text-xl font-semibold mb-6" style={{ color: '#1e3a5f' }}>
+          <h2 className="text-xl font-semibold mb-6" style={{ color: COLORS.primary }}>
             Dostupné kurzy
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -77,7 +78,7 @@ export default function DashboardPage() {
 
         {/* Info cards */}
         <section>
-          <h2 className="text-xl font-semibold mb-6" style={{ color: '#1e3a5f' }}>
+          <h2 className="text-xl font-semibold mb-6" style={{ color: COLORS.primary }}>
             Užitočné informácie
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -113,16 +114,16 @@ function CourseCard({
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
 
       {/* Header */}
-      <div className="px-6 py-4 flex items-center gap-4" style={{ backgroundColor: '#1e3a5f' }}>
+      <div className="px-6 py-4 flex items-center gap-4" style={{ backgroundColor: COLORS.primary }}>
         <span
           className="text-2xl font-bold w-12 h-12 rounded-full flex items-center justify-center shrink-0"
-          style={{ backgroundColor: '#c9a84c', color: '#1e3a5f' }}
+          style={{ backgroundColor: COLORS.accent, color: COLORS.primary }}
         >
           {type}
         </span>
         <div>
           <h3 className="text-white font-bold text-lg leading-tight">{title}</h3>
-          <p className="text-sm" style={{ color: '#c9a84c' }}>{subtitle}</p>
+          <p className="text-sm" style={{ color: COLORS.accent }}>{subtitle}</p>
         </div>
       </div>
 
@@ -136,7 +137,7 @@ function CourseCard({
         <Link
           href={href}
           className="block text-center py-2.5 rounded-lg font-semibold hover:opacity-90 transition-opacity"
-          style={{ backgroundColor: '#1e3a5f', color: 'white' }}
+          style={{ backgroundColor: COLORS.primary, color: 'white' }}
         >
           Začať kurz
         </Link>
@@ -163,7 +164,7 @@ function InfoCard({
     >
       <span className="text-2xl shrink-0">{icon}</span>
       <div>
-        <h3 className="font-semibold" style={{ color: '#1e3a5f' }}>{title}</h3>
+        <h3 className="font-semibold" style={{ color: COLORS.primary }}>{title}</h3>
         <p className="text-sm text-gray-500 mt-1 leading-snug">{description}</p>
       </div>
     </Link>
