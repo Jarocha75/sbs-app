@@ -16,6 +16,11 @@ export const courseLinks: NavItem[] = [
   { href: '/kurzy/p', label: 'Preukaz typu P', badge: 'P' },
 ]
 
+export const testLinks: NavItem[] = [
+  { href: '/testy/s', label: 'Preukaz typu S', badge: 'S' },
+  { href: '/testy/p', label: 'Preukaz typu P', badge: 'P' },
+]
+
 export const NAV = {
   signIn: 'Prihlásiť sa',
   signInHref: '/prihlasenie',

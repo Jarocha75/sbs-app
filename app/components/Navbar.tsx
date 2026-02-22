@@ -6,7 +6,7 @@ import { useSession, signOut } from 'next-auth/react'
 import { COLORS } from '@/data/colors'
 import { SITE } from '@/data/site'
 import ShieldIcon from '@/app/components/icons/ShieldIcon'
-import { NAV, navLinks, sluzbyLinks, courseLinks, type NavItem } from '@/data/navbar'
+import { NAV, navLinks, sluzbyLinks, courseLinks, testLinks, type NavItem } from '@/data/navbar'
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -42,6 +42,7 @@ export default function Navbar() {
             </Link>
             <NavDropdown label="Služby" items={sluzbyLinks} />
             <NavDropdown label="Kurzy" items={courseLinks} />
+            <NavDropdown label="On-line testy SBS" items={testLinks} />
             <Link href={navLinks[1].href} className="text-gray-200 hover:text-white font-medium transition-colors">
               {navLinks[1].label}
             </Link>
@@ -119,6 +120,15 @@ export default function Navbar() {
             name="kurzy"
             items={courseLinks}
             expanded={mobileExpanded === 'kurzy'}
+            onToggle={toggleMobileSection}
+            onClose={closeMobile}
+          />
+
+          <MobileDropdown
+            label="On-line testy SBS"
+            name="testy"
+            items={testLinks}
+            expanded={mobileExpanded === 'testy'}
             onToggle={toggleMobileSection}
             onClose={closeMobile}
           />
