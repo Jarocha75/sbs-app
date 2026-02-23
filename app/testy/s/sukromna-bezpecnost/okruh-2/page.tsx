@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { COLORS } from '@/data/colors'
-import { okruh1Content, questions, type Answer } from '@/data/test-sukromna-bezpecnost-okruh-1'
+import { okruh2Content, questions, type Answer } from '@/data/test-sukromna-bezpecnost-okruh-2'
 import { useShuffledQuestions } from '@/hooks/useShuffledQuestions'
 
 type Phase = 'quiz' | 'results'
@@ -80,8 +80,8 @@ function NavButton({
   )
 }
 
-export default function Okruh1Page() {
-  const { hero, backHref, backLabel, result } = okruh1Content
+export default function Okruh2Page() {
+  const { hero, backHref, backLabel, result } = okruh2Content
   const shuffledQuestions = useShuffledQuestions(questions)
 
   const [phase, setPhase] = useState<Phase>('quiz')
@@ -134,7 +134,6 @@ export default function Okruh1Page() {
 
         <div className="flex-1 flex items-center justify-center px-4 py-12">
           <div className="bg-white rounded-2xl shadow-lg w-full max-w-2xl overflow-hidden">
-            {/* Score header */}
             <div
               className="py-10 px-8 text-center"
               style={{ backgroundColor: passed ? '#16a34a' : '#dc2626' }}
@@ -147,7 +146,6 @@ export default function Okruh1Page() {
               </div>
             </div>
 
-            {/* Wrong answers summary */}
             <div className="px-8 py-6">
               {shuffledQuestions.some((q) => answers[q.id] !== q.correct) && (
                 <div className="mb-6">
@@ -186,7 +184,6 @@ export default function Okruh1Page() {
 
   return (
     <main className="flex flex-col" style={{ backgroundColor: COLORS.pageBg, minHeight: '100vh', paddingBottom: '5rem' }}>
-      {/* Hero */}
       <div style={{ backgroundColor: COLORS.primary }} className="py-10 px-4">
         <div className="max-w-2xl mx-auto">
           <Link href={backHref} className="inline-block text-sm mb-4 hover:opacity-80 transition-opacity" style={{ color: COLORS.accent }}>
@@ -197,7 +194,6 @@ export default function Okruh1Page() {
         </div>
       </div>
 
-      {/* Progress bar */}
       <div className="w-full h-1.5" style={{ backgroundColor: '#d1d5db' }}>
         <div
           className="h-full transition-all duration-500"
@@ -205,10 +201,8 @@ export default function Okruh1Page() {
         />
       </div>
 
-      {/* Question area */}
       <div className="flex-1 flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-2xl">
-          {/* Counter + dots */}
           <div className="flex items-center justify-between mb-5">
             <span className="text-lg font-bold" style={{ color: COLORS.primary }}>
               Otázka {currentIndex + 1}{' '}
@@ -236,16 +230,13 @@ export default function Okruh1Page() {
             </div>
           </div>
 
-          {/* Question card */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-            {/* Question text */}
             <div className="px-7 py-7 border-b border-gray-100">
               <p className="text-lg font-semibold leading-relaxed" style={{ color: COLORS.primary }}>
                 {question.text}
               </p>
             </div>
 
-            {/* Options */}
             <div className="px-7 py-5 flex flex-col gap-3">
               {(['A', 'B', 'C'] as Answer[]).map((letter) => {
                 const isSelected = userAnswer === letter
@@ -309,7 +300,6 @@ export default function Okruh1Page() {
               })}
             </div>
 
-            {/* Inline feedback */}
             {isAnswered && (
               <div className="px-7 pb-6">
                 <div
@@ -329,7 +319,6 @@ export default function Okruh1Page() {
         </div>
       </div>
 
-      {/* Fixed bottom nav bar */}
       <div
         style={{
           position: 'fixed',
@@ -346,7 +335,6 @@ export default function Okruh1Page() {
           className="max-w-2xl mx-auto px-4 flex items-center justify-between"
           style={{ height: '4.5rem' }}
         >
-          {/* Left: back button */}
           <div>
             {currentIndex > 0 ? (
               <NavButton variant="outline" onClick={goPrev}>
@@ -357,7 +345,6 @@ export default function Okruh1Page() {
             )}
           </div>
 
-          {/* Right: next / hint */}
           {isAnswered ? (
             <NavButton variant="primary" onClick={goNext}>
               {isLast ? 'Zobraziť výsledok →' : 'Ďalšia otázka →'}
