@@ -38,4 +38,22 @@ export const kategorie: TestKategoria[] = [
     pocetOtazok: 27,
     href: '/testy/s/trestne-pravo',
   },
+  {
+    id: 'ustava-sr',
+    nazov: 'Ústava SR a ZĽPS',
+    pocetOtazok: 12,
+    href: '/testy/s/ustava-sr',
+  },
+  {
+    id: 'kriminalistika',
+    nazov: 'Kriminalistika',
+    pocetOtazok: 13,
+    href: '/testy/s/kriminalistika',
+  },
+  {
+    id: 'policajny-zbor',
+    nazov: 'Policajný zbor',
+    pocetOtazok: 15,
+    href: '/testy/s/policajny-zbor',
+  },
 ]
