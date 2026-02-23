@@ -58,14 +58,7 @@ export default function Navbar() {
                 >
                   {session.user.name ?? session.user.email}
                 </Link>
-                {session.user.role === 'ADMIN' && (
-                  <span
-                    className="text-xs font-bold px-2 py-0.5 rounded"
-                    style={{ backgroundColor: COLORS.accent, color: COLORS.primary }}
-                  >
-                    {NAV.adminBadge}
-                  </span>
-                )}
+                {session.user.role === 'ADMIN' && <AdminBadge />}
                 <button
                   onClick={() => signOut({ callbackUrl: NAV.signOutCallbackUrl })}
                   className="text-sm font-semibold px-4 py-2 rounded-md border border-white/30 text-white hover:bg-white/10 transition-colors"
@@ -146,14 +139,7 @@ export default function Navbar() {
             <>
               <div className="py-2 text-gray-300 text-sm flex items-center gap-2">
                 <span>{session.user.name ?? session.user.email}</span>
-                {session.user.role === 'ADMIN' && (
-                  <span
-                    className="text-xs font-bold px-2 py-0.5 rounded"
-                    style={{ backgroundColor: COLORS.accent, color: COLORS.primary }}
-                  >
-                    {NAV.adminBadge}
-                  </span>
-                )}
+                {session.user.role === 'ADMIN' && <AdminBadge />}
               </div>
               <button
                 onClick={() => signOut({ callbackUrl: NAV.signOutCallbackUrl })}
@@ -286,6 +272,19 @@ function MobileDropdown({
         </div>
       )}
     </div>
+  )
+}
+
+// ── AdminBadge ────────────────────────────────────────────────────────────────
+
+function AdminBadge() {
+  return (
+    <span
+      className="text-xs font-bold px-2 py-0.5 rounded"
+      style={{ backgroundColor: COLORS.accent, color: COLORS.primary }}
+    >
+      {NAV.adminBadge}
+    </span>
   )
 }
 
