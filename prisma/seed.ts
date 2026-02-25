@@ -11,6 +11,8 @@ import { questions as qTrestne } from '../data/test-trestne-pravo'
 import { questions as qUstava } from '../data/test-ustava-sr'
 import { questions as qKriminalistika } from '../data/test-kriminalistika'
 import { questions as qPolicajny } from '../data/test-policajny-zbor'
+import { questions as qObecnaPolicia } from '../data/test-obecna-policia'
+import { questions as qVojenskaPolicia } from '../data/test-vojenska-policia'
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL })
 const adapter = new PrismaPg(pool)
@@ -106,6 +108,16 @@ async function main() {
             title: 'Policajný zbor',
             passScore: calcPassScore(12, 15), // 80%
             questions: { create: toQuestionsData(qPolicajny) },
+          },
+          {
+            title: 'Obecná polícia',
+            passScore: calcPassScore(7, 9), // 78%
+            questions: { create: toQuestionsData(qObecnaPolicia) },
+          },
+          {
+            title: 'Vojenská polícia',
+            passScore: calcPassScore(4, 5), // 80%
+            questions: { create: toQuestionsData(qVojenskaPolicia) },
           },
         ],
       },

@@ -56,4 +56,16 @@ export const kategorie: TestKategoria[] = [
     pocetOtazok: 15,
     href: '/testy/s/policajny-zbor',
   },
+  {
+    id: 'obecna-policia',
+    nazov: 'Obecná polícia',
+    pocetOtazok: 9,
+    href: '/testy/s/obecna-policia',
+  },
+  {
+    id: 'vojenska-policia',
+    nazov: 'Vojenská polícia',
+    pocetOtazok: 5,
+    href: '/testy/s/vojenska-policia',
+  },
 ]
