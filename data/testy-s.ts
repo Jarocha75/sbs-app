@@ -68,4 +68,16 @@ export const kategorie: TestKategoria[] = [
     pocetOtazok: 5,
     href: '/testy/s/vojenska-policia',
   },
+  {
+    id: 'ochrana-osobnych-udajov',
+    nazov: 'Ochrana osobných údajov',
+    pocetOtazok: 7,
+    href: '/testy/s/ochrana-osobnych-udajov',
+  },
+  {
+    id: 'slovenska-informacna-sluzba',
+    nazov: 'Slovenská informačná služba',
+    pocetOtazok: 2,
+    href: '/testy/s/slovenska-informacna-sluzba',
+  },
 ]

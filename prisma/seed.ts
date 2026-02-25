@@ -13,6 +13,8 @@ import { questions as qKriminalistika } from '../data/test-kriminalistika'
 import { questions as qPolicajny } from '../data/test-policajny-zbor'
 import { questions as qObecnaPolicia } from '../data/test-obecna-policia'
 import { questions as qVojenskaPolicia } from '../data/test-vojenska-policia'
+import { questions as qOchranaUdajov } from '../data/test-ochrana-osobnych-udajov'
+import { questions as qSIS } from '../data/test-slovenska-informacna-sluzba'
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL })
 const adapter = new PrismaPg(pool)
@@ -118,6 +120,16 @@ async function main() {
             title: 'Vojenská polícia',
             passScore: calcPassScore(4, 5), // 80%
             questions: { create: toQuestionsData(qVojenskaPolicia) },
+          },
+          {
+            title: 'Ochrana osobných údajov',
+            passScore: calcPassScore(6, 7), // 86%
+            questions: { create: toQuestionsData(qOchranaUdajov) },
+          },
+          {
+            title: 'Slovenská informačná služba',
+            passScore: calcPassScore(2, 2), // 100%
+            questions: { create: toQuestionsData(qSIS) },
           },
         ],
       },
