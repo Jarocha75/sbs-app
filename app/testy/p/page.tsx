@@ -1,5 +1,6 @@
+import Link from 'next/link'
 import { COLORS } from '@/data/colors'
-import { testyPContent } from '@/data/testy-p'
+import { testyPContent, kategorie, type TestKategoria } from '@/data/testy-p'
 
 export default function TestyPPage() {
   const { hero, section } = testyPContent
@@ -29,10 +30,40 @@ export default function TestyPPage() {
         <h2 className="text-lg font-semibold mb-6" style={{ color: COLORS.primary }}>
           {section.title}
         </h2>
-        <div className="bg-white rounded-xl border border-dashed border-gray-200 px-6 py-12 text-center">
-          <p className="text-gray-400 text-sm">Testy pre preukaz typu P budú pridané čoskoro.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {kategorie.map((kat) => (
+            <KategoriaCard key={kat.id} kategoria={kat} labels={section} />
+          ))}
         </div>
       </div>
     </main>
+  )
+}
+
+function KategoriaCard({
+  kategoria,
+  labels,
+}: {
+  kategoria: TestKategoria
+  labels: { otazok: string; spustit: string }
+}) {
+  return (
+    <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+      <div className="px-6 py-5">
+        <h3 className="font-bold text-base mb-1" style={{ color: COLORS.primary }}>
+          {kategoria.nazov}
+        </h3>
+        <p className="text-sm text-gray-400 mb-5">
+          {kategoria.pocetOtazok} {labels.otazok}
+        </p>
+        <Link
+          href={kategoria.href}
+          className="block text-center py-2.5 rounded-lg font-semibold hover:opacity-90 transition-opacity"
+          style={{ backgroundColor: COLORS.primary, color: 'white' }}
+        >
+          {labels.spustit}
+        </Link>
+      </div>
+    </div>
   )
 }

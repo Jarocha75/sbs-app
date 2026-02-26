@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { COLORS } from '@/data/colors'
 import { testySContent, kategorie, type TestKategoria } from '@/data/testy-s'
+import CvicnyTestCard from '@/app/components/CvicnyTestCard'
 
 export default function TestySPage() {
   const { hero, section } = testySContent
@@ -27,6 +28,11 @@ export default function TestySPage() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-10">
+        {/* Cvičný test */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+          <CvicnyTestCard />
+        </div>
+
         <h2 className="text-lg font-semibold mb-6" style={{ color: COLORS.primary }}>
           {section.title}
         </h2>

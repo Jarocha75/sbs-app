@@ -15,6 +15,11 @@ import { questions as qObecnaPolicia } from '../data/test-obecna-policia'
 import { questions as qVojenskaPolicia } from '../data/test-vojenska-policia'
 import { questions as qOchranaUdajov } from '../data/test-ochrana-osobnych-udajov'
 import { questions as qSIS } from '../data/test-slovenska-informacna-sluzba'
+import { questions as qPrakticke } from '../data/test-prakticke-otazky'
+import { questions as qPOkruh1 } from '../data/test-p-okruh-1'
+import { questions as qPOkruh2 } from '../data/test-p-okruh-2'
+import { questions as qPOkruh3 } from '../data/test-p-okruh-3'
+import { questions as qPOkruh4 } from '../data/test-p-okruh-4'
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL })
 const adapter = new PrismaPg(pool)
@@ -131,6 +136,11 @@ async function main() {
             passScore: calcPassScore(2, 2), // 100%
             questions: { create: toQuestionsData(qSIS) },
           },
+          {
+            title: 'Praktické otázky SBS',
+            passScore: calcPassScore(8, 10), // 80%
+            questions: { create: toQuestionsData(qPrakticke) },
+          },
         ],
       },
     },
@@ -138,12 +148,36 @@ async function main() {
 
   console.log(`Kurz vytvorený: ${courseS.title}`)
 
-  // Kurz Typ P (zatiaľ prázdny)
+  // Kurz Typ P
   const courseP = await prisma.course.create({
     data: {
       title: 'Preukaz SBS - Typ P',
       description: 'Príprava na skúšku odbornej spôsobilosti pre preukaz typu P',
       type: 'P',
+      tests: {
+        create: [
+          {
+            title: 'P - Okruh 1',
+            passScore: calcPassScore(36, 40), // 90%
+            questions: { create: toQuestionsData(qPOkruh1) },
+          },
+          {
+            title: 'P - Okruh 2',
+            passScore: calcPassScore(36, 40), // 90%
+            questions: { create: toQuestionsData(qPOkruh2) },
+          },
+          {
+            title: 'P - Okruh 3',
+            passScore: calcPassScore(36, 40), // 90%
+            questions: { create: toQuestionsData(qPOkruh3) },
+          },
+          {
+            title: 'P - Okruh 4',
+            passScore: calcPassScore(36, 40), // 90%
+            questions: { create: toQuestionsData(qPOkruh4) },
+          },
+        ],
+      },
     },
   })
 
