@@ -11,7 +11,7 @@ type CourseCardProps = {
   href: string
 }
 
-export default function CourseCard({
+const CourseCard = ({
   type,
   title,
   subtitle,
@@ -19,7 +19,7 @@ export default function CourseCard({
   lessons,
   duration,
   href,
-}: CourseCardProps) {
+}: CourseCardProps) => {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
 
@@ -55,3 +55,5 @@ export default function CourseCard({
     </div>
   )
 }
+
+export default CourseCard

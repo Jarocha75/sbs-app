@@ -10,7 +10,7 @@ type Props = {
   completed: boolean
 }
 
-export default function MarkCompleteButton({ lessonId, nextLessonId, completed }: Props) {
+const MarkCompleteButton = ({ lessonId, nextLessonId, completed }: Props) => {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -80,3 +80,5 @@ export default function MarkCompleteButton({ lessonId, nextLessonId, completed }
     </div>
   )
 }
+
+export default MarkCompleteButton

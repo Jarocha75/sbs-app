@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { COLORS } from '@/data/colors'
 import { useShuffledQuestions } from '@/hooks/useShuffledQuestions'
-import { NavButton, type Phase } from '@/app/components/NavButton'
+import NavButton, { type Phase } from '@/app/components/NavButton'
 
 type Answer = 'A' | 'B' | 'C'
 
@@ -29,13 +29,13 @@ export type QuizContent = {
   }
 }
 
-export default function QuizClient({
+const QuizClient = ({
   questions,
   content,
 }: {
   questions: QuizQuestion[]
   content: QuizContent
-}) {
+}) => {
   const { hero, backHref, backLabel, result } = content
   const shuffledQuestions = useShuffledQuestions(questions)
 
@@ -325,3 +325,5 @@ export default function QuizClient({
     </main>
   )
 }
+
+export default QuizClient

@@ -11,7 +11,7 @@ type Props = {
   centered?: boolean
 }
 
-export default function ShieldIcon({ size = 48, variant = 'default', centered = false }: Props) {
+const ShieldIcon = ({ size = 48, variant = 'default', centered = false }: Props) => {
   const outerFill = variant === 'inverted' ? COLORS.accent : COLORS.primary
   const innerFill = variant === 'inverted' ? COLORS.primary : COLORS.accent
 
@@ -31,3 +31,5 @@ export default function ShieldIcon({ size = 48, variant = 'default', centered = 
   if (centered) return <div className="flex justify-center">{svg}</div>
   return svg
 }
+
+export default ShieldIcon

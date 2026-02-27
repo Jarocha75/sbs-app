@@ -13,7 +13,7 @@ type Props = {
   icon: React.ReactNode;
 };
 
-export default function SluzbaPage({ data, icon }: Props) {
+const SluzbaPage = ({ data, icon }: Props) => {
   return (
     <main className="min-h-screen" style={{ backgroundColor: COLORS.pageBg }}>
       {/* Hero */}
@@ -101,7 +101,9 @@ export default function SluzbaPage({ data, icon }: Props) {
   );
 }
 
-function InfoIcon() {
+export default SluzbaPage
+
+const InfoIcon = () => {
   return (
     <svg
       width="14"

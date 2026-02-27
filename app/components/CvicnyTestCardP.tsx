@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { COLORS } from "@/data/colors";
 
-export default function CvicnyTestCardP() {
+const CvicnyTestCardP = () => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -104,3 +104,5 @@ export default function CvicnyTestCardP() {
     </>
   );
 }
+
+export default CvicnyTestCardP

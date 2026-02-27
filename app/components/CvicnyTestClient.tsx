@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { COLORS } from '@/data/colors'
 import { useShuffledQuestions } from '@/hooks/useShuffledQuestions'
-import { NavButton } from '@/app/components/NavButton'
+import NavButton from '@/app/components/NavButton'
 import type { QuizQuestion } from '@/app/components/QuizClient'
 
 type Answer = 'A' | 'B' | 'C'
@@ -12,13 +12,13 @@ type Answer = 'A' | 'B' | 'C'
 const TOTAL_SECONDS = 40 * 60
 const PASS_MARK = 32
 
-function formatTime(s: number): string {
+const formatTime = (s: number): string => {
   const m = Math.floor(s / 60).toString().padStart(2, '0')
   const sec = (s % 60).toString().padStart(2, '0')
   return `${m}:${sec}`
 }
 
-export default function CvicnyTestClient({ questions }: { questions: QuizQuestion[] }) {
+const CvicnyTestClient = ({ questions }: { questions: QuizQuestion[] }) => {
   const shuffled = useShuffledQuestions(questions)
   const [phase, setPhase] = useState<'quiz' | 'results'>('quiz')
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -298,3 +298,5 @@ export default function CvicnyTestClient({ questions }: { questions: QuizQuestio
     </main>
   )
 }
+
+export default CvicnyTestClient

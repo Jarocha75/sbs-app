@@ -8,7 +8,7 @@ type InfoCardProps = {
   href: string
 }
 
-export default function InfoCard({ icon, title, description, href }: InfoCardProps) {
+const InfoCard = ({ icon, title, description, href }: InfoCardProps) => {
   return (
     <Link
       href={href}
@@ -22,3 +22,5 @@ export default function InfoCard({ icon, title, description, href }: InfoCardPro
     </Link>
   )
 }
+
+export default InfoCard

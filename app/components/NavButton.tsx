@@ -2,7 +2,7 @@ import { COLORS } from '@/data/colors'
 
 export type Phase = 'quiz' | 'results'
 
-export function NavButton({
+const NavButton = ({
   variant,
   onClick,
   children,
@@ -10,7 +10,7 @@ export function NavButton({
   variant: 'primary' | 'outline' | 'ghost'
   onClick: () => void
   children: React.ReactNode
-}) {
+}) => {
   const base: React.CSSProperties = {
     display: 'inline-flex',
     alignItems: 'center',
@@ -73,3 +73,5 @@ export function NavButton({
     </button>
   )
 }
+
+export default NavButton
