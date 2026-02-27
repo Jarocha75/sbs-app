@@ -1,6 +1,6 @@
 import { COLORS } from "@/data/colors";
 import { testyPContent, kategorie } from "@/data/testy-p";
-import KategoriaCard from "@/app/testy/components/KategoriaCard";
+import KategoriaCard from "@/app/components/testy/KategoriaCard";
 
 const TestyPPage = () => {
   const { hero, section } = testyPContent;

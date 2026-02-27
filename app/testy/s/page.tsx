@@ -1,7 +1,7 @@
 import { COLORS } from "@/data/colors";
 import { testySContent, kategorie } from "@/data/testy-s";
 import CvicnyTestCard from "@/app/components/CvicnyTestCard";
-import KategoriaCard from "@/app/testy/components/KategoriaCard";
+import KategoriaCard from "@/app/components/testy/KategoriaCard";
 
 const TestySPage = () => {
   const { hero, section } = testySContent;
