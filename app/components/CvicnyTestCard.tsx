@@ -134,6 +134,6 @@ const CvicnyTestCard = () => {
       )}
     </>
   );
-}
+};
 
-export default CvicnyTestCard
+export default CvicnyTestCard;

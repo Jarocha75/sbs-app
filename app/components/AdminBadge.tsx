@@ -1,5 +1,5 @@
-import { COLORS } from '@/data/colors'
-import { NAV } from '@/data/navbar'
+import { COLORS } from "@/data/colors";
+import { NAV } from "@/data/navbar";
 
 const AdminBadge = () => {
   return (
@@ -9,7 +9,7 @@ const AdminBadge = () => {
     >
       {NAV.adminBadge}
     </span>
-  )
-}
+  );
+};
 
-export default AdminBadge
+export default AdminBadge;

@@ -2,6 +2,7 @@
 
 import type { SluzbaData } from "@/data/sluzby";
 import { COLORS } from "@/data/colors";
+import InfoIcon from "@/app/components/icons/InfoIcon";
 
 const BADGE_TEXT = "Zákon č. 473/2005 Z.z.";
 const CARD_HEADING = "Predmety činnosti";
@@ -99,27 +100,6 @@ const SluzbaPage = ({ data, icon }: Props) => {
       </div>
     </main>
   );
-}
+};
 
-export default SluzbaPage
-
-const InfoIcon = () => {
-  return (
-    <svg
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-      className="shrink-0"
-    >
-      <circle cx="12" cy="12" r="10" stroke="#9ca3af" strokeWidth="2" />
-      <path
-        d="M12 8v4m0 4h.01"
-        stroke="#9ca3af"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
+export default SluzbaPage;

@@ -1,86 +1,96 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { COLORS } from '@/data/colors'
-import { useShuffledQuestions } from '@/hooks/useShuffledQuestions'
-import NavButton, { type Phase } from '@/app/components/NavButton'
+import { useState } from "react";
+import Link from "next/link";
+import { COLORS } from "@/data/colors";
+import { useShuffledQuestions } from "@/hooks/useShuffledQuestions";
+import NavButton, { type Phase } from "@/app/components/NavButton";
 
-type Answer = 'A' | 'B' | 'C'
+type Answer = "A" | "B" | "C";
 
 export type QuizQuestion = {
-  id: string
-  text: string
-  options: { A: string; B: string; C: string }
-  correct: Answer
-}
+  id: string;
+  text: string;
+  options: { A: string; B: string; C: string };
+  correct: Answer;
+};
 
 export type QuizContent = {
   hero: {
-    title: string
-    subtitle: string
-  }
-  backHref: string
-  backLabel: string
+    title: string;
+    subtitle: string;
+  };
+  backHref: string;
+  backLabel: string;
   result: {
-    passMark: number
-    passed: string
-    failed: string
-  }
-}
+    passMark: number;
+    passed: string;
+    failed: string;
+  };
+};
 
 const QuizClient = ({
   questions,
   content,
 }: {
-  questions: QuizQuestion[]
-  content: QuizContent
+  questions: QuizQuestion[];
+  content: QuizContent;
 }) => {
-  const { hero, backHref, backLabel, result } = content
-  const shuffledQuestions = useShuffledQuestions(questions)
+  const { hero, backHref, backLabel, result } = content;
+  const shuffledQuestions = useShuffledQuestions(questions);
 
-  const [phase, setPhase] = useState<Phase>('quiz')
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [answers, setAnswers] = useState<Record<string, Answer>>({})
+  const [phase, setPhase] = useState<Phase>("quiz");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [answers, setAnswers] = useState<Record<string, Answer>>({});
 
-  const question = shuffledQuestions[currentIndex]
-  const userAnswer = answers[question.id]
-  const isAnswered = userAnswer !== undefined
-  const isLast = currentIndex === shuffledQuestions.length - 1
-  const progress = ((currentIndex + (isAnswered ? 1 : 0)) / shuffledQuestions.length) * 100
+  const question = shuffledQuestions[currentIndex];
+  const userAnswer = answers[question.id];
+  const isAnswered = userAnswer !== undefined;
+  const isLast = currentIndex === shuffledQuestions.length - 1;
+  const progress =
+    ((currentIndex + (isAnswered ? 1 : 0)) / shuffledQuestions.length) * 100;
 
-  const score = shuffledQuestions.filter((q) => answers[q.id] === q.correct).length
+  const score = shuffledQuestions.filter(
+    (q) => answers[q.id] === q.correct,
+  ).length;
 
   function selectAnswer(letter: Answer) {
-    if (isAnswered) return
-    setAnswers((prev) => ({ ...prev, [question.id]: letter }))
+    if (isAnswered) return;
+    setAnswers((prev) => ({ ...prev, [question.id]: letter }));
   }
 
   function goNext() {
     if (isLast) {
-      setPhase('results')
+      setPhase("results");
     } else {
-      setCurrentIndex((i) => i + 1)
+      setCurrentIndex((i) => i + 1);
     }
   }
 
   function goPrev() {
-    if (currentIndex > 0) setCurrentIndex((i) => i - 1)
+    if (currentIndex > 0) setCurrentIndex((i) => i - 1);
   }
 
   function reset() {
-    setAnswers({})
-    setCurrentIndex(0)
-    setPhase('quiz')
+    setAnswers({});
+    setCurrentIndex(0);
+    setPhase("quiz");
   }
 
-  if (phase === 'results') {
-    const passed = score >= result.passMark
+  if (phase === "results") {
+    const passed = score >= result.passMark;
     return (
-      <main className="min-h-screen flex flex-col" style={{ backgroundColor: COLORS.pageBg }}>
+      <main
+        className="min-h-screen flex flex-col"
+        style={{ backgroundColor: COLORS.pageBg }}
+      >
         <div style={{ backgroundColor: COLORS.primary }} className="py-10 px-4">
           <div className="max-w-2xl mx-auto">
-            <Link href={backHref} className="inline-block text-sm mb-4 hover:opacity-80 transition-opacity" style={{ color: COLORS.accent }}>
+            <Link
+              href={backHref}
+              className="inline-block text-sm mb-4 hover:opacity-80 transition-opacity"
+              style={{ color: COLORS.accent }}
+            >
               {backLabel}
             </Link>
             <h1 className="text-2xl font-bold text-white">{hero.title}</h1>
@@ -92,7 +102,7 @@ const QuizClient = ({
             {/* Score header */}
             <div
               className="py-10 px-8 text-center"
-              style={{ backgroundColor: passed ? '#16a34a' : '#dc2626' }}
+              style={{ backgroundColor: passed ? "#16a34a" : "#dc2626" }}
             >
               <div className="text-white text-7xl font-black mb-2">
                 {score}/{shuffledQuestions.length}
@@ -106,17 +116,34 @@ const QuizClient = ({
             <div className="px-8 py-6">
               {shuffledQuestions.some((q) => answers[q.id] !== q.correct) && (
                 <div className="mb-6">
-                  <p className="text-sm font-semibold mb-3" style={{ color: COLORS.primary }}>
+                  <p
+                    className="text-sm font-semibold mb-3"
+                    style={{ color: COLORS.primary }}
+                  >
                     Nesprávne odpovede:
                   </p>
                   <div className="flex flex-col gap-2">
                     {shuffledQuestions
                       .filter((q) => answers[q.id] !== q.correct)
                       .map((q, idx) => (
-                        <div key={q.id} className="rounded-lg px-4 py-3 text-sm" style={{ backgroundColor: '#fef2f2', borderLeft: '3px solid #dc2626' }}>
-                          <span className="font-bold text-gray-500 mr-2">{idx + 1}.</span>
-                          <span className="text-gray-700">{q.text.slice(0, 70)}…</span>
-                          <span className="block mt-1 text-xs font-semibold" style={{ color: '#16a34a' }}>
+                        <div
+                          key={q.id}
+                          className="rounded-lg px-4 py-3 text-sm"
+                          style={{
+                            backgroundColor: "#fef2f2",
+                            borderLeft: "3px solid #dc2626",
+                          }}
+                        >
+                          <span className="font-bold text-gray-500 mr-2">
+                            {idx + 1}.
+                          </span>
+                          <span className="text-gray-700">
+                            {q.text.slice(0, 70)}…
+                          </span>
+                          <span
+                            className="block mt-1 text-xs font-semibold"
+                            style={{ color: "#16a34a" }}
+                          >
                             Správna odpoveď: {q.correct}) {q.options[q.correct]}
                           </span>
                         </div>
@@ -136,24 +163,37 @@ const QuizClient = ({
           </div>
         </div>
       </main>
-    )
+    );
   }
 
   return (
-    <main className="flex flex-col" style={{ backgroundColor: COLORS.pageBg, minHeight: '100vh', paddingBottom: '5rem' }}>
+    <main
+      className="flex flex-col"
+      style={{
+        backgroundColor: COLORS.pageBg,
+        minHeight: "100vh",
+        paddingBottom: "5rem",
+      }}
+    >
       {/* Hero */}
       <div style={{ backgroundColor: COLORS.primary }} className="py-10 px-4">
         <div className="max-w-2xl mx-auto">
-          <Link href={backHref} className="inline-block text-sm mb-4 hover:opacity-80 transition-opacity" style={{ color: COLORS.accent }}>
+          <Link
+            href={backHref}
+            className="inline-block text-sm mb-4 hover:opacity-80 transition-opacity"
+            style={{ color: COLORS.accent }}
+          >
             {backLabel}
           </Link>
           <h1 className="text-2xl font-bold text-white">{hero.title}</h1>
-          <p className="text-sm mt-1" style={{ color: COLORS.accent }}>{hero.subtitle}</p>
+          <p className="text-sm mt-1" style={{ color: COLORS.accent }}>
+            {hero.subtitle}
+          </p>
         </div>
       </div>
 
       {/* Progress bar */}
-      <div className="w-full h-1.5" style={{ backgroundColor: '#d1d5db' }}>
+      <div className="w-full h-1.5" style={{ backgroundColor: "#d1d5db" }}>
         <div
           className="h-full transition-all duration-500"
           style={{ width: `${progress}%`, backgroundColor: COLORS.accent }}
@@ -165,11 +205,22 @@ const QuizClient = ({
         <div className="w-full max-w-2xl">
           {/* Counter + dots */}
           <div className="flex items-center justify-between mb-5">
-            <span className="text-lg font-bold" style={{ color: COLORS.primary }}>
-              Otázka {currentIndex + 1}{' '}
-              <span className="font-normal text-gray-400" style={{ fontSize: '1rem' }}>/ {shuffledQuestions.length}</span>
+            <span
+              className="text-lg font-bold"
+              style={{ color: COLORS.primary }}
+            >
+              Otázka {currentIndex + 1}{" "}
+              <span
+                className="font-normal text-gray-400"
+                style={{ fontSize: "1rem" }}
+              >
+                / {shuffledQuestions.length}
+              </span>
             </span>
-            <div className="flex gap-2 flex-wrap justify-end" style={{ maxWidth: '60%' }}>
+            <div
+              className="flex gap-2 flex-wrap justify-end"
+              style={{ maxWidth: "60%" }}
+            >
               {shuffledQuestions.map((q, i) => (
                 <div
                   key={q.id}
@@ -180,11 +231,11 @@ const QuizClient = ({
                     backgroundColor:
                       answers[q.id] !== undefined
                         ? answers[q.id] === q.correct
-                          ? '#16a34a'
-                          : '#dc2626'
+                          ? "#16a34a"
+                          : "#dc2626"
                         : i === currentIndex
                           ? COLORS.accent
-                          : '#d1d5db',
+                          : "#d1d5db",
                   }}
                 />
               ))}
@@ -195,47 +246,50 @@ const QuizClient = ({
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             {/* Question text */}
             <div className="px-7 py-7 border-b border-gray-100">
-              <p className="text-lg font-semibold leading-relaxed" style={{ color: COLORS.primary }}>
+              <p
+                className="text-lg font-semibold leading-relaxed"
+                style={{ color: COLORS.primary }}
+              >
                 {question.text}
               </p>
             </div>
 
             {/* Options */}
             <div className="px-7 py-5 flex flex-col gap-3">
-              {(['A', 'B', 'C'] as Answer[]).map((letter) => {
-                const isSelected = userAnswer === letter
-                const isCorrectOption = question.correct === letter
-                const showGreen = isAnswered && isCorrectOption
-                const showRed = isAnswered && isSelected && !isCorrectOption
-                const isDimmed = isAnswered && !isSelected && !isCorrectOption
+              {(["A", "B", "C"] as Answer[]).map((letter) => {
+                const isSelected = userAnswer === letter;
+                const isCorrectOption = question.correct === letter;
+                const showGreen = isAnswered && isCorrectOption;
+                const showRed = isAnswered && isSelected && !isCorrectOption;
+                const isDimmed = isAnswered && !isSelected && !isCorrectOption;
 
-                let bg = 'white'
-                let border = '#e5e7eb'
-                let textColor = '#374151'
-                let labelBg = '#f3f4f6'
-                let labelColor = '#6b7280'
-                let opacity = 1
+                let bg = "white";
+                let border = "#e5e7eb";
+                let textColor = "#374151";
+                let labelBg = "#f3f4f6";
+                let labelColor = "#6b7280";
+                let opacity = 1;
 
                 if (showGreen) {
-                  bg = '#16a34a'
-                  border = '#16a34a'
-                  textColor = 'white'
-                  labelBg = 'rgba(255,255,255,0.2)'
-                  labelColor = 'white'
+                  bg = "#16a34a";
+                  border = "#16a34a";
+                  textColor = "white";
+                  labelBg = "rgba(255,255,255,0.2)";
+                  labelColor = "white";
                 } else if (showRed) {
-                  bg = '#dc2626'
-                  border = '#dc2626'
-                  textColor = 'white'
-                  labelBg = 'rgba(255,255,255,0.2)'
-                  labelColor = 'white'
+                  bg = "#dc2626";
+                  border = "#dc2626";
+                  textColor = "white";
+                  labelBg = "rgba(255,255,255,0.2)";
+                  labelColor = "white";
                 } else if (!isAnswered && isSelected) {
-                  bg = '#eff6ff'
-                  border = COLORS.primary
-                  textColor = COLORS.primary
-                  labelBg = COLORS.primary
-                  labelColor = 'white'
+                  bg = "#eff6ff";
+                  border = COLORS.primary;
+                  textColor = COLORS.primary;
+                  labelBg = COLORS.primary;
+                  labelColor = "white";
                 } else if (isDimmed) {
-                  opacity = 0.45
+                  opacity = 0.45;
                 }
 
                 return (
@@ -249,7 +303,7 @@ const QuizClient = ({
                       borderColor: border,
                       color: textColor,
                       opacity,
-                      cursor: isAnswered ? 'default' : 'pointer',
+                      cursor: isAnswered ? "default" : "pointer",
                     }}
                   >
                     <span
@@ -258,9 +312,14 @@ const QuizClient = ({
                     >
                       {letter}
                     </span>
-                    <span className="leading-relaxed" style={{ fontSize: '0.9375rem' }}>{question.options[letter]}</span>
+                    <span
+                      className="leading-relaxed"
+                      style={{ fontSize: "0.9375rem" }}
+                    >
+                      {question.options[letter]}
+                    </span>
                   </button>
-                )
+                );
               })}
             </div>
 
@@ -270,12 +329,14 @@ const QuizClient = ({
                 <div
                   className="rounded-xl px-5 py-3 text-sm font-semibold"
                   style={{
-                    backgroundColor: userAnswer === question.correct ? '#dcfce7' : '#fee2e2',
-                    color: userAnswer === question.correct ? '#15803d' : '#b91c1c',
+                    backgroundColor:
+                      userAnswer === question.correct ? "#dcfce7" : "#fee2e2",
+                    color:
+                      userAnswer === question.correct ? "#15803d" : "#b91c1c",
                   }}
                 >
                   {userAnswer === question.correct
-                    ? '✓ Správne!'
+                    ? "✓ Správne!"
                     : `✗ Nesprávne. Správna odpoveď: ${question.correct}) ${question.options[question.correct]}`}
                 </div>
               </div>
@@ -287,19 +348,19 @@ const QuizClient = ({
       {/* Fixed bottom nav bar */}
       <div
         style={{
-          position: 'fixed',
+          position: "fixed",
           bottom: 0,
           left: 0,
           right: 0,
-          backgroundColor: 'white',
-          borderTop: '1px solid #e5e7eb',
-          boxShadow: '0 -4px 20px rgba(0,0,0,0.07)',
+          backgroundColor: "white",
+          borderTop: "1px solid #e5e7eb",
+          boxShadow: "0 -4px 20px rgba(0,0,0,0.07)",
           zIndex: 50,
         }}
       >
         <div
           className="max-w-2xl mx-auto px-4 flex items-center justify-between"
-          style={{ height: '4.5rem' }}
+          style={{ height: "4.5rem" }}
         >
           <div>
             {currentIndex > 0 ? (
@@ -313,17 +374,17 @@ const QuizClient = ({
 
           {isAnswered ? (
             <NavButton variant="primary" onClick={goNext}>
-              {isLast ? 'Zobraziť výsledok →' : 'Ďalšia otázka →'}
+              {isLast ? "Zobraziť výsledok →" : "Ďalšia otázka →"}
             </NavButton>
           ) : (
-            <span className="text-sm" style={{ color: '#9ca3af' }}>
+            <span className="text-sm" style={{ color: "#9ca3af" }}>
               Vyberte odpoveď…
             </span>
           )}
         </div>
       </div>
     </main>
-  )
-}
+  );
+};
 
-export default QuizClient
+export default QuizClient;

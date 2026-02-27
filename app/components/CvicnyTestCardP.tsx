@@ -30,9 +30,7 @@ const CvicnyTestCardP = () => {
             >
               Cvičné otázky — Okruh 1
             </h3>
-            <p className="text-sm text-gray-400 mt-0.5">
-              40 otázok · 80 bodov
-            </p>
+            <p className="text-sm text-gray-400 mt-0.5">40 otázok · 80 bodov</p>
           </div>
           <button
             onClick={() => setOpen(true)}
@@ -103,6 +101,6 @@ const CvicnyTestCardP = () => {
       )}
     </>
   );
-}
+};
 
-export default CvicnyTestCardP
+export default CvicnyTestCardP;

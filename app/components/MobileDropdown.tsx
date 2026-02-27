@@ -1,18 +1,25 @@
-import Link from 'next/link'
-import { COLORS } from '@/data/colors'
-import { type NavItem } from '@/data/navbar'
-import ChevronIcon from '@/app/components/icons/ChevronIcon'
+import Link from "next/link";
+import { COLORS } from "@/data/colors";
+import { type NavItem } from "@/data/navbar";
+import ChevronIcon from "@/app/components/icons/ChevronIcon";
 
 type Props = {
-  label: string
-  name: string
-  items: NavItem[]
-  expanded: boolean
-  onToggle: (name: string) => void
-  onClose: () => void
-}
+  label: string;
+  name: string;
+  items: NavItem[];
+  expanded: boolean;
+  onToggle: (name: string) => void;
+  onClose: () => void;
+};
 
-const MobileDropdown = ({ label, name, items, expanded, onToggle, onClose }: Props) => {
+const MobileDropdown = ({
+  label,
+  name,
+  items,
+  expanded,
+  onToggle,
+  onClose,
+}: Props) => {
   return (
     <div className="border-b border-white/10">
       <button
@@ -36,7 +43,10 @@ const MobileDropdown = ({ label, name, items, expanded, onToggle, onClose }: Pro
               {item.badge && (
                 <span
                   className="w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center shrink-0"
-                  style={{ backgroundColor: COLORS.accent, color: COLORS.primary }}
+                  style={{
+                    backgroundColor: COLORS.accent,
+                    color: COLORS.primary,
+                  }}
                 >
                   {item.badge}
                 </span>
@@ -47,7 +57,7 @@ const MobileDropdown = ({ label, name, items, expanded, onToggle, onClose }: Pro
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default MobileDropdown
+export default MobileDropdown;
