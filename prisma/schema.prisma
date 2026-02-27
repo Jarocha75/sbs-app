@@ -67,6 +67,8 @@ model Lesson {
   id        String   @id @default(uuid())
   title     String
   content   String
+  outline   Json?    // String[] – zoznam tém lekcie
+  duration  Int?     // v minútach
   videoUrl  String?
   order     Int
 
@@ -120,4 +122,6 @@ model Progress {
 
   lesson   Lesson @relation(fields: [lessonId], references: [id])
   lessonId String
+
+  @@unique([userId, lessonId])
 }
