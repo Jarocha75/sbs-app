@@ -1,52 +1,65 @@
-import Link from 'next/link'
-import { notFound, redirect } from 'next/navigation'
-import { auth } from '@/auth'
-import { prisma } from '@/lib/prisma'
-import { COLORS } from '@/data/colors'
-import MarkCompleteButton from '@/app/components/MarkCompleteButton'
+import PlayIcon from "@/app/components/icons/PlayIcon";
+import MarkCompleteButton from "@/app/components/MarkCompleteButton";
+import { auth } from "@/auth";
+import { COLORS } from "@/data/colors";
+import { prisma } from "@/lib/prisma";
+import Link from "next/link";
+import { notFound, redirect } from "next/navigation";
 
-type Props = { params: Promise<{ id: string }> }
+type Props = { params: Promise<{ id: string }> };
 
-export default async function LessonDetailPage({ params }: Props) {
-  const { id } = await params
-  const session = await auth()
-  if (!session?.user?.id) redirect('/prihlasenie')
+const LessonDetailPage = async ({ params }: Props) => {
+  const { id } = await params;
+  const session = await auth();
+  if (!session?.user?.id) redirect("/prihlasenie");
 
   const lesson = await prisma.lesson.findUnique({
     where: { id },
     include: {
       course: {
         include: {
-          lessons: { orderBy: { order: 'asc' }, select: { id: true, order: true, title: true } },
+          lessons: {
+            orderBy: { order: "asc" },
+            select: { id: true, order: true, title: true },
+          },
         },
       },
     },
-  })
+  });
 
-  if (!lesson || lesson.course.type !== 'S') notFound()
+  if (!lesson || lesson.course.type !== "S") notFound();
 
   // Ochrana pred URL hackingom – ak predošlá lekcia nie je dokončená, redirect
   if (lesson.order > 1) {
-    const prevLesson = lesson.course.lessons.find((l) => l.order === lesson.order - 1)
+    const prevLesson = lesson.course.lessons.find(
+      (l) => l.order === lesson.order - 1,
+    );
     if (prevLesson) {
       const prevProgress = await prisma.progress.findFirst({
-        where: { userId: session.user.id, lessonId: prevLesson.id, completed: true },
-      })
-      if (!prevProgress) redirect('/kurzy/s/lekcie')
+        where: {
+          userId: session.user.id,
+          lessonId: prevLesson.id,
+          completed: true,
+        },
+      });
+      if (!prevProgress) redirect("/kurzy/s/lekcie");
     }
   }
 
   const progress = await prisma.progress.findFirst({
     where: { userId: session.user.id, lessonId: id },
-  })
-  const isCompleted = progress?.completed ?? false
+  });
+  const isCompleted = progress?.completed ?? false;
 
-  const allLessons = lesson.course.lessons
-  const currentIndex = allLessons.findIndex((l) => l.id === id)
-  const prevLesson = currentIndex > 0 ? allLessons[currentIndex - 1] : null
-  const nextLesson = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1] : null
+  const allLessons = lesson.course.lessons;
+  const currentIndex = allLessons.findIndex((l) => l.id === id);
+  const prevLesson = currentIndex > 0 ? allLessons[currentIndex - 1] : null;
+  const nextLesson =
+    currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1] : null;
 
-  const outline = Array.isArray(lesson.outline) ? (lesson.outline as string[]) : null
+  const outline = Array.isArray(lesson.outline)
+    ? (lesson.outline as string[])
+    : null;
 
   return (
     <main className="min-h-screen" style={{ backgroundColor: COLORS.pageBg }}>
@@ -78,7 +91,9 @@ export default async function LessonDetailPage({ params }: Props) {
               </span>
             )}
           </div>
-          <h1 className="text-2xl font-bold text-white leading-snug">{lesson.title}</h1>
+          <h1 className="text-2xl font-bold text-white leading-snug">
+            {lesson.title}
+          </h1>
         </div>
       </div>
 
@@ -86,37 +101,51 @@ export default async function LessonDetailPage({ params }: Props) {
         {/* Video placeholder */}
         <div
           className="rounded-xl overflow-hidden flex items-center justify-center"
-          style={{ backgroundColor: '#0f172a', aspectRatio: '16 / 9' }}
+          style={{ backgroundColor: "#0f172a", aspectRatio: "16 / 9" }}
         >
           <div className="flex flex-col items-center gap-3 text-center px-8">
             <div
               className="w-16 h-16 rounded-full flex items-center justify-center"
               style={{
-                backgroundColor: 'rgba(201,168,76,0.15)',
+                backgroundColor: "rgba(201,168,76,0.15)",
                 border: `2px solid ${COLORS.accent}`,
               }}
             >
               <PlayIcon />
             </div>
-            <p className="text-sm font-semibold" style={{ color: COLORS.accent }}>
+            <p
+              className="text-sm font-semibold"
+              style={{ color: COLORS.accent }}
+            >
               Video bude čoskoro dostupné
             </p>
-            <p className="text-xs text-gray-500">Lekcia je zatiaľ dostupná len v textovej forme</p>
+            <p className="text-xs text-gray-500">
+              Lekcia je zatiaľ dostupná len v textovej forme
+            </p>
           </div>
         </div>
 
         {/* Osnova lekcie */}
         {outline && outline.length > 0 && (
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm px-8 py-6">
-            <h2 className="text-base font-semibold mb-4" style={{ color: COLORS.primary }}>
+            <h2
+              className="text-base font-semibold mb-4"
+              style={{ color: COLORS.primary }}
+            >
               Čo sa naučíš
             </h2>
             <ul className="space-y-2">
               {outline.map((item, i) => (
-                <li key={i} className="flex items-start gap-3 text-sm text-gray-700">
+                <li
+                  key={i}
+                  className="flex items-start gap-3 text-sm text-gray-700"
+                >
                   <span
                     className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-xs font-bold"
-                    style={{ backgroundColor: COLORS.subtleBg, color: COLORS.primary }}
+                    style={{
+                      backgroundColor: COLORS.subtleBg,
+                      color: COLORS.primary,
+                    }}
                   >
                     {i + 1}
                   </span>
@@ -129,7 +158,10 @@ export default async function LessonDetailPage({ params }: Props) {
 
         {/* Obsah lekcie */}
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm px-8 py-8">
-          <h2 className="text-base font-semibold mb-5" style={{ color: COLORS.primary }}>
+          <h2
+            className="text-base font-semibold mb-5"
+            style={{ color: COLORS.primary }}
+          >
             Obsah lekcie
           </h2>
           <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
@@ -154,7 +186,9 @@ export default async function LessonDetailPage({ params }: Props) {
               className="flex-1 bg-white rounded-xl border border-gray-100 shadow-sm px-5 py-4 text-sm font-semibold hover:shadow-md transition-shadow"
               style={{ color: COLORS.primary }}
             >
-              <span className="block text-xs text-gray-400 mb-0.5">Predošlá lekcia</span>
+              <span className="block text-xs text-gray-400 mb-0.5">
+                Predošlá lekcia
+              </span>
               ← {prevLesson.title}
             </Link>
           ) : (
@@ -167,7 +201,9 @@ export default async function LessonDetailPage({ params }: Props) {
               className="flex-1 bg-white rounded-xl border border-gray-100 shadow-sm px-5 py-4 text-sm font-semibold hover:shadow-md transition-shadow text-right"
               style={{ color: COLORS.primary }}
             >
-              <span className="block text-xs text-gray-400 mb-0.5">Nasledujúca lekcia</span>
+              <span className="block text-xs text-gray-400 mb-0.5">
+                Nasledujúca lekcia
+              </span>
               {nextLesson.title} →
             </Link>
           ) : (
@@ -182,13 +218,7 @@ export default async function LessonDetailPage({ params }: Props) {
         </div>
       </div>
     </main>
-  )
-}
+  );
+};
 
-function PlayIcon() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M8 5v14l11-7L8 5z" fill={COLORS.accent} />
-    </svg>
-  )
-}
+export default LessonDetailPage;
