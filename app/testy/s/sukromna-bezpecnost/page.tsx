@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { COLORS } from '@/data/colors'
-import { sukromnaPageContent, okruhy, type Okruh } from '@/data/test-sukromna-bezpecnost'
+import { sukromnaPageContent, okruhy, type Okruh } from '@/data/testy/s/sukromna-bezpecnost'
 
 export default function SukromnaBezpecnostPage() {
   const { hero, section } = sukromnaPageContent

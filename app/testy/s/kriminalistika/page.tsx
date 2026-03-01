@@ -1,4 +1,4 @@
-import { kriminalistikaContent } from '@/data/test-kriminalistika'
+import { kriminalistikaContent } from '@/data/testy/s/kriminalistika'
 import QuizClient from '@/app/components/QuizClient'
 import { getTestQuestions } from '@/lib/getTest'
 

@@ -1,4 +1,4 @@
-import { slovenskaInformacnaSluzbaContent } from '@/data/test-slovenska-informacna-sluzba'
+import { slovenskaInformacnaSluzbaContent } from '@/data/testy/s/slovenska-informacna-sluzba'
 import QuizClient from '@/app/components/QuizClient'
 import { getTestQuestions } from '@/lib/getTest'
 

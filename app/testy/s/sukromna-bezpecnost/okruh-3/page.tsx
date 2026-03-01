@@ -1,4 +1,4 @@
-import { okruh3Content } from '@/data/test-sukromna-bezpecnost-okruh-3'
+import { okruh3Content } from '@/data/testy/s/sukromna-bezpecnost-okruh-3'
 import QuizClient from '@/app/components/QuizClient'
 import { getTestQuestions } from '@/lib/getTest'
 

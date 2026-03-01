@@ -1,4 +1,4 @@
-import { okruh2PContent } from '@/data/test-p-okruh-2'
+import { okruh2PContent } from '@/data/testy/p/okruh-2'
 import QuizClient from '@/app/components/QuizClient'
 import { getTestQuestions } from '@/lib/getTest'
 

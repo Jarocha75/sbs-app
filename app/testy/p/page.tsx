@@ -1,5 +1,5 @@
 import { COLORS } from "@/data/colors";
-import { testyPContent, kategorie } from "@/data/testy-p";
+import { testyPContent, kategorie } from "@/data/testy/p/testy-p";
 import KategoriaCard from "@/app/components/testy/KategoriaCard";
 import CvicnyTestPCard from "@/app/components/CvicnyTestPCard";
 

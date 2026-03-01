@@ -1,4 +1,4 @@
-import { ustavaContent } from '@/data/test-ustava-sr'
+import { ustavaContent } from '@/data/testy/s/ustava-sr'
 import QuizClient from '@/app/components/QuizClient'
 import { getTestQuestions } from '@/lib/getTest'
 

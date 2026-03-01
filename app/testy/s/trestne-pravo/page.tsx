@@ -1,4 +1,4 @@
-import { trestneContent } from '@/data/test-trestne-pravo'
+import { trestneContent } from '@/data/testy/s/trestne-pravo'
 import QuizClient from '@/app/components/QuizClient'
 import { getTestQuestions } from '@/lib/getTest'
 

@@ -1,4 +1,4 @@
-import { ochranaOsobnychUdajovContent } from '@/data/test-ochrana-osobnych-udajov'
+import { ochranaOsobnychUdajovContent } from '@/data/testy/s/ochrana-osobnych-udajov'
 import QuizClient from '@/app/components/QuizClient'
 import { getTestQuestions } from '@/lib/getTest'
 

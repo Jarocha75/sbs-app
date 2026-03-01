@@ -1,4 +1,4 @@
-import { obecnaPoliciContent } from '@/data/test-obecna-policia'
+import { obecnaPoliciContent } from '@/data/testy/s/obecna-policia'
 import QuizClient from '@/app/components/QuizClient'
 import { getTestQuestions } from '@/lib/getTest'
 

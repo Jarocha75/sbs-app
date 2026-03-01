@@ -1,4 +1,4 @@
-import { vojenskaPoliciContent } from '@/data/test-vojenska-policia'
+import { vojenskaPoliciContent } from '@/data/testy/s/vojenska-policia'
 import QuizClient from '@/app/components/QuizClient'
 import { getTestQuestions } from '@/lib/getTest'
 

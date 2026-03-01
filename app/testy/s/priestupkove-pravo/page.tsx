@@ -1,4 +1,4 @@
-import { priestupkyContent } from '@/data/test-priestupkove-pravo'
+import { priestupkyContent } from '@/data/testy/s/priestupkove-pravo'
 import QuizClient from '@/app/components/QuizClient'
 import { getTestQuestions } from '@/lib/getTest'
 
