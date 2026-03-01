@@ -1,6 +1,7 @@
 import { COLORS } from "@/data/colors";
 import { testyPContent, kategorie } from "@/data/testy-p";
 import KategoriaCard from "@/app/components/testy/KategoriaCard";
+import CvicnyTestPCard from "@/app/components/CvicnyTestPCard";
 
 const TestyPPage = () => {
   const { hero, section } = testyPContent;
@@ -32,6 +33,11 @@ const TestyPPage = () => {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-10">
+        {/* Cvičný test */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+          <CvicnyTestPCard />
+        </div>
+
         <h2
           className="text-lg font-semibold mb-6"
           style={{ color: COLORS.primary }}
