@@ -41,8 +41,8 @@ export const vyhody: Vyhoda[] = [
   },
   {
     icon: "🎓",
-    title: "Oficiálny preukaz",
-    text: "Po úspešnom absolvovaní získate preukaz odbornej spôsobilosti SBS.",
+    title: "Osvedčenie o absolvovaní kurzu",
+    text: "Po úspešnom absolvovaní Vám vydáme osvedčenie o absolvovaní kurzu a prihlásime na skúšku odbornej spôsobilosti.",
   },
 ];
 
@@ -60,7 +60,7 @@ export const kurzTerminy: KurzTermin[] = [
     nazov: 'Kurz typ „S" — Strážna služba',
     od: "11. marca 2026",
     do: "18. marca 2026",
-    miesta: 12,
+    miesta: 15,
   },
 ];
 

@@ -16,7 +16,12 @@ const HomePage = () => {
       {/* ── HERO ── */}
       <section
         className="relative flex min-h-[90vh] items-center justify-center overflow-hidden"
-        style={{ backgroundColor: COLORS.primary }}
+        style={{
+          backgroundColor: COLORS.primary,
+          backgroundImage: `linear-gradient(rgba(30,58,95,0.72), rgba(30,58,95,0.72)), url('/images/background%20Security-001.jpg')`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
       >
         {/* Dekoratívne kruhy */}
         <div
@@ -114,7 +119,7 @@ const HomePage = () => {
         style={{ backgroundColor: COLORS.pageBg }}
         className="pb-20 pt-4"
       >
-        <div className="mx-auto max-w-4xl px-6">
+        <div className="mx-auto max-w-5xl px-6">
           <h2
             className="mb-2 text-center text-3xl font-extrabold"
             style={{ color: COLORS.primary }}
@@ -192,7 +197,7 @@ const HomePage = () => {
       {/* ── KONTAKT ── */}
       <section
         id="kontakt"
-        className="py-20"
+        className="py-12"
         style={{ backgroundColor: COLORS.subtleBg }}
       >
         <div className="mx-auto max-w-2xl px-6">
@@ -202,7 +207,7 @@ const HomePage = () => {
           >
             {KONTAKT_SECTION.title}
           </h2>
-          <p className="mb-10 text-center text-sm text-gray-500">
+          <p className="mb-6 text-center text-sm text-gray-500">
             {KONTAKT_SECTION.subtitle}
           </p>
 
@@ -211,7 +216,7 @@ const HomePage = () => {
           </div>
 
           {/* Alternatívy */}
-          <div className="mt-8 flex flex-col items-center gap-2 text-center text-sm text-gray-500">
+          <div className="mt-4 flex flex-col items-center gap-2 text-center text-sm text-gray-500">
             <p>{KONTAKT_SECTION.altText}</p>
             <div className="flex flex-wrap justify-center gap-6">
               {kontaktLinks.map((link) => (
