@@ -1,61 +1,63 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { COLORS } from '@/data/colors'
-import { SITE } from '@/data/site'
-import ShieldIcon from '@/app/components/icons/ShieldIcon'
-import { checkoutSchema, type CheckoutFormErrors } from '@/validation/checkout'
+import { useState } from "react";
+import { COLORS } from "@/data/colors";
+import { SITE } from "@/data/site";
+import ShieldIcon from "@/app/components/icons/ShieldIcon";
+import { checkoutSchema, type CheckoutFormErrors } from "@/validation/checkout";
 
-const inputClass = 'w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-900 transition-colors'
+const inputClass =
+  "w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-900 transition-colors";
 
 const ObjednavkaPage = () => {
-  const [errors, setErrors] = useState<CheckoutFormErrors>({})
-  const [loading, setLoading] = useState(false)
-  const [serverError, setServerError] = useState('')
+  const [errors, setErrors] = useState<CheckoutFormErrors>({});
+  const [loading, setLoading] = useState(false);
+  const [serverError, setServerError] = useState("");
+  const [selectedType, setSelectedType] = useState<"S" | "P" | null>(null);
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setErrors({})
-    setServerError('')
+    e.preventDefault();
+    setErrors({});
+    setServerError("");
 
-    const formData = new FormData(e.currentTarget)
+    const formData = new FormData(e.currentTarget);
     const raw = {
-      email: formData.get('email') as string,
-      courseType: formData.get('courseType') as string,
-    }
+      email: formData.get("email") as string,
+      courseType: formData.get("courseType") as string,
+    };
 
-    const result = checkoutSchema.safeParse(raw)
+    const result = checkoutSchema.safeParse(raw);
     if (!result.success) {
-      const fieldErrors: CheckoutFormErrors = {}
+      const fieldErrors: CheckoutFormErrors = {};
       for (const issue of result.error.issues) {
-        const key = issue.path[0] as keyof CheckoutFormErrors
-        if (!fieldErrors[key]) fieldErrors[key] = issue.message
+        const key = issue.path[0] as keyof CheckoutFormErrors;
+        if (!fieldErrors[key]) fieldErrors[key] = issue.message;
       }
-      setErrors(fieldErrors)
-      return
+      setErrors(fieldErrors);
+      return;
     }
 
-    setLoading(true)
+    setLoading(true);
     try {
-      const res = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(result.data),
-      })
-      const data = await res.json()
+      });
+      const data = await res.json();
 
       if (!res.ok) {
-        setServerError(data.error ?? 'Nastala chyba. Skúste to znova.')
-        setLoading(false)
-        return
+        setServerError(data.error ?? "Nastala chyba. Skúste to znova.");
+        setLoading(false);
+        return;
       }
 
-      window.location.href = data.url
+      window.location.href = data.url;
     } catch {
-      setServerError('Nastala chyba pri pripojení. Skúste to znova.')
-      setLoading(false)
+      setServerError("Nastala chyba pri pripojení. Skúste to znova.");
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div
@@ -65,7 +67,10 @@ const ObjednavkaPage = () => {
       <div className="bg-white rounded-xl shadow-md w-full max-w-md p-8">
         <div className="text-center mb-8">
           <ShieldIcon size={48} centered />
-          <h1 className="text-2xl font-bold mt-3" style={{ color: COLORS.primary }}>
+          <h1
+            className="text-2xl font-bold mt-3"
+            style={{ color: COLORS.primary }}
+          >
             Objednávka kurzu
           </h1>
           <p className="text-gray-400 text-sm mt-1">{SITE.name}</p>
@@ -80,17 +85,31 @@ const ObjednavkaPage = () => {
         <form onSubmit={handleSubmit} noValidate className="space-y-5">
           {/* Typ kurzu */}
           <div>
-            <label className="block text-sm font-medium mb-2" style={{ color: COLORS.primary }}>
+            <label
+              className="block text-sm font-medium mb-2"
+              style={{ color: COLORS.primary }}
+            >
               Typ kurzu <span className="text-red-500">*</span>
             </label>
             <div className="grid grid-cols-2 gap-3">
-              {(['S', 'P'] as const).map((type) => (
+              {(["S", "P"] as const).map((type) => (
                 <label
                   key={type}
-                  className="flex items-center justify-center gap-2 border rounded-lg px-4 py-3 cursor-pointer text-sm font-semibold transition-colors has-[:checked]:border-blue-900 has-[:checked]:bg-blue-50"
-                  style={{ borderColor: COLORS.primary + '40' }}
+                  className={`flex items-center justify-center gap-2 border rounded-lg px-4 py-3 cursor-pointer text-sm font-semibold transition-colors ${
+                    selectedType === type ? "border-blue-900 bg-blue-50" : ""
+                  }`}
+                  style={{
+                    borderColor:
+                      selectedType === type ? undefined : COLORS.primary + "40",
+                  }}
                 >
-                  <input type="radio" name="courseType" value={type} className="sr-only" />
+                  <input
+                    type="radio"
+                    name="courseType"
+                    value={type}
+                    className="sr-only"
+                    onChange={() => setSelectedType(type)}
+                  />
                   Preukaz {type}
                 </label>
               ))}
@@ -102,7 +121,10 @@ const ObjednavkaPage = () => {
 
           {/* Email */}
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: COLORS.primary }}>
+            <label
+              className="block text-sm font-medium mb-1.5"
+              style={{ color: COLORS.primary }}
+            >
               Email <span className="text-red-500">*</span>
             </label>
             <input
@@ -112,7 +134,9 @@ const ObjednavkaPage = () => {
               autoComplete="email"
               placeholder="vas@email.sk"
               className={inputClass}
-              style={errors.email ? { boxShadow: '0 0 0 2px #ef4444' } : undefined}
+              style={
+                errors.email ? { boxShadow: "0 0 0 2px #ef4444" } : undefined
+              }
             />
             {errors.email && (
               <p className="mt-1 text-xs text-red-600">{errors.email}</p>
@@ -125,7 +149,7 @@ const ObjednavkaPage = () => {
             className="w-full py-2.5 rounded-lg font-semibold text-white hover:opacity-90 transition-opacity disabled:opacity-60 mt-2"
             style={{ backgroundColor: COLORS.primary }}
           >
-            {loading ? 'Presmerovávam...' : 'Pokračovať k platbe →'}
+            {loading ? "Presmerovávam..." : "Pokračovať k platbe →"}
           </button>
         </form>
 
@@ -134,7 +158,7 @@ const ObjednavkaPage = () => {
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ObjednavkaPage
+export default ObjednavkaPage;
