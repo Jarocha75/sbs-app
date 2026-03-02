@@ -20,6 +20,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         })
 
         if (!user) return null
+        if (!user.password) return null           // PENDING: heslo ešte nie je nastavené
+        if (user.status !== 'ACTIVE') return null // blokuj neaktivované účty
 
         const passwordMatch = await bcrypt.compare(
           credentials.password as string,

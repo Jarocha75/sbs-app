@@ -21,6 +21,12 @@ export async function POST(req: NextRequest) {
 
   const existingUser = await prisma.user.findUnique({ where: { email } })
   if (existingUser) {
+    if (existingUser.status === 'PENDING') {
+      return NextResponse.json(
+        { error: 'Tento email čaká na aktiváciu. Skontrolujte svoju emailovú schránku.' },
+        { status: 400 }
+      )
+    }
     return NextResponse.json(
       { error: 'Účet s týmto emailom už existuje' },
       { status: 400 }
@@ -35,6 +41,7 @@ export async function POST(req: NextRequest) {
       email,
       password: hashedPassword,
       role: 'USER',
+      status: 'ACTIVE',
     },
   })
 

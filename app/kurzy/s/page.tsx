@@ -1,17 +1,28 @@
 import Link from "next/link";
 import { COLORS } from "@/data/colors";
-import {
-  kurzSContent,
-  predmety,
-  celkovyPocetHodin,
-} from "@/data/kurz-s";
-
+import { kurzSContent, predmety, celkovyPocetHodin } from "@/data/kurz-s";
 import StatCard from "@/app/components/kurz-s/StatCard";
 import PredmetCard from "@/app/components/kurz-s/PredmetCard";
 import ScaleIcon from "@/app/components/kurz-s/ScaleIcon";
+import KurzObjednavkaForm from "@/app/components/KurzObjednavkaForm";
+import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma";
 
-const KurzSPage = () => {
+const KurzSPage = async () => {
   const { hero, stats, section } = kurzSContent;
+
+  const session = await auth();
+  let isEnrolled = false;
+
+  if (session?.user?.id) {
+    const course = await prisma.course.findFirst({ where: { type: "S" } });
+    if (course) {
+      const enrollment = await prisma.enrollment.findUnique({
+        where: { userId_courseId: { userId: session.user.id, courseId: course.id } },
+      });
+      isEnrolled = !!enrollment;
+    }
+  }
 
   return (
     <main className="min-h-screen" style={{ backgroundColor: COLORS.pageBg }}>
@@ -78,28 +89,31 @@ const KurzSPage = () => {
 
         {/* CTA */}
         <div className="mt-8 pt-6 border-t border-gray-200">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-              <p
-                className="text-sm font-semibold"
-                style={{ color: COLORS.primary }}
+          <p className="text-sm font-semibold mb-1" style={{ color: COLORS.primary }}>
+            Pripravený začať štúdium?
+          </p>
+
+          {isEnrolled ? (
+            <>
+              <p className="text-xs text-gray-500 mb-4">
+                Máte prístup ku kurzu. Môžete začať hneď.
+              </p>
+              <Link
+                href="/kurzy/s/lekcie"
+                className="inline-block px-6 py-3 rounded-xl font-semibold text-sm text-white hover:opacity-90 transition-opacity"
+                style={{ backgroundColor: COLORS.primary }}
               >
-                Pripravený začať štúdium?
+                Začať štúdium →
+              </Link>
+            </>
+          ) : (
+            <>
+              <p className="text-xs text-gray-500 mb-4">
+                Po zakúpení dostanete email s odkazom na aktiváciu účtu.
               </p>
-
-              <p className="text-xs text-gray-500 mt-0.5">
-                Interaktívne lekcie s textovým obsahom a video výkladom
-              </p>
-            </div>
-
-            <Link
-              href="/kurzy/s/lekcie"
-              className="shrink-0 px-6 py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: COLORS.primary, color: "white" }}
-            >
-              Začať štúdium →
-            </Link>
-          </div>
+              <KurzObjednavkaForm courseType="S" />
+            </>
+          )}
         </div>
       </div>
     </main>

@@ -1,16 +1,28 @@
+import Link from "next/link";
 import { COLORS } from "@/data/colors";
-import {
-  kurzPContent,
-  predmety,
-  celkovyPocetHodin,
-} from "@/data/kurz-p";
-
+import { kurzPContent, predmety, celkovyPocetHodin } from "@/data/kurz-p";
 import StatCard from "@/app/components/kurz-s/StatCard";
 import PredmetCard from "@/app/components/kurz-p/PredmetCard";
 import ScaleIcon from "@/app/components/kurz-s/ScaleIcon";
+import KurzObjednavkaForm from "@/app/components/KurzObjednavkaForm";
+import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma";
 
-const KurzPPage = () => {
+const KurzPPage = async () => {
   const { hero, stats, section } = kurzPContent;
+
+  const session = await auth();
+  let isEnrolled = false;
+
+  if (session?.user?.id) {
+    const course = await prisma.course.findFirst({ where: { type: "P" } });
+    if (course) {
+      const enrollment = await prisma.enrollment.findUnique({
+        where: { userId_courseId: { userId: session.user.id, courseId: course.id } },
+      });
+      isEnrolled = !!enrollment;
+    }
+  }
 
   return (
     <main className="min-h-screen" style={{ backgroundColor: COLORS.pageBg }}>
@@ -74,6 +86,35 @@ const KurzPPage = () => {
             ))}
           </div>
         </section>
+
+        {/* CTA */}
+        <div className="mt-8 pt-6 border-t border-gray-200">
+          <p className="text-sm font-semibold mb-1" style={{ color: COLORS.primary }}>
+            Pripravený začať štúdium?
+          </p>
+
+          {isEnrolled ? (
+            <>
+              <p className="text-xs text-gray-500 mb-4">
+                Máte prístup ku kurzu. Môžete začať hneď.
+              </p>
+              <Link
+                href="/kurzy/p/lekcie"
+                className="inline-block px-6 py-3 rounded-xl font-semibold text-sm text-white hover:opacity-90 transition-opacity"
+                style={{ backgroundColor: COLORS.primary }}
+              >
+                Začať štúdium →
+              </Link>
+            </>
+          ) : (
+            <>
+              <p className="text-xs text-gray-500 mb-4">
+                Po zakúpení dostanete email s odkazom na aktiváciu účtu.
+              </p>
+              <KurzObjednavkaForm courseType="P" />
+            </>
+          )}
+        </div>
       </div>
     </main>
   );

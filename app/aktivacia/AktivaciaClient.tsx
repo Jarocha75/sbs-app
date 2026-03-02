@@ -1,92 +1,114 @@
 'use client'
 
-import { signIn } from 'next-auth/react'
-import { useState, Suspense } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 import { COLORS } from '@/data/colors'
 import { SITE } from '@/data/site'
 import ShieldIcon from '@/app/components/icons/ShieldIcon'
-import AktivovanyBanner from '@/app/components/AktivovanyBanner'
 
-export default function LoginPage() {
-  const [error, setError] = useState('')
+interface Props {
+  token: string
+}
+
+export default function AktivaciaClient({ token }: Props) {
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState(false)
   const router = useRouter()
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setError('')
-    setLoading(true)
 
     const formData = new FormData(e.currentTarget)
+    const password = formData.get('password') as string
+    const confirm = formData.get('confirm') as string
 
-    const result = await signIn('credentials', {
-      email: formData.get('email'),
-      password: formData.get('password'),
-      redirect: false,
+    if (password !== confirm) {
+      setError('Heslá sa nezhodujú')
+      return
+    }
+
+    setLoading(true)
+    const res = await fetch('/api/activate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, password }),
     })
-
+    const data = await res.json()
     setLoading(false)
 
-    if (result?.error) {
-      setError('Nesprávny email alebo heslo')
-    } else {
-      const res = await fetch('/api/me/enrollment')
-      const { redirect } = await res.json()
-      router.push(redirect)
-      router.refresh()
+    if (!res.ok) {
+      setError(data.error ?? 'Nastala chyba. Skúste to znova.')
+      return
     }
+
+    setSuccess(true)
+    setTimeout(() => router.push('/prihlasenie?aktivovany=1'), 2000)
+  }
+
+  if (success) {
+    return (
+      <div
+        className="min-h-screen flex items-center justify-center px-4"
+        style={{ backgroundColor: COLORS.pageBg }}
+      >
+        <div className="bg-white rounded-xl shadow-md w-full max-w-md p-8 text-center">
+          <div className="text-5xl mb-4" style={{ color: COLORS.accent }}>✓</div>
+          <h1 className="text-xl font-bold" style={{ color: COLORS.primary }}>
+            Účet bol aktivovaný!
+          </h1>
+          <p className="text-gray-500 mt-2 text-sm">Presmerovávame vás na prihlásenie...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: COLORS.pageBg }}>
+    <div
+      className="min-h-screen flex items-center justify-center px-4"
+      style={{ backgroundColor: COLORS.pageBg }}
+    >
       <div className="bg-white rounded-xl shadow-md w-full max-w-md p-8">
-
-        {/* Hlavička */}
         <div className="text-center mb-8">
           <ShieldIcon size={48} centered />
-          <h1 className="text-2xl font-bold mt-3" style={{ color: COLORS.primary }}>Prihlásiť sa</h1>
+          <h1 className="text-2xl font-bold mt-3" style={{ color: COLORS.primary }}>
+            Nastavte si heslo
+          </h1>
           <p className="text-gray-400 text-sm mt-1">{SITE.name}</p>
         </div>
 
-        {/* Aktivácia úspešná */}
-        <Suspense>
-          <AktivovanyBanner />
-        </Suspense>
-
-        {/* Chyba */}
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-5 text-sm">
             {error}
           </div>
         )}
 
-        {/* Formulár */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium mb-1.5" style={{ color: COLORS.primary }}>
-              Email
+              Nové heslo <span className="text-red-500">*</span>
             </label>
             <input
-              name="email"
-              type="email"
+              name="password"
+              type="password"
               required
-              autoComplete="email"
-              placeholder="vas@email.sk"
+              minLength={8}
+              autoComplete="new-password"
+              placeholder="min. 8 znakov"
               className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-900 transition-colors"
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium mb-1.5" style={{ color: COLORS.primary }}>
-              Heslo
+              Potvrdenie hesla <span className="text-red-500">*</span>
             </label>
             <input
-              name="password"
+              name="confirm"
               type="password"
               required
-              autoComplete="current-password"
+              autoComplete="new-password"
               placeholder="••••••••"
               className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-900 transition-colors"
             />
@@ -98,18 +120,10 @@ export default function LoginPage() {
             className="w-full py-2.5 rounded-lg font-semibold text-white hover:opacity-90 transition-opacity disabled:opacity-60 mt-2"
             style={{ backgroundColor: COLORS.primary }}
           >
-            {loading ? 'Prihlasujem...' : 'Prihlásiť sa'}
+            {loading ? 'Aktivujem...' : 'Aktivovať účet'}
           </button>
         </form>
-
-        <p className="text-center text-sm text-gray-400 mt-6">
-          Nemáte účet?{' '}
-          <Link href="/registracia" className="font-semibold hover:underline" style={{ color: COLORS.primary }}>
-            Zaregistrujte sa
-          </Link>
-        </p>
       </div>
     </div>
   )
 }
-

@@ -9,20 +9,22 @@ export const authConfig: NextAuthConfig = {
       const isLoggedIn = !!auth?.user
       const { pathname } = nextUrl
 
-      const isAuthPage =
+      // Stránky kde prihlásený user dostane redirect na /dashboard
+      const isStrictAuthPage =
         pathname.startsWith('/prihlasenie') ||
         pathname.startsWith('/registracia')
 
       const isProtectedRoute =
         pathname.startsWith('/dashboard') ||
-        pathname.startsWith('/kurzy') ||
+        pathname.startsWith('/kurzy/s/lekcie') ||
+        pathname.startsWith('/kurzy/p/lekcie') ||
         pathname.startsWith('/profil')
 
       if (!isLoggedIn && isProtectedRoute) {
         return false // presmerovanie na /prihlasenie (pages.signIn)
       }
 
-      if (isLoggedIn && isAuthPage) {
+      if (isLoggedIn && isStrictAuthPage) {
         return Response.redirect(new URL('/dashboard', nextUrl))
       }
 

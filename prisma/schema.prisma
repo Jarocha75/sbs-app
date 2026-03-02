@@ -14,12 +14,17 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  name      String?
-  password  String
-  role      Role     @default(USER)
-  createdAt DateTime @default(now())
+  id               String      @id @default(uuid())
+  email            String      @unique
+  name             String?
+  password         String?
+  role             Role        @default(USER)
+  status           UserStatus  @default(PENDING)
+  createdAt        DateTime    @default(now())
+
+  activationToken  String?     @unique
+  activationExpiry DateTime?
+  stripeSessionId  String?     @unique
 
   progresses   Progress[]
   results      TestResult[]
@@ -29,6 +34,11 @@ model User {
 enum Role {
   USER
   ADMIN
+}
+
+enum UserStatus {
+  PENDING
+  ACTIVE
 }
 
 model Course {
@@ -44,8 +54,10 @@ model Course {
 }
 
 model Enrollment {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  paidAt    DateTime?
+  stripePaymentIntentId String?
 
   // Kto má prístup
   user   User   @relation(fields: [userId], references: [id])
