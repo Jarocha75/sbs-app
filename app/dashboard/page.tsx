@@ -1,52 +1,138 @@
-import { COLORS } from "@/data/colors";
-import { HERO, SECTIONS, courses, infoCards } from "@/data/dashboard";
-import CourseCard from "@/app/components/CourseCard";
-import InfoCard from "@/app/components/InfoCard";
+import { auth } from '@/auth'
+import { prisma } from '@/lib/prisma'
+import { COLORS } from '@/data/colors'
+import UserHeader from '@/app/components/dashboard/UserHeader'
+import CourseProgressCard from '@/app/components/dashboard/CourseProgressCard'
+import StatsCard from '@/app/components/dashboard/StatsCard'
+import TestsCard from '@/app/components/dashboard/TestsCard'
+import ResultsCard from '@/app/components/dashboard/ResultsCard'
+import Link from 'next/link'
 
-const DashboardPage = () => {
+export default async function DashboardPage() {
+  const session = await auth()
+  const userId = session!.user!.id as string
+
+  const [user, enrollments, progresses, testResults] = await Promise.all([
+    prisma.user.findUnique({
+      where: { id: userId },
+      select: { name: true, email: true, status: true },
+    }),
+    prisma.enrollment.findMany({
+      where: { userId },
+      include: {
+        course: {
+          include: {
+            lessons: { orderBy: { order: 'asc' } },
+            tests: {
+              select: { id: true, title: true, _count: { select: { questions: true } } },
+              orderBy: { title: 'asc' },
+            },
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    }),
+    prisma.progress.findMany({
+      where: { userId, completed: true },
+      select: { lessonId: true },
+    }),
+    prisma.testResult.findMany({
+      where: { userId },
+      include: { test: { select: { title: true } } },
+      orderBy: { createdAt: 'desc' },
+      take: 8,
+    }),
+  ])
+
+  if (!user) return null
+
+  const completedLessonIds = new Set(progresses.map((p) => p.lessonId))
+
+  // Štatistiky
+  const allEnrolledLessonIds = new Set(
+    enrollments.flatMap((e) => e.course.lessons.map((l) => l.id)),
+  )
+  const totalLessons = allEnrolledLessonIds.size
+  const completedInCourse = [...completedLessonIds].filter((id) =>
+    allEnrolledLessonIds.has(id),
+  ).length
+  const avgScore =
+    testResults.length > 0
+      ? Math.round(testResults.reduce((acc, r) => acc + r.score, 0) / testResults.length)
+      : null
+
+  const allTests = enrollments.flatMap((e) =>
+    e.course.tests.map((t) => ({
+      id: t.id,
+      title: t.title,
+      questionCount: t._count.questions,
+    })),
+  )
+
+  const results = testResults.map((r) => ({
+    id: r.id,
+    score: r.score,
+    passed: r.passed,
+    createdAt: r.createdAt,
+    testTitle: r.test.title,
+  }))
+
   return (
     <main className="min-h-screen" style={{ backgroundColor: COLORS.pageBg }}>
-      {/* Hero banner */}
-      <div style={{ backgroundColor: COLORS.primary }} className="py-12 px-4">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl font-bold text-white">{HERO.title}</h1>
-          <p className="mt-2 text-gray-300 max-w-xl">{HERO.subtitle}</p>
-        </div>
-      </div>
+      <UserHeader
+        name={user.name}
+        email={user.email}
+        status={user.status as 'PENDING' | 'ACTIVE'}
+      />
 
-      <div className="max-w-7xl mx-auto px-4 py-10 space-y-12">
-        {/* Courses */}
-        <section>
-          <h2
-            className="text-xl font-semibold mb-6"
-            style={{ color: COLORS.primary }}
-          >
-            {SECTIONS.courses}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {courses.map((course) => (
-              <CourseCard key={course.type} {...course} />
-            ))}
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        {enrollments.length === 0 ? (
+          /* Žiadny enrollment */
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-10 text-center max-w-lg mx-auto mt-8">
+            <p className="text-4xl mb-4">📚</p>
+            <h2 className="text-xl font-bold mb-2" style={{ color: COLORS.primary }}>
+              Zatiaľ nemáte zakúpený žiadny kurz
+            </h2>
+            <p className="text-gray-500 text-sm mb-6">
+              Vyberte si kurz a začnite sa pripravovať na skúšku odbornej spôsobilosti.
+            </p>
+            <Link
+              href="/kurzy/s"
+              className="inline-block px-6 py-3 rounded-xl font-bold text-white hover:opacity-90 transition-opacity"
+              style={{ backgroundColor: COLORS.primary }}
+            >
+              Pozrieť kurzy →
+            </Link>
           </div>
-        </section>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Ľavý stĺpec – kurzy */}
+            <div className="lg:col-span-2 space-y-6">
+              {enrollments.map((enrollment) => (
+                <CourseProgressCard
+                  key={enrollment.id}
+                  courseType={enrollment.course.type as 'S' | 'P'}
+                  courseTitle={enrollment.course.title}
+                  lessons={enrollment.course.lessons}
+                  completedLessonIds={completedLessonIds}
+                />
+              ))}
+            </div>
 
-        {/* Info cards */}
-        <section>
-          <h2
-            className="text-xl font-semibold mb-6"
-            style={{ color: COLORS.primary }}
-          >
-            {SECTIONS.infoCards}
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {infoCards.map((card) => (
-              <InfoCard key={card.href} {...card} />
-            ))}
+            {/* Pravý stĺpec – štatistiky, testy, výsledky */}
+            <div className="space-y-6">
+              <StatsCard
+                completedLessons={completedInCourse}
+                totalLessons={totalLessons}
+                testCount={testResults.length}
+                avgScore={avgScore}
+              />
+              <TestsCard tests={allTests} />
+              <ResultsCard results={results} />
+            </div>
           </div>
-        </section>
+        )}
       </div>
     </main>
-  );
-};
-
-export default DashboardPage;
+  )
+}

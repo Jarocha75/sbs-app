@@ -34,9 +34,7 @@ const PrihlaseniePage = () => {
     if (result?.error) {
       setError('Nesprávny email alebo heslo')
     } else {
-      const res = await fetch('/api/me/enrollment')
-      const { redirect } = await res.json()
-      router.push(redirect)
+      router.push('/dashboard')
       router.refresh()
     }
   }

@@ -1,52 +1,80 @@
-# SBS App Memory
+# SBS App – Memory
 
-## Project Overview
-Next.js 16 app for SBS (private security) exam preparation. Uses Prisma + PostgreSQL.
+## Projekt
+Slovak SBS (Súkromná bezpečnostná služba) exam prep app. Next.js 15 App Router, TypeScript, Tailwind, PostgreSQL + Prisma ORM, NextAuth.js (Credentials provider).
 
-## Key Commands
-- `npm run db:seed` — re-seeds the entire database (deletes all and recreates)
-- `npm run dev` — development server
+## Stack
+- Runtime: bun alebo npm (bežné Next.js skripty)
+- DB: PostgreSQL, Prisma client output: `app/generated/prisma`
+- Auth: NextAuth, `auth()` z `@/auth`, chránené routes: `/dashboard`, `/kurzy/s/lekcie`, `/kurzy/p/lekcie`, `/profil`
+- Colors: `COLORS` objekt z `@/data/colors` – vždy inline `style={{}}`
+- Prisma singleton: `import { prisma } from '@/lib/prisma'`
+- Platby: Stripe Checkout + Resend aktivačný email
+- Emaily: `lib/resend.ts`, šablóna `lib/emails/activation.ts`
 
-## Data Pattern for New Tests
-1. Create `data/test-[name].ts` — questions array + content object
-2. Create `app/testy/s/[name]/page.tsx` — server page using `getTestQuestions('[Title]')`
-3. Add card to `data/testy-s.ts` — `kategorie` array
-4. Add import + test block to `prisma/seed.ts`
-5. Run `npm run db:seed`
+## Štruktúra app/
+- `(auth)/` – prihlasenie, registracia
+- `api/register/` – POST registrácia
+- `api/progress/` – POST označiť lekciu ako hotovú
+- `api/test-results/` – POST uložiť výsledok testu `{ testId, score, passed }`
+- `dashboard/` – personalizovaný dashboard (UserHeader + CourseProgressCard + StatsCard + TestsCard + ResultsCard)
+- `kurzy/s/` – osnova kurzu S
+- `kurzy/s/lekcie/` – zoznam lekcií s progress barom
+- `kurzy/s/lekcie/[id]/` – detail lekcie
+- `testy/[testId]/` – DB-backed test stránka (QuizClient + ukladanie výsledkov)
+- `testy/s/` – statický prehľad testov kurzu S
+- `testy/p/` – statický prehľad testov kurzu P
+- `components/dashboard/` – UserHeader, CourseProgressCard, StatsCard, TestsCard, ResultsCard
 
-## Tests in DB (Typ S course)
-- Súkromná bezpečnosť - Okruh 1–4 (25 questions each)
-- Priestupkové právo (10)
-- Trestné právo (27)
-- Ústava SR a ZĽPS (12)
-- Kriminalistika (13)
-- Policajný zbor (15)
-- Obecná polícia (9)
-- Vojenská polícia (5)
-- Ochrana osobných údajov (7)
-- Slovenská informačná služba (2)
-- Praktické otázky SBS (10)
+## Dashboard (personalizovaný)
+- Async server komponent, načítava: user, enrollments, progress, testResults
+- Layout B (dvojstĺpcový): ľavý 2/3 = CourseProgressCard, pravý 1/3 = StatsCard + TestsCard + ResultsCard
+- TestsCard linkuje na `/testy/[testId]` (DB route)
+- ResultsCard zobrazuje posledných 8 výsledkov z DB
 
-## Cvičný Test (40 questions, 40 min)
-- Route: `/testy/s/cvicny-test`
-- 20 from SBS okruhy 1–4 (random)
-- 1 from each service area (Policajný zbor: 2)
-- 10 practical questions (all)
-- All shuffled on every load
-- Pass: 32/40 (64/80 points, 80%)
-- Timer turns red under 5 min remaining
-- Card on `/testy/s` opens modal before starting
+## Testy – architektúra
+- Statické pages `/testy/s/[kategoria]` načítavajú otázky z DB cez `getTestQuestions(title)`
+- DB-backed route `/testy/[testId]` načítava test podľa ID, po dokončení uloží `TestResult`
+- `QuizClient` má voliteľný prop `testId?: string` – keď je nastavený, uloží výsledok via `POST /api/test-results`
+- `getTestWithId(title)` vráti `{ testId, questions }` (pre stránky kde chceme ukladať)
+- Cvičný test (`/testy/s/cvicny-test`) – bez ukladania (composite 40 otázok)
 
-## Key Files
-- `lib/getTest.ts` — fetch test questions by title
-- `lib/getCvicnyTest.ts` — assemble 40 cvičný test questions
-- `app/components/QuizClient.tsx` — standard quiz component
-- `app/components/CvicnyTestClient.tsx` — quiz with countdown timer
-- `app/components/CvicnyTestCard.tsx` — card with info modal
-- `data/colors.ts` — COLORS constant (primary, accent, pageBg, etc.)
-- `prisma/seed.ts` — full DB seed
+## Dátový vzor
+- Statický obsah (osnovy kurzov): `/data/*.ts` súbory
+- Test data: `/data/testy/s/*.ts` a `/data/testy/p/*.ts`
+- Seed importuje z `../data/testy/s/` a `../data/testy/p/` (nie `../data/test-*`)
+- Dynamický obsah (lekcie, postup, výsledky): Prisma priamo v server komponentoch
 
-## User Preferences
-- Slovak language throughout
-- Questions sent as text with (A/B/C) marking the correct answer
-- Always run db:seed after seed changes
+## Prisma schema – kľúčové modely
+- `User`: status PENDING/ACTIVE, enrollments, progresses, results
+- `Lesson`: id, title, content, outline (Json?), duration (Int? min), videoUrl?, order, courseId
+- `Progress`: id, completed, userId, lessonId — `@@unique([userId, lessonId])`
+- `Course`: type enum S/P, lessons, tests, enrollments
+- `Enrollment`: userId, courseId, paidAt — `@@unique([userId, courseId])`
+- `Test`: id, title, passScore (%), courseId, questions, results
+- `TestResult`: id, score (0–100 %), passed, userId, testId, createdAt
+
+## Lekcie kurzu S (seeded)
+- 3 lekcie (45 min, videoUrl: null): Zákon o SBS, Trestné právo, GDPR/OOU
+- Seed: `npx prisma db seed`
+
+## Testy v DB (kurz S)
+- Súkromná bezpečnosť Okruh 1–4 (25 ot. každý), Priestupkové právo (10), Trestné právo (27)
+- Ústava SR (12), Kriminalistika (13), Policajný zbor (15), Obecná polícia (9)
+- Vojenská polícia (5), Ochrana osobných údajov (7), SIS (2), Praktické otázky (10)
+
+## Test user
+- `jarocha75@gmail.com` – ACTIVE, enrollment na kurz S (pridané v seede)
+
+## Schema zmeny
+- Po `db push` treba vždy `npx prisma generate` + reštart dev servera
+- `prisma migrate dev` nefunguje v non-interactive prostredí → použiť `prisma db push`
+
+## Pay-to-access flow
+- `/kurzy/s` a `/kurzy/p` sú verejné – zobrazujú osnovu
+- `User.status`: PENDING (zaplatil, bez hesla) | ACTIVE (plne aktivovaný)
+
+## Ďalší plán
+- Keď budú videá: nahradiť video placeholder skutočným prehrávačom (updatovať `videoUrl` v DB)
+- Kurz P zatiaľ nemá lekcie
+- CvičnýTest by mohol tiež ukladať výsledky (zatiaľ bez toho)

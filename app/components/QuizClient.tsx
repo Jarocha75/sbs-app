@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { COLORS } from "@/data/colors";
 import { useShuffledQuestions } from "@/hooks/useShuffledQuestions";
@@ -32,9 +32,13 @@ export type QuizContent = {
 const QuizClient = ({
   questions,
   content,
+  testId,
+  showDashboardLink = false,
 }: {
   questions: QuizQuestion[];
   content: QuizContent;
+  testId?: string;
+  showDashboardLink?: boolean;
 }) => {
   const { hero, backHref, backLabel, result } = content;
   const shuffledQuestions = useShuffledQuestions(questions);
@@ -42,6 +46,11 @@ const QuizClient = ({
   const [phase, setPhase] = useState<Phase>("quiz");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, Answer>>({});
+  const [resultSaved, setResultSaved] = useState(false);
+
+  const score = shuffledQuestions.filter(
+    (q) => answers[q.id] === q.correct,
+  ).length;
 
   const question = shuffledQuestions[currentIndex];
   const userAnswer = answers[question.id];
@@ -50,9 +59,17 @@ const QuizClient = ({
   const progress =
     ((currentIndex + (isAnswered ? 1 : 0)) / shuffledQuestions.length) * 100;
 
-  const score = shuffledQuestions.filter(
-    (q) => answers[q.id] === q.correct,
-  ).length;
+  useEffect(() => {
+    if (phase !== "results" || !testId || resultSaved) return;
+    const scorePercent = Math.round((score / shuffledQuestions.length) * 100);
+    const passed = score >= result.passMark;
+    setResultSaved(true);
+    fetch("/api/test-results", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ testId, score: scorePercent, passed }),
+    }).catch(() => {/* tichá chyba – výsledok sa neuloží */});
+  }, [phase, testId, resultSaved, score, shuffledQuestions.length, result.passMark]);
 
   function selectAnswer(letter: Answer) {
     if (isAnswered) return;
@@ -159,6 +176,16 @@ const QuizClient = ({
               >
                 Zopakovať test
               </button>
+
+              {showDashboardLink && (
+                <Link
+                  href="/dashboard"
+                  className="block w-full text-center py-4 rounded-xl font-bold text-base mt-3 border-2 hover:bg-gray-50 transition-colors"
+                  style={{ borderColor: COLORS.primary, color: COLORS.primary }}
+                >
+                  ← Späť na dashboard
+                </Link>
+              )}
             </div>
           </div>
         </div>

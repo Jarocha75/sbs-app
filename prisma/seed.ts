@@ -2,24 +2,24 @@ import 'dotenv/config'
 import { Pool } from 'pg'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient } from '../app/generated/prisma/client'
-import { questions as q1 } from '../data/test-sukromna-bezpecnost-okruh-1'
-import { questions as q2 } from '../data/test-sukromna-bezpecnost-okruh-2'
-import { questions as q3 } from '../data/test-sukromna-bezpecnost-okruh-3'
-import { questions as q4 } from '../data/test-sukromna-bezpecnost-okruh-4'
-import { questions as qPriestupky } from '../data/test-priestupkove-pravo'
-import { questions as qTrestne } from '../data/test-trestne-pravo'
-import { questions as qUstava } from '../data/test-ustava-sr'
-import { questions as qKriminalistika } from '../data/test-kriminalistika'
-import { questions as qPolicajny } from '../data/test-policajny-zbor'
-import { questions as qObecnaPolicia } from '../data/test-obecna-policia'
-import { questions as qVojenskaPolicia } from '../data/test-vojenska-policia'
-import { questions as qOchranaUdajov } from '../data/test-ochrana-osobnych-udajov'
-import { questions as qSIS } from '../data/test-slovenska-informacna-sluzba'
-import { questions as qPrakticke } from '../data/test-prakticke-otazky'
-import { questions as qPOkruh1 } from '../data/test-p-okruh-1'
-import { questions as qPOkruh2 } from '../data/test-p-okruh-2'
-import { questions as qPOkruh3 } from '../data/test-p-okruh-3'
-import { questions as qPOkruh4 } from '../data/test-p-okruh-4'
+import { questions as q1 } from '../data/testy/s/sukromna-bezpecnost-okruh-1'
+import { questions as q2 } from '../data/testy/s/sukromna-bezpecnost-okruh-2'
+import { questions as q3 } from '../data/testy/s/sukromna-bezpecnost-okruh-3'
+import { questions as q4 } from '../data/testy/s/sukromna-bezpecnost-okruh-4'
+import { questions as qPriestupky } from '../data/testy/s/priestupkove-pravo'
+import { questions as qTrestne } from '../data/testy/s/trestne-pravo'
+import { questions as qUstava } from '../data/testy/s/ustava-sr'
+import { questions as qKriminalistika } from '../data/testy/s/kriminalistika'
+import { questions as qPolicajny } from '../data/testy/s/policajny-zbor'
+import { questions as qObecnaPolicia } from '../data/testy/s/obecna-policia'
+import { questions as qVojenskaPolicia } from '../data/testy/s/vojenska-policia'
+import { questions as qOchranaUdajov } from '../data/testy/s/ochrana-osobnych-udajov'
+import { questions as qSIS } from '../data/testy/s/slovenska-informacna-sluzba'
+import { questions as qPrakticke } from '../data/testy/s/prakticke-otazky'
+import { questions as qPOkruh1 } from '../data/testy/p/okruh-1'
+import { questions as qPOkruh2 } from '../data/testy/p/okruh-2'
+import { questions as qPOkruh3 } from '../data/testy/p/okruh-3'
+import { questions as qPOkruh4 } from '../data/testy/p/okruh-4'
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL })
 const adapter = new PrismaPg(pool)
@@ -339,6 +339,20 @@ Porušenie povinností ochrany osobných údajov môže viesť k pokute zo stran
   })
 
   console.log(`Kurz vytvorený: ${courseP.title}`)
+
+  // Enrollment pre jarocha75
+  const jarocha = await prisma.user.findFirst({
+    where: { OR: [{ email: { contains: 'jarocha75' } }, { name: { contains: 'jarocha75' } }] },
+  })
+  if (jarocha) {
+    await prisma.enrollment.create({
+      data: { userId: jarocha.id, courseId: courseS.id, paidAt: new Date() },
+    })
+    console.log(`Enrollment pre ${jarocha.email} vytvorený`)
+  } else {
+    console.log('Používateľ jarocha75 nebol nájdený – enrollment nevytvorený')
+  }
+
   console.log('Seed úspešne dokončený!')
 }
 

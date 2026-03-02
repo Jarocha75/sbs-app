@@ -1,8 +1,8 @@
 import { slovenskaInformacnaSluzbaContent } from '@/data/testy/s/slovenska-informacna-sluzba'
 import QuizClient from '@/app/components/QuizClient'
-import { getTestQuestions } from '@/lib/getTest'
+import { getTestWithId } from '@/lib/getTest'
 
 export default async function SlovenskaInformacnaSluzbaPage() {
-  const questions = await getTestQuestions('Slovenská informačná služba')
-  return <QuizClient questions={questions} content={slovenskaInformacnaSluzbaContent} />
+  const { testId, questions } = await getTestWithId('Slovenská informačná služba')
+  return <QuizClient questions={questions} content={slovenskaInformacnaSluzbaContent} testId={testId} />
 }

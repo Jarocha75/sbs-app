@@ -1,8 +1,8 @@
 import { priestupkyContent } from '@/data/testy/s/priestupkove-pravo'
 import QuizClient from '@/app/components/QuizClient'
-import { getTestQuestions } from '@/lib/getTest'
+import { getTestWithId } from '@/lib/getTest'
 
 export default async function PriestupkovePravoPage() {
-  const questions = await getTestQuestions('Priestupkové právo')
-  return <QuizClient questions={questions} content={priestupkyContent} />
+  const { testId, questions } = await getTestWithId('Priestupkové právo')
+  return <QuizClient questions={questions} content={priestupkyContent} testId={testId} />
 }
