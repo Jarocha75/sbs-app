@@ -6,12 +6,14 @@ import { SITE } from '@/data/site'
 import ShieldIcon from '@/app/components/icons/ShieldIcon'
 import { checkoutSchema, type CheckoutFormErrors } from '@/validation/checkout'
 
-export default function ObjednavkaPage() {
+const inputClass = 'w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-900 transition-colors'
+
+const ObjednavkaPage = () => {
   const [errors, setErrors] = useState<CheckoutFormErrors>({})
   const [loading, setLoading] = useState(false)
   const [serverError, setServerError] = useState('')
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
     setErrors({})
     setServerError('')
@@ -109,7 +111,7 @@ export default function ObjednavkaPage() {
               required
               autoComplete="email"
               placeholder="vas@email.sk"
-              className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-900 transition-colors"
+              className={inputClass}
               style={errors.email ? { boxShadow: '0 0 0 2px #ef4444' } : undefined}
             />
             {errors.email && (
@@ -134,3 +136,5 @@ export default function ObjednavkaPage() {
     </div>
   )
 }
+
+export default ObjednavkaPage

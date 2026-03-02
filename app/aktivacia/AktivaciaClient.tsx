@@ -1,51 +1,54 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { COLORS } from '@/data/colors'
-import { SITE } from '@/data/site'
-import ShieldIcon from '@/app/components/icons/ShieldIcon'
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { COLORS } from "@/data/colors";
+import { SITE } from "@/data/site";
+import ShieldIcon from "@/app/components/icons/ShieldIcon";
 
 interface Props {
-  token: string
+  token: string;
 }
 
-export default function AktivaciaClient({ token }: Props) {
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
-  const [success, setSuccess] = useState(false)
-  const router = useRouter()
+const inputClass =
+  "w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-900 transition-colors";
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setError('')
+const AktivaciaClient = ({ token }: Props) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+  const router = useRouter();
 
-    const formData = new FormData(e.currentTarget)
-    const password = formData.get('password') as string
-    const confirm = formData.get('confirm') as string
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("");
+
+    const formData = new FormData(e.currentTarget);
+    const password = formData.get("password") as string;
+    const confirm = formData.get("confirm") as string;
 
     if (password !== confirm) {
-      setError('Heslá sa nezhodujú')
-      return
+      setError("Heslá sa nezhodujú");
+      return;
     }
 
-    setLoading(true)
-    const res = await fetch('/api/activate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    setLoading(true);
+    const res = await fetch("/api/activate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token, password }),
-    })
-    const data = await res.json()
-    setLoading(false)
+    });
+    const data = await res.json();
+    setLoading(false);
 
     if (!res.ok) {
-      setError(data.error ?? 'Nastala chyba. Skúste to znova.')
-      return
+      setError(data.error ?? "Nastala chyba. Skúste to znova.");
+      return;
     }
 
-    setSuccess(true)
-    setTimeout(() => router.push('/prihlasenie?aktivovany=1'), 2000)
-  }
+    setSuccess(true);
+    setTimeout(() => router.push("/prihlasenie?aktivovany=1"), 2000);
+  };
 
   if (success) {
     return (
@@ -54,14 +57,18 @@ export default function AktivaciaClient({ token }: Props) {
         style={{ backgroundColor: COLORS.pageBg }}
       >
         <div className="bg-white rounded-xl shadow-md w-full max-w-md p-8 text-center">
-          <div className="text-5xl mb-4" style={{ color: COLORS.accent }}>✓</div>
+          <div className="text-5xl mb-4" style={{ color: COLORS.accent }}>
+            ✓
+          </div>
           <h1 className="text-xl font-bold" style={{ color: COLORS.primary }}>
             Účet bol aktivovaný!
           </h1>
-          <p className="text-gray-500 mt-2 text-sm">Presmerovávame vás na prihlásenie...</p>
+          <p className="text-gray-500 mt-2 text-sm">
+            Presmerovávame vás na prihlásenie...
+          </p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -72,7 +79,10 @@ export default function AktivaciaClient({ token }: Props) {
       <div className="bg-white rounded-xl shadow-md w-full max-w-md p-8">
         <div className="text-center mb-8">
           <ShieldIcon size={48} centered />
-          <h1 className="text-2xl font-bold mt-3" style={{ color: COLORS.primary }}>
+          <h1
+            className="text-2xl font-bold mt-3"
+            style={{ color: COLORS.primary }}
+          >
             Nastavte si heslo
           </h1>
           <p className="text-gray-400 text-sm mt-1">{SITE.name}</p>
@@ -86,7 +96,10 @@ export default function AktivaciaClient({ token }: Props) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: COLORS.primary }}>
+            <label
+              className="block text-sm font-medium mb-1.5"
+              style={{ color: COLORS.primary }}
+            >
               Nové heslo <span className="text-red-500">*</span>
             </label>
             <input
@@ -96,12 +109,15 @@ export default function AktivaciaClient({ token }: Props) {
               minLength={8}
               autoComplete="new-password"
               placeholder="min. 8 znakov"
-              className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-900 transition-colors"
+              className={inputClass}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: COLORS.primary }}>
+            <label
+              className="block text-sm font-medium mb-1.5"
+              style={{ color: COLORS.primary }}
+            >
               Potvrdenie hesla <span className="text-red-500">*</span>
             </label>
             <input
@@ -110,7 +126,7 @@ export default function AktivaciaClient({ token }: Props) {
               required
               autoComplete="new-password"
               placeholder="••••••••"
-              className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-900 transition-colors"
+              className={inputClass}
             />
           </div>
 
@@ -120,10 +136,12 @@ export default function AktivaciaClient({ token }: Props) {
             className="w-full py-2.5 rounded-lg font-semibold text-white hover:opacity-90 transition-opacity disabled:opacity-60 mt-2"
             style={{ backgroundColor: COLORS.primary }}
           >
-            {loading ? 'Aktivujem...' : 'Aktivovať účet'}
+            {loading ? "Aktivujem..." : "Aktivovať účet"}
           </button>
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
+
+export default AktivaciaClient;

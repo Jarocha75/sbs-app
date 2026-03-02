@@ -7,12 +7,14 @@ import { COLORS } from '@/data/colors'
 import { SITE } from '@/data/site'
 import ShieldIcon from '@/app/components/icons/ShieldIcon'
 
-export default function RegisterPage() {
+const inputClass = 'w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-900 transition-colors'
+
+const RegistraciaPage = () => {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError('')
 
@@ -76,7 +78,7 @@ export default function RegisterPage() {
               type="text"
               autoComplete="name"
               placeholder="Ján Novák"
-              className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-900 transition-colors"
+              className={inputClass}
             />
           </div>
 
@@ -90,7 +92,7 @@ export default function RegisterPage() {
               required
               autoComplete="email"
               placeholder="vas@email.sk"
-              className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-900 transition-colors"
+              className={inputClass}
             />
           </div>
 
@@ -105,7 +107,7 @@ export default function RegisterPage() {
               minLength={8}
               autoComplete="new-password"
               placeholder="min. 8 znakov"
-              className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-900 transition-colors"
+              className={inputClass}
             />
           </div>
 
@@ -119,7 +121,7 @@ export default function RegisterPage() {
               required
               autoComplete="new-password"
               placeholder="••••••••"
-              className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-900 transition-colors"
+              className={inputClass}
             />
           </div>
 
@@ -144,3 +146,4 @@ export default function RegisterPage() {
   )
 }
 
+export default RegistraciaPage

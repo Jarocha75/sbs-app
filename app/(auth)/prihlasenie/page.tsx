@@ -9,12 +9,14 @@ import { SITE } from '@/data/site'
 import ShieldIcon from '@/app/components/icons/ShieldIcon'
 import AktivovanyBanner from '@/app/components/AktivovanyBanner'
 
-export default function LoginPage() {
+const inputClass = 'w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-900 transition-colors'
+
+const PrihlaseniePage = () => {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError('')
     setLoading(true)
@@ -74,7 +76,7 @@ export default function LoginPage() {
               required
               autoComplete="email"
               placeholder="vas@email.sk"
-              className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-900 transition-colors"
+              className={inputClass}
             />
           </div>
 
@@ -88,7 +90,7 @@ export default function LoginPage() {
               required
               autoComplete="current-password"
               placeholder="••••••••"
-              className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-900 transition-colors"
+              className={inputClass}
             />
           </div>
 
@@ -113,3 +115,4 @@ export default function LoginPage() {
   )
 }
 
+export default PrihlaseniePage
