@@ -1,27 +1,27 @@
-import { COLORS } from '@/data/colors'
+import { COLORS } from "@/data/colors";
 
-const STATUS_ACTIVE = 'ACTIVE'
-const LABEL_ACTIVE = '● AKTÍVNY'
-const LABEL_PENDING = '● ČAKÁ NA AKTIVÁCIU'
+const STATUS_ACTIVE = "ACTIVE";
+const LABEL_ACTIVE = "● AKTÍVNY";
+const LABEL_PENDING = "● ČAKÁ NA AKTIVÁCIU";
 
-type Props = {
-  name: string | null
-  email: string
-  status: 'PENDING' | 'ACTIVE'
+interface Props {
+  name: string | null;
+  email: string;
+  status: "PENDING" | "ACTIVE";
 }
 
 const getInitials = (name: string | null, email: string): string => {
   if (name) {
-    const parts = name.trim().split(/\s+/)
-    if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase()
-    return parts[0].slice(0, 2).toUpperCase()
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+    return parts[0].slice(0, 2).toUpperCase();
   }
-  return email.slice(0, 2).toUpperCase()
-}
+  return email.slice(0, 2).toUpperCase();
+};
 
 const UserHeader = ({ name, email, status }: Props) => {
-  const initials = getInitials(name, email)
-  const isActive = status === STATUS_ACTIVE
+  const initials = getInitials(name, email);
+  const isActive = status === STATUS_ACTIVE;
 
   return (
     <div style={{ backgroundColor: COLORS.primary }} className="py-8 px-4">
@@ -49,14 +49,14 @@ const UserHeader = ({ name, email, status }: Props) => {
           className="shrink-0 text-xs font-bold px-3 py-1.5 rounded-full"
           style={{
             backgroundColor: isActive ? COLORS.success : COLORS.warning,
-            color: 'white',
+            color: "white",
           }}
         >
           {isActive ? LABEL_ACTIVE : LABEL_PENDING}
         </span>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default UserHeader
+export default UserHeader;

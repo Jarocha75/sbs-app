@@ -1,34 +1,35 @@
-import Link from 'next/link'
-import { COLORS } from '@/data/colors'
+import Link from "next/link";
+import { COLORS } from "@/data/colors";
+import type { TestItem } from "@/types/dashboard";
 
-const CARD_TITLE = 'Moje testy'
-const EMPTY_TEXT = 'Žiadne testy nie sú k dispozícii.'
+const CARD_TITLE = "Moje testy";
+const EMPTY_TEXT = "Žiadne testy nie sú k dispozícii.";
 
-type TestItem = {
-  id: string
-  title: string
-  questionCount: number
-}
-
-type Props = {
-  tests: TestItem[]
+interface Props {
+  tests: TestItem[];
 }
 
 const TestsCard = ({ tests }: Props) => {
   if (tests.length === 0) {
     return (
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-        <h3 className="text-sm font-semibold mb-3" style={{ color: COLORS.primary }}>
+        <h3
+          className="text-sm font-semibold mb-3"
+          style={{ color: COLORS.primary }}
+        >
           {CARD_TITLE}
         </h3>
         <p className="text-sm text-gray-400">{EMPTY_TEXT}</p>
       </div>
-    )
+    );
   }
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-      <h3 className="text-sm font-semibold mb-3" style={{ color: COLORS.primary }}>
+      <h3
+        className="text-sm font-semibold mb-3"
+        style={{ color: COLORS.primary }}
+      >
         {CARD_TITLE}
       </h3>
       <ul className="space-y-1.5">
@@ -49,7 +50,7 @@ const TestsCard = ({ tests }: Props) => {
         ))}
       </ul>
     </div>
-  )
-}
+  );
+};
 
-export default TestsCard
+export default TestsCard;
