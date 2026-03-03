@@ -17,3 +17,26 @@ export type ResultItem = {
   createdAt: Date
   testTitle: string
 }
+
+export type QuizAnswer = 'A' | 'B' | 'C'
+
+export type QuizQuestion = {
+  id: string
+  text: string
+  options: { A: string; B: string; C: string }
+  correct: QuizAnswer
+}
+
+export type QuizContent = {
+  hero: {
+    title: string
+    subtitle: string
+  }
+  backHref: string
+  backLabel: string
+  result: {
+    passMark: number
+    passed: string
+    failed: string
+  }
+}

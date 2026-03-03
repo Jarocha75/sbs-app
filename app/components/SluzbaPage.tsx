@@ -1,5 +1,3 @@
-"use client";
-
 import type { SluzbaData } from "@/data/sluzby";
 import InfoIcon from "@/app/components/icons/InfoIcon";
 

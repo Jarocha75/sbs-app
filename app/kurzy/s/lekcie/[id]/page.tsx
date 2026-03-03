@@ -12,6 +12,11 @@ const LessonDetailPage = async ({ params }: Props) => {
   const session = await auth();
   if (!session?.user?.id) redirect("/prihlasenie");
 
+  const enrollment = await prisma.enrollment.findFirst({
+    where: { userId: session.user.id, course: { type: "S" } },
+  });
+  if (!enrollment) redirect("/kurzy/s");
+
   const lesson = await prisma.lesson.findUnique({
     where: { id },
     include: {
@@ -83,7 +88,7 @@ const LessonDetailPage = async ({ params }: Props) => {
               </span>
             )}
             {isCompleted && (
-              <span className="text-sm font-bold px-3 py-1 rounded-full bg-green-600 text-white">
+              <span className="text-sm font-bold px-3 py-1 rounded-full bg-success text-white">
                 ✓ Dokončené
               </span>
             )}

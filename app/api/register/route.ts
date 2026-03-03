@@ -1,23 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
+import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
 
+const registerSchema = z.object({
+  name: z.string().max(100).optional(),
+  email: z.email('Neplatná emailová adresa'),
+  password: z.string().min(8, 'Heslo musí mať aspoň 8 znakov'),
+})
+
 export async function POST(req: NextRequest) {
-  const { name, email, password } = await req.json()
-
-  if (!email || !password) {
+  const body = await req.json()
+  const result = registerSchema.safeParse(body)
+  if (!result.success) {
     return NextResponse.json(
-      { error: 'Email a heslo sú povinné' },
+      { error: result.error.issues[0].message },
       { status: 400 }
     )
   }
-
-  if (password.length < 8) {
-    return NextResponse.json(
-      { error: 'Heslo musí mať aspoň 8 znakov' },
-      { status: 400 }
-    )
-  }
+  const { name, email, password } = result.data
 
   const existingUser = await prisma.user.findUnique({ where: { email } })
   if (existingUser) {

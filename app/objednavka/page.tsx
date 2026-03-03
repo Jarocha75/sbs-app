@@ -6,7 +6,7 @@ import ShieldIcon from "@/app/components/icons/ShieldIcon";
 import { checkoutSchema, type CheckoutFormErrors } from "@/validation/checkout";
 
 const inputClass =
-  "w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-900 transition-colors";
+  "w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors";
 
 const ObjednavkaPage = () => {
   const [errors, setErrors] = useState<CheckoutFormErrors>({});
@@ -14,7 +14,7 @@ const ObjednavkaPage = () => {
   const [serverError, setServerError] = useState("");
   const [selectedType, setSelectedType] = useState<"S" | "P" | null>(null);
 
-  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrors({});
     setServerError("");
@@ -92,12 +92,10 @@ const ObjednavkaPage = () => {
                 <label
                   key={type}
                   className={`flex items-center justify-center gap-2 border rounded-lg px-4 py-3 cursor-pointer text-sm font-semibold transition-colors ${
-                    selectedType === type ? "border-blue-900 bg-blue-50" : ""
+                    selectedType === type
+                      ? "border-primary bg-subtle-bg"
+                      : "border-gray-200"
                   }`}
-                  style={{
-                    borderColor:
-                      selectedType === type ? undefined : "var(--color-primary)" + "40",
-                  }}
                 >
                   <input
                     type="radio"

@@ -12,8 +12,7 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  // Tu môžeš pridať odosielanie emailu (napr. Resend, Nodemailer)
-  console.log('Nová kontaktná správa:', result.data)
+  // TODO: odoslať email cez Resend
 
   return NextResponse.json({ success: true }, { status: 200 })
 }

@@ -1,11 +1,11 @@
 import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import QuizClient from '@/app/components/QuizClient'
-import type { QuizQuestion, QuizContent } from '@/app/components/QuizClient'
+import type { QuizQuestion, QuizContent } from '@/types/dashboard'
 
 type Props = { params: Promise<{ testId: string }> }
 
-export default async function TestPage({ params }: Props) {
+const TestPage = async ({ params }: Props) => {
   const { testId } = await params
 
   const test = await prisma.test.findUnique({
@@ -49,3 +49,5 @@ export default async function TestPage({ params }: Props) {
 
   return <QuizClient questions={questions} content={content} testId={test.id} showDashboardLink />
 }
+
+export default TestPage

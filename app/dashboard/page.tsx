@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation'
 import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
 import UserHeader from '@/app/components/dashboard/UserHeader'
@@ -7,9 +8,10 @@ import TestsCard from '@/app/components/dashboard/TestsCard'
 import ResultsCard from '@/app/components/dashboard/ResultsCard'
 import Link from 'next/link'
 
-export default async function DashboardPage() {
+const DashboardPage = async () => {
   const session = await auth()
-  const userId = session!.user!.id as string
+  const userId = session?.user?.id
+  if (!userId) redirect('/prihlasenie')
 
   const [user, enrollments, progresses, testResults] = await Promise.all([
     prisma.user.findUnique({
@@ -134,3 +136,5 @@ export default async function DashboardPage() {
     </main>
   )
 }
+
+export default DashboardPage

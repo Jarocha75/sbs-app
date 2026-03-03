@@ -3,52 +3,58 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useShuffledQuestions } from "@/hooks/useShuffledQuestions";
-import NavButton, { type Phase } from "@/app/components/NavButton";
-import type { QuizQuestion, QuizContent, QuizAnswer } from "@/types/dashboard";
+import NavButton from "@/app/components/NavButton";
+import type { QuizQuestion, QuizAnswer } from "@/types/dashboard";
 
-export type { QuizQuestion, QuizContent };
-
-const QuizClient = ({
-  questions,
-  content,
-  testId,
-  showDashboardLink = false,
-}: {
+type Props = {
   questions: QuizQuestion[];
-  content: QuizContent;
-  testId?: string;
-  showDashboardLink?: boolean;
-}) => {
-  const { hero, backHref, backLabel, result } = content;
-  const shuffledQuestions = useShuffledQuestions(questions);
+  totalSeconds: number;
+  passMark: number;
+  backHref: string;
+  title: string;
+  subtitle: string;
+};
 
-  const [phase, setPhase] = useState<Phase>("quiz");
+const formatTime = (s: number): string => {
+  const m = Math.floor(s / 60).toString().padStart(2, "0");
+  const sec = (s % 60).toString().padStart(2, "0");
+  return `${m}:${sec}`;
+};
+
+const CvicnyTestBaseClient = ({
+  questions,
+  totalSeconds,
+  passMark,
+  backHref,
+  title,
+  subtitle,
+}: Props) => {
+  const shuffled = useShuffledQuestions(questions);
+  const [phase, setPhase] = useState<"quiz" | "results">("quiz");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, QuizAnswer>>({});
-  const [resultSaved, setResultSaved] = useState(false);
+  const [secondsLeft, setSecondsLeft] = useState(totalSeconds);
 
-  const score = shuffledQuestions.filter(
-    (q) => answers[q.id] === q.correct,
-  ).length;
+  const totalPoints = shuffled.length * 2;
+  const passPoints = passMark * 2;
 
-  const question = shuffledQuestions[currentIndex];
-  const userAnswer = answers[question.id];
+  const timedOut = secondsLeft === 0;
+  const showResults = phase === "results" || timedOut;
+
+  const question = shuffled[currentIndex];
+  const userAnswer = answers[question?.id ?? ""];
   const isAnswered = userAnswer !== undefined;
-  const isLast = currentIndex === shuffledQuestions.length - 1;
-  const progress =
-    ((currentIndex + (isAnswered ? 1 : 0)) / shuffledQuestions.length) * 100;
+  const isLast = currentIndex === shuffled.length - 1;
+  const score = shuffled.filter((q) => answers[q.id] === q.correct).length;
+  const progress = ((currentIndex + (isAnswered ? 1 : 0)) / shuffled.length) * 100;
+  const isWarning = secondsLeft <= 300;
 
   useEffect(() => {
-    if (phase !== "results" || !testId || resultSaved) return;
-    const scorePercent = Math.round((score / shuffledQuestions.length) * 100);
-    const passed = score >= result.passMark;
-    setResultSaved(true);
-    fetch("/api/test-results", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ testId, score: scorePercent, passed }),
-    }).catch(() => {/* tichá chyba – výsledok sa neuloží */});
-  }, [phase, testId, resultSaved, score, shuffledQuestions.length, result.passMark]);
+    if (phase !== "quiz") return;
+    if (secondsLeft <= 0) return;
+    const t = window.setTimeout(() => setSecondsLeft((s) => s - 1), 1000);
+    return () => window.clearTimeout(t);
+  }, [secondsLeft, phase]);
 
   function selectAnswer(letter: QuizAnswer) {
     if (isAnswered) return;
@@ -56,11 +62,8 @@ const QuizClient = ({
   }
 
   function goNext() {
-    if (isLast) {
-      setPhase("results");
-    } else {
-      setCurrentIndex((i) => i + 1);
-    }
+    if (isLast) setPhase("results");
+    else setCurrentIndex((i) => i + 1);
   }
 
   function goPrev() {
@@ -71,10 +74,11 @@ const QuizClient = ({
     setAnswers({});
     setCurrentIndex(0);
     setPhase("quiz");
+    setSecondsLeft(totalSeconds);
   }
 
-  if (phase === "results") {
-    const passed = score >= result.passMark;
+  if (showResults) {
+    const passed = score >= passMark;
     return (
       <main className="min-h-screen flex flex-col bg-page-bg">
         <div className="bg-primary py-10 px-4">
@@ -83,45 +87,54 @@ const QuizClient = ({
               href={backHref}
               className="inline-block text-sm mb-4 hover:opacity-80 transition-opacity text-accent"
             >
-              {backLabel}
+              ← Späť na oblasti testovania
             </Link>
-            <h1 className="text-2xl font-bold text-white">{hero.title}</h1>
+            <h1 className="text-2xl font-bold text-white">{title}</h1>
           </div>
         </div>
 
         <div className="flex-1 flex items-center justify-center px-4 py-12">
           <div className="bg-white rounded-2xl shadow-lg w-full max-w-2xl overflow-hidden">
-            {/* Score header */}
-            <div className={`py-10 px-8 text-center ${passed ? "bg-success" : "bg-danger"}`}>
+            <div
+              className={`py-10 px-8 text-center ${
+                timedOut ? "bg-warning" : passed ? "bg-success" : "bg-danger"
+              }`}
+            >
+              {timedOut && (
+                <p className="text-white text-base font-semibold mb-3 opacity-90">
+                  Čas vypršal!
+                </p>
+              )}
               <div className="text-white text-7xl font-black mb-2">
-                {score}/{shuffledQuestions.length}
+                {score}/{shuffled.length}
               </div>
-              <div className="text-white text-lg font-semibold opacity-90">
-                {passed ? result.passed : result.failed}
+              <div className="text-white text-base font-semibold opacity-90">
+                {score * 2} / {totalPoints} bodov
+              </div>
+              <div className="text-white text-lg font-semibold mt-2 opacity-90">
+                {passed ? "Úspešne ste zvládli test!" : "Skúste to ešte raz."}
+              </div>
+              <div className="text-white text-sm mt-1 opacity-70">
+                Potrebných: {passMark}/{shuffled.length} správnych odpovedí ({passPoints}/{totalPoints} bodov)
               </div>
             </div>
 
-            {/* Wrong answers summary */}
             <div className="px-8 py-6">
-              {shuffledQuestions.some((q) => answers[q.id] !== q.correct) && (
+              {shuffled.some((q) => answers[q.id] !== q.correct) && (
                 <div className="mb-6">
                   <p className="text-sm font-semibold mb-3 text-primary">
                     Nesprávne odpovede:
                   </p>
                   <div className="flex flex-col gap-2">
-                    {shuffledQuestions
+                    {shuffled
                       .filter((q) => answers[q.id] !== q.correct)
                       .map((q, idx) => (
                         <div
                           key={q.id}
                           className="rounded-lg px-4 py-3 text-sm bg-danger-bg border-l-[3px] border-l-danger"
                         >
-                          <span className="font-bold text-gray-500 mr-2">
-                            {idx + 1}.
-                          </span>
-                          <span className="text-gray-700">
-                            {q.text.slice(0, 70)}…
-                          </span>
+                          <span className="font-bold text-gray-500 mr-2">{idx + 1}.</span>
+                          <span className="text-gray-700">{q.text.slice(0, 70)}…</span>
                           <span className="block mt-1 text-xs font-semibold text-success">
                             Správna odpoveď: {q.correct}) {q.options[q.correct]}
                           </span>
@@ -130,22 +143,12 @@ const QuizClient = ({
                   </div>
                 </div>
               )}
-
               <button
                 onClick={reset}
                 className="w-full py-4 rounded-xl font-bold text-white text-base bg-primary"
               >
                 Zopakovať test
               </button>
-
-              {showDashboardLink && (
-                <Link
-                  href="/dashboard"
-                  className="block w-full text-center py-4 rounded-xl font-bold text-base mt-3 border-2 hover:bg-gray-50 transition-colors border-primary text-primary"
-                >
-                  ← Späť na dashboard
-                </Link>
-              )}
             </div>
           </div>
         </div>
@@ -162,10 +165,22 @@ const QuizClient = ({
             href={backHref}
             className="inline-block text-sm mb-4 hover:opacity-80 transition-opacity text-accent"
           >
-            {backLabel}
+            ← Späť na oblasti testovania
           </Link>
-          <h1 className="text-2xl font-bold text-white">{hero.title}</h1>
-          <p className="text-sm mt-1 text-accent">{hero.subtitle}</p>
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <h1 className="text-2xl font-bold text-white">{title}</h1>
+              <p className="text-sm mt-1 text-accent">{subtitle}</p>
+            </div>
+            {/* Timer */}
+            <div
+              className={`shrink-0 px-4 py-2 rounded-xl font-mono font-bold text-lg ${
+                isWarning ? "bg-danger text-white" : "bg-accent text-primary"
+              }`}
+            >
+              {formatTime(secondsLeft)}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -185,11 +200,11 @@ const QuizClient = ({
             <span className="text-lg font-bold text-primary">
               Otázka {currentIndex + 1}{" "}
               <span className="font-normal text-gray-400 text-base">
-                / {shuffledQuestions.length}
+                / {shuffled.length}
               </span>
             </span>
             <div className="flex gap-2 flex-wrap justify-end" style={{ maxWidth: "60%" }}>
-              {shuffledQuestions.map((q, i) => {
+              {shuffled.map((q, i) => {
                 const dotClass =
                   answers[q.id] !== undefined
                     ? answers[q.id] === q.correct
@@ -211,7 +226,6 @@ const QuizClient = ({
               </p>
             </div>
 
-            {/* Options */}
             <div className="px-7 py-5 flex flex-col gap-3">
               {(["A", "B", "C"] as QuizAnswer[]).map((letter) => {
                 const isSelected = userAnswer === letter;
@@ -255,7 +269,6 @@ const QuizClient = ({
               })}
             </div>
 
-            {/* Inline feedback */}
             {isAnswered && (
               <div className="px-7 pb-6">
                 <div
@@ -275,7 +288,7 @@ const QuizClient = ({
         </div>
       </div>
 
-      {/* Fixed bottom nav bar */}
+      {/* Fixed bottom nav */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-muted shadow-[0_-4px_20px_rgba(0,0,0,0.07)] z-50">
         <div className="max-w-2xl mx-auto px-4 flex items-center justify-between h-18">
           <div>
@@ -287,7 +300,6 @@ const QuizClient = ({
               <span />
             )}
           </div>
-
           {isAnswered ? (
             <NavButton variant="primary" onClick={goNext}>
               {isLast ? "Zobraziť výsledok →" : "Ďalšia otázka →"}
@@ -301,4 +313,4 @@ const QuizClient = ({
   );
 };
 
-export default QuizClient;
+export default CvicnyTestBaseClient;

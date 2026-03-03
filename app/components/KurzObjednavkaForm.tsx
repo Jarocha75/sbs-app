@@ -6,7 +6,7 @@ interface Props {
   courseType: 'S' | 'P'
 }
 
-export default function KurzObjednavkaForm({ courseType }: Props) {
+const KurzObjednavkaForm = ({ courseType }: Props) => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -48,7 +48,7 @@ export default function KurzObjednavkaForm({ courseType }: Props) {
           required
           autoComplete="email"
           placeholder="vas@email.sk"
-          className="w-full border border-gray-200 bg-white rounded-xl px-4 py-3 text-sm outline-none focus:border-blue-900 focus:ring-1 focus:ring-blue-900 transition-colors"
+          className="w-full border border-gray-200 bg-white rounded-xl px-4 py-3 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
         />
         {error && (
           <p className="mt-1 text-xs text-red-600">{error}</p>
@@ -58,11 +58,12 @@ export default function KurzObjednavkaForm({ courseType }: Props) {
       <button
         type="submit"
         disabled={loading}
-        className="shrink-0 px-6 py-3 rounded-xl font-semibold text-sm text-white hover:opacity-90 transition-opacity disabled:opacity-60"
-        style={{ backgroundColor: '#1e3a5f' }}
+        className="shrink-0 px-6 py-3 rounded-xl font-semibold text-sm text-white hover:opacity-90 transition-opacity disabled:opacity-60 bg-primary"
       >
         {loading ? 'Presmerovávam...' : 'Kúpiť kurz →'}
       </button>
     </form>
   )
 }
+
+export default KurzObjednavkaForm

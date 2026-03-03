@@ -8,6 +8,11 @@ const LekcieListPage = async () => {
   const session = await auth();
   if (!session?.user?.id) redirect("/prihlasenie");
 
+  const enrollment = await prisma.enrollment.findFirst({
+    where: { userId: session.user.id, course: { type: "S" } },
+  });
+  if (!enrollment) redirect("/kurzy/s");
+
   const course = await prisma.course.findFirst({
     where: { type: "S" },
     include: {
@@ -117,32 +122,25 @@ const LekcieListPage = async () => {
 
             const cardContent = (
               <div
-                className="bg-white rounded-xl shadow-sm py-4 px-6 flex items-center gap-4"
-                style={{
-                  border: isCurrent
-                    ? `2px solid var(--color-accent)`
-                    : "1px solid #f3f4f6",
-                  opacity: isLocked ? 0.5 : 1,
-                }}
+                className={`bg-white rounded-xl shadow-sm py-4 px-6 flex items-center gap-4 ${
+                  isCurrent ? "border-2 border-accent" : "border border-gray-100"
+                } ${isLocked ? "opacity-50" : ""}`}
               >
                 <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 text-sm font-bold"
-                  style={{
-                    backgroundColor: isCompleted
-                      ? "#16a34a"
+                  className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 text-sm font-bold ${
+                    isCompleted
+                      ? "bg-success text-white"
                       : isCurrent
-                        ? "var(--color-primary)"
-                        : "#e5e7eb",
-                    color: isCompleted || isCurrent ? "white" : "#9ca3af",
-                  }}
+                        ? "bg-primary text-white"
+                        : "bg-muted text-muted-text"
+                  }`}
                 >
                   {isCompleted ? "✓" : isLocked ? <LockIcon /> : lesson.order}
                 </div>
 
                 <div className="flex-1 min-w-0">
                   <p
-                    className="font-semibold text-sm leading-snug"
-                    style={{ color: isLocked ? "#9ca3af" : "var(--color-primary)" }}
+                    className={`font-semibold text-sm leading-snug ${isLocked ? "text-muted-text" : "text-primary"}`}
                   >
                     {lesson.title}
                   </p>

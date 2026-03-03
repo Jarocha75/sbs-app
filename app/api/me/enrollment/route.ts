@@ -6,7 +6,7 @@ export async function GET() {
   const session = await auth()
 
   if (!session?.user?.id) {
-    return NextResponse.json({ redirect: '/dashboard' })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const enrollment = await prisma.enrollment.findFirst({

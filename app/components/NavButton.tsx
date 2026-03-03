@@ -1,77 +1,27 @@
 export type Phase = "quiz" | "results";
 
-const NavButton = ({
-  variant,
-  onClick,
-  children,
-}: {
+type Props = {
   variant: "primary" | "outline" | "ghost";
   onClick: () => void;
   children: React.ReactNode;
-}) => {
-  const base: React.CSSProperties = {
-    display: "inline-flex",
-    alignItems: "center",
-    gap: "0.375rem",
-    padding: "0.625rem 1.375rem",
-    borderRadius: "0.75rem",
-    fontSize: "0.9375rem",
-    fontWeight: 600,
-    cursor: "pointer",
-    border: "2px solid transparent",
-    transition: "background-color 0.15s, box-shadow 0.15s, transform 0.1s",
-    whiteSpace: "nowrap",
-  };
-
-  const styles: Record<string, React.CSSProperties> = {
-    primary: {
-      ...base,
-      backgroundColor: "var(--color-primary)",
-      color: "white",
-      boxShadow: "0 2px 8px rgba(30,58,95,0.25)",
-    },
-    outline: {
-      ...base,
-      backgroundColor: "white",
-      color: "var(--color-primary)",
-      borderColor: "var(--color-primary)",
-    },
-    ghost: {
-      ...base,
-      backgroundColor: "transparent",
-      color: "#9ca3af",
-      borderColor: "#e5e7eb",
-    },
-  };
-
-  return (
-    <button
-      onClick={onClick}
-      style={styles[variant]}
-      onMouseEnter={(e) => {
-        const el = e.currentTarget;
-        if (variant === "primary") {
-          el.style.boxShadow = "0 4px 14px rgba(30,58,95,0.35)";
-          el.style.transform = "translateY(-1px)";
-        } else {
-          el.style.backgroundColor =
-            variant === "outline" ? "#eff6ff" : "#f9fafb";
-        }
-      }}
-      onMouseLeave={(e) => {
-        const el = e.currentTarget;
-        if (variant === "primary") {
-          el.style.boxShadow = "0 2px 8px rgba(30,58,95,0.25)";
-          el.style.transform = "translateY(0)";
-        } else {
-          el.style.backgroundColor =
-            variant === "outline" ? "white" : "transparent";
-        }
-      }}
-    >
-      {children}
-    </button>
-  );
 };
+
+const base =
+  "inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-[0.9375rem] font-semibold border-2 transition-all duration-150 whitespace-nowrap cursor-pointer";
+
+const variants: Record<Props["variant"], string> = {
+  primary:
+    "bg-primary text-white border-transparent shadow-[0_2px_8px_rgba(30,58,95,0.25)] hover:shadow-[0_4px_14px_rgba(30,58,95,0.35)] hover:-translate-y-px",
+  outline:
+    "bg-white text-primary border-primary hover:bg-blue-50",
+  ghost:
+    "bg-transparent text-muted-text border-muted hover:bg-gray-50",
+};
+
+const NavButton = ({ variant, onClick, children }: Props) => (
+  <button onClick={onClick} className={`${base} ${variants[variant]}`}>
+    {children}
+  </button>
+);
 
 export default NavButton;
