@@ -2,6 +2,12 @@
 
 import { useState } from 'react'
 
+const PLACEHOLDER_EMAIL = "vas@email.sk";
+const BTN_LOADING = "Presmerovávam...";
+const BTN_SUBMIT = "Kúpiť kurz →";
+const ERR_GENERIC = "Nastala chyba. Skúste to znova.";
+const ERR_NETWORK = "Nastala chyba pri pripojení. Skúste to znova.";
+
 interface Props {
   courseType: 'S' | 'P'
 }
@@ -27,14 +33,14 @@ const KurzObjednavkaForm = ({ courseType }: Props) => {
       const data = await res.json()
 
       if (!res.ok) {
-        setError(data.error ?? 'Nastala chyba. Skúste to znova.')
+        setError(data.error ?? ERR_GENERIC)
         setLoading(false)
         return
       }
 
       window.location.href = data.url
     } catch {
-      setError('Nastala chyba pri pripojení. Skúste to znova.')
+      setError(ERR_NETWORK)
       setLoading(false)
     }
   }
@@ -47,7 +53,7 @@ const KurzObjednavkaForm = ({ courseType }: Props) => {
           type="email"
           required
           autoComplete="email"
-          placeholder="vas@email.sk"
+          placeholder={PLACEHOLDER_EMAIL}
           className="w-full border border-gray-200 bg-white rounded-xl px-4 py-3 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
         />
         {error && (
@@ -60,7 +66,7 @@ const KurzObjednavkaForm = ({ courseType }: Props) => {
         disabled={loading}
         className="shrink-0 px-6 py-3 rounded-xl font-semibold text-sm text-white hover:opacity-90 transition-opacity disabled:opacity-60 bg-primary"
       >
-        {loading ? 'Presmerovávam...' : 'Kúpiť kurz →'}
+        {loading ? BTN_LOADING : BTN_SUBMIT}
       </button>
     </form>
   )

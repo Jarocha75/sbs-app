@@ -1,5 +1,9 @@
 import Link from "next/link";
 
+const LESSONS_ICON = "📚";
+const DURATION_ICON = "⏱";
+const BTN_START = "Začať kurz";
+
 type CourseCardProps = {
   type: string;
   title: string;
@@ -38,14 +42,14 @@ const CourseCard = ({
           {description}
         </p>
         <div className="flex gap-5 text-sm text-gray-400 mb-5">
-          <span>📚 {lessons} lekcií</span>
-          <span>⏱ {duration}</span>
+          <span>{LESSONS_ICON} {lessons} lekcií</span>
+          <span>{DURATION_ICON} {duration}</span>
         </div>
         <Link
           href={href}
           className="block text-center py-2.5 rounded-lg font-semibold hover:opacity-90 transition-opacity bg-primary text-white"
         >
-          Začať kurz
+          {BTN_START}
         </Link>
       </div>
     </article>

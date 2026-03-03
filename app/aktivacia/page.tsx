@@ -2,6 +2,11 @@ import { prisma } from '@/lib/prisma'
 import AktivaciaClient from './AktivaciaClient'
 import AktivaciaError from './AktivaciaError'
 
+const ERR_NO_TOKEN = "Neplatný aktivačný odkaz. Token chýba.";
+const ERR_INVALID = "Aktivačný odkaz je neplatný alebo bol už použitý.";
+const ERR_ALREADY_ACTIVE = "Váš účet je už aktivovaný. Môžete sa prihlásiť.";
+const ERR_EXPIRED = "Platnosť aktivačného odkazu vypršala. Kontaktujte podporu.";
+
 interface Props {
   searchParams: Promise<{ token?: string }>
 }
@@ -10,7 +15,7 @@ const AktivaciaPage = async ({ searchParams }: Props) => {
   const { token } = await searchParams
 
   if (!token) {
-    return <AktivaciaError message="Neplatný aktivačný odkaz. Token chýba." />
+    return <AktivaciaError message={ERR_NO_TOKEN} />
   }
 
   const user = await prisma.user.findUnique({
@@ -19,15 +24,15 @@ const AktivaciaPage = async ({ searchParams }: Props) => {
   })
 
   if (!user) {
-    return <AktivaciaError message="Aktivačný odkaz je neplatný alebo bol už použitý." />
+    return <AktivaciaError message={ERR_INVALID} />
   }
 
   if (user.status === 'ACTIVE') {
-    return <AktivaciaError message="Váš účet je už aktivovaný. Môžete sa prihlásiť." showLogin />
+    return <AktivaciaError message={ERR_ALREADY_ACTIVE} showLogin />
   }
 
   if (!user.activationExpiry || user.activationExpiry < new Date()) {
-    return <AktivaciaError message="Platnosť aktivačného odkazu vypršala. Kontaktujte podporu." />
+    return <AktivaciaError message={ERR_EXPIRED} />
   }
 
   return <AktivaciaClient token={token} />
