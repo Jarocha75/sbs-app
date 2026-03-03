@@ -4,6 +4,21 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import LockIcon from "@/app/components/icons/LockIcon";
 
+const EMPTY_TEXT = "Lekcie zatiaľ nie sú dostupné.";
+const HERO_BADGE = "S";
+const PAGE_TITLE = "Lekcie – Preukaz typu S";
+const PAGE_SUBTITLE = "Odborná príprava pre fyzickú ochranu a pátranie";
+const PROGRESS_TITLE = "Postup v kurze";
+const PROGRESS_SUFFIX = "hotovo";
+const PROGRESS_PERCENT_SUFFIX = "% dokončené";
+const LESSONS_TITLE = "Zoznam lekcií";
+const STATUS_DONE = "Dokončené";
+const STATUS_LOCKED = "Zamknuté";
+const STATUS_AVAILABLE = "Dostupné";
+const DONE_BADGE = "✓";
+const DURATION_SUFFIX = "min";
+const BACK_LINK = "← Späť na prehľad kurzu";
+
 const LekcieListPage = async () => {
   const session = await auth();
   if (!session?.user?.id) redirect("/prihlasenie");
@@ -28,7 +43,7 @@ const LekcieListPage = async () => {
       <main
         className="min-h-screen flex items-center justify-center bg-page-bg"
       >
-        <p className="text-gray-500">Lekcie zatiaľ nie sú dostupné.</p>
+        <p className="text-gray-500">{EMPTY_TEXT}</p>
       </main>
     );
   }
@@ -64,16 +79,16 @@ const LekcieListPage = async () => {
           <span
             className="text-3xl font-bold w-16 h-16 rounded-full flex items-center justify-center shrink-0 bg-accent text-primary"
           >
-            S
+            {HERO_BADGE}
           </span>
           <div>
             <h1 className="text-3xl font-bold text-white">
-              Lekcie – Preukaz typu S
+              {PAGE_TITLE}
             </h1>
             <p
               className="text-sm font-semibold mt-0.5 text-accent"
             >
-              Odborná príprava pre fyzickú ochranu a pátranie
+              {PAGE_SUBTITLE}
             </p>
           </div>
         </div>
@@ -86,12 +101,12 @@ const LekcieListPage = async () => {
             <span
               className="text-sm font-semibold text-primary"
             >
-              Postup v kurze
+              {PROGRESS_TITLE}
             </span>
             <span
               className="text-sm font-bold text-accent"
             >
-              {completedCount}/{totalCount} hotovo
+              {completedCount}/{totalCount} {PROGRESS_SUFFIX}
             </span>
           </div>
           <div className="w-full h-2.5 rounded-full bg-gray-200">
@@ -103,7 +118,7 @@ const LekcieListPage = async () => {
             />
           </div>
           <p className="text-xs text-gray-400 mt-1.5">
-            {progressPercent}% dokončené
+            {progressPercent}{PROGRESS_PERCENT_SUFFIX}
           </p>
         </div>
 
@@ -111,7 +126,7 @@ const LekcieListPage = async () => {
         <h2
           className="text-lg font-semibold mb-4 text-primary"
         >
-          Zoznam lekcií
+          {LESSONS_TITLE}
         </h2>
         <div className="space-y-3">
           {course.lessons.map((lesson, i) => {
@@ -135,7 +150,7 @@ const LekcieListPage = async () => {
                         : "bg-muted text-muted-text"
                   }`}
                 >
-                  {isCompleted ? "✓" : isLocked ? <LockIcon /> : lesson.order}
+                  {isCompleted ? DONE_BADGE : isLocked ? <LockIcon /> : lesson.order}
                 </div>
 
                 <div className="flex-1 min-w-0">
@@ -147,14 +162,14 @@ const LekcieListPage = async () => {
                   <div className="flex items-center gap-2 mt-0.5">
                     <p className="text-xs text-gray-400">
                       {isCompleted
-                        ? "Dokončené"
+                        ? STATUS_DONE
                         : isLocked
-                          ? "Zamknuté"
-                          : "Dostupné"}
+                          ? STATUS_LOCKED
+                          : STATUS_AVAILABLE}
                     </p>
                     {lesson.duration && (
                       <span className="text-xs text-gray-400">
-                        · {lesson.duration} min
+                        · {lesson.duration} {DURATION_SUFFIX}
                       </span>
                     )}
                   </div>
@@ -185,7 +200,7 @@ const LekcieListPage = async () => {
             href="/kurzy/s"
             className="text-sm font-semibold hover:opacity-80 transition-opacity text-primary"
           >
-            ← Späť na prehľad kurzu
+            {BACK_LINK}
           </Link>
         </div>
       </div>

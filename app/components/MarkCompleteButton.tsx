@@ -3,6 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+const ERR_SAVE = "Nepodarilo sa uložiť postup";
+const ERR_GENERIC = "Nastala chyba";
+const BTN_LOADING = "Ukladám…";
+const BTN_DONE = "✓ Hotovo – lekcia dokončená";
+const BTN_DEFAULT = "Označiť ako hotovú";
+const MSG_LAST_LESSON = "Toto bola posledná lekcia kurzu. Gratulujeme!";
+
 type Props = {
   lessonId: string;
   nextLessonId: string | null;
@@ -29,7 +36,7 @@ const MarkCompleteButton = ({ lessonId, nextLessonId, completed }: Props) => {
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data?.error ?? "Nepodarilo sa uložiť postup");
+        throw new Error(data?.error ?? ERR_SAVE);
       }
 
       setIsDone(true);
@@ -41,7 +48,7 @@ const MarkCompleteButton = ({ lessonId, nextLessonId, completed }: Props) => {
       }
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Nastala chyba");
+      setError(err instanceof Error ? err.message : ERR_GENERIC);
     } finally {
       setLoading(false);
     }
@@ -55,17 +62,17 @@ const MarkCompleteButton = ({ lessonId, nextLessonId, completed }: Props) => {
         className={`w-full py-3.5 rounded-xl font-bold text-base transition-opacity text-white ${isDone ? "bg-success cursor-default" : loading ? "bg-primary opacity-70 cursor-wait" : "bg-primary cursor-pointer"}`}
       >
         {loading
-          ? "Ukladám…"
+          ? BTN_LOADING
           : isDone
-            ? "✓ Hotovo – lekcia dokončená"
-            : "Označiť ako hotovú"}
+            ? BTN_DONE
+            : BTN_DEFAULT}
       </button>
 
       {error && <p className="text-sm text-red-600 text-center">{error}</p>}
 
       {isDone && !nextLessonId && (
         <p className="text-sm text-center text-gray-500">
-          Toto bola posledná lekcia kurzu. Gratulujeme!
+          {MSG_LAST_LESSON}
         </p>
       )}
     </div>

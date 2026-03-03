@@ -5,6 +5,18 @@ import { SITE } from "@/data/site";
 import ShieldIcon from "@/app/components/icons/ShieldIcon";
 import { checkoutSchema, type CheckoutFormErrors } from "@/validation/checkout";
 
+const PAGE_TITLE = "Objednávka kurzu";
+const LABEL_COURSE_TYPE = "Typ kurzu";
+const LABEL_PREUKAZ = "Preukaz";
+const LABEL_EMAIL = "Email";
+const PLACEHOLDER_EMAIL = "vas@email.sk";
+const BTN_LOADING = "Presmerovávam...";
+const BTN_SUBMIT = "Pokračovať k platbe →";
+const NOTE_PAYMENT =
+  "Po úspešnej platbe dostanete email s odkazom na aktiváciu účtu.";
+const ERR_GENERIC = "Nastala chyba. Skúste to znova.";
+const ERR_NETWORK = "Nastala chyba pri pripojení. Skúste to znova.";
+
 const inputClass =
   "w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors";
 
@@ -46,30 +58,24 @@ const ObjednavkaPage = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        setServerError(data.error ?? "Nastala chyba. Skúste to znova.");
+        setServerError(data.error ?? ERR_GENERIC);
         setLoading(false);
         return;
       }
 
       window.location.href = data.url;
     } catch {
-      setServerError("Nastala chyba pri pripojení. Skúste to znova.");
+      setServerError(ERR_NETWORK);
       setLoading(false);
     }
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center px-4 bg-page-bg"
-    >
+    <div className="min-h-screen flex items-center justify-center px-4 bg-page-bg">
       <div className="bg-white rounded-xl shadow-md w-full max-w-md p-8">
         <div className="text-center mb-8">
           <ShieldIcon size={48} centered />
-          <h1
-            className="text-2xl font-bold mt-3 text-primary"
-          >
-            Objednávka kurzu
-          </h1>
+          <h1 className="text-2xl font-bold mt-3 text-primary">{PAGE_TITLE}</h1>
           <p className="text-gray-400 text-sm mt-1">{SITE.name}</p>
         </div>
 
@@ -82,10 +88,8 @@ const ObjednavkaPage = () => {
         <form onSubmit={handleSubmit} noValidate className="space-y-5">
           {/* Typ kurzu */}
           <div>
-            <label
-              className="block text-sm font-medium mb-2 text-primary"
-            >
-              Typ kurzu <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium mb-2 text-primary">
+              {LABEL_COURSE_TYPE} <span className="text-red-500">*</span>
             </label>
             <div className="grid grid-cols-2 gap-3">
               {(["S", "P"] as const).map((type) => (
@@ -104,7 +108,7 @@ const ObjednavkaPage = () => {
                     className="sr-only"
                     onChange={() => setSelectedType(type)}
                   />
-                  Preukaz {type}
+                  {LABEL_PREUKAZ} {type}
                 </label>
               ))}
             </div>
@@ -115,17 +119,15 @@ const ObjednavkaPage = () => {
 
           {/* Email */}
           <div>
-            <label
-              className="block text-sm font-medium mb-1.5 text-primary"
-            >
-              Email <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium mb-1.5 text-primary">
+              {LABEL_EMAIL} <span className="text-red-500">*</span>
             </label>
             <input
               name="email"
               type="email"
               required
               autoComplete="email"
-              placeholder="vas@email.sk"
+              placeholder={PLACEHOLDER_EMAIL}
               className={inputClass}
               style={
                 errors.email ? { boxShadow: "0 0 0 2px #ef4444" } : undefined
@@ -141,13 +143,11 @@ const ObjednavkaPage = () => {
             disabled={loading}
             className="w-full py-2.5 rounded-lg font-semibold text-white hover:opacity-90 transition-opacity disabled:opacity-60 mt-2 bg-primary"
           >
-            {loading ? "Presmerovávam..." : "Pokračovať k platbe →"}
+            {loading ? BTN_LOADING : BTN_SUBMIT}
           </button>
         </form>
 
-        <p className="text-center text-xs text-gray-400 mt-6">
-          Po úspešnej platbe dostanete email s odkazom na aktiváciu účtu.
-        </p>
+        <p className="text-center text-xs text-gray-400 mt-6">{NOTE_PAYMENT}</p>
       </div>
     </div>
   );

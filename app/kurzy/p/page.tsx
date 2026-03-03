@@ -1,11 +1,17 @@
+import { celkovyPocetHodin, kurzPContent, predmety } from "@/data/kurz-p";
 import Link from "next/link";
-import { kurzPContent, predmety, celkovyPocetHodin } from "@/data/kurz-p";
-import StatCard from "@/app/components/kurz-s/StatCard";
 import PredmetCard from "@/app/components/kurz-p/PredmetCard";
 import ScaleIcon from "@/app/components/kurz-s/ScaleIcon";
+import StatCard from "@/app/components/kurz-s/StatCard";
 import KurzObjednavkaForm from "@/app/components/KurzObjednavkaForm";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+
+const CTA_TITLE = "Pripravený začať štúdium?";
+const CTA_ENROLLED_TEXT = "Máte prístup ku kurzu. Môžete začať hneď.";
+const CTA_START_BTN = "Začať štúdium →";
+const CTA_NOT_ENROLLED_TEXT =
+  "Po zakúpení dostanete email s odkazom na aktiváciu účtu.";
 
 const KurzPPage = async () => {
   const { hero, stats, section } = kurzPContent;
@@ -17,7 +23,9 @@ const KurzPPage = async () => {
     const course = await prisma.course.findFirst({ where: { type: "P" } });
     if (course) {
       const enrollment = await prisma.enrollment.findUnique({
-        where: { userId_courseId: { userId: session.user.id, courseId: course.id } },
+        where: {
+          userId_courseId: { userId: session.user.id, courseId: course.id },
+        },
       });
       isEnrolled = !!enrollment;
     }
@@ -28,18 +36,14 @@ const KurzPPage = async () => {
       {/* Hero */}
       <div className="bg-primary py-12 px-4">
         <div className="max-w-4xl mx-auto flex items-center gap-5">
-          <span
-            className="text-3xl font-bold w-16 h-16 rounded-full flex items-center justify-center shrink-0 bg-accent text-primary"
-          >
+          <span className="text-3xl font-bold w-16 h-16 rounded-full flex items-center justify-center shrink-0 bg-accent text-primary">
             {hero.badge}
           </span>
 
           <div>
             <h1 className="text-3xl font-bold text-white">{hero.title}</h1>
 
-            <p
-              className="text-sm font-semibold mt-0.5 text-accent"
-            >
+            <p className="text-sm font-semibold mt-0.5 text-accent">
               {hero.subtitle}
             </p>
 
@@ -66,9 +70,7 @@ const KurzPPage = async () => {
 
         {/* Osnova */}
         <section className="mt-8">
-          <h2
-            className="text-lg font-semibold mb-4 text-primary"
-          >
+          <h2 className="text-lg font-semibold mb-4 text-primary">
             {section.title}
           </h2>
 
@@ -85,26 +87,22 @@ const KurzPPage = async () => {
 
         {/* CTA */}
         <div className="mt-8 pt-6 border-t border-gray-200">
-          <p className="text-sm font-semibold mb-1 text-primary">
-            Pripravený začať štúdium?
-          </p>
+          <p className="text-sm font-semibold mb-1 text-primary">{CTA_TITLE}</p>
 
           {isEnrolled ? (
             <>
-              <p className="text-xs text-gray-500 mb-4">
-                Máte prístup ku kurzu. Môžete začať hneď.
-              </p>
+              <p className="text-xs text-gray-500 mb-4">{CTA_ENROLLED_TEXT}</p>
               <Link
                 href="/kurzy/p/lekcie"
                 className="inline-block px-6 py-3 rounded-xl font-semibold text-sm text-white hover:opacity-90 transition-opacity bg-primary"
               >
-                Začať štúdium →
+                {CTA_START_BTN}
               </Link>
             </>
           ) : (
             <>
               <p className="text-xs text-gray-500 mb-4">
-                Po zakúpení dostanete email s odkazom na aktiváciu účtu.
+                {CTA_NOT_ENROLLED_TEXT}
               </p>
               <KurzObjednavkaForm courseType="P" />
             </>

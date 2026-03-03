@@ -5,6 +5,17 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
+const BACK_TO_LIST = "← Späť na zoznam lekcií";
+const LESSON_PREFIX = "Lekcia";
+const DURATION_SUFFIX = "min";
+const BADGE_COMPLETED = "✓ Dokončené";
+const VIDEO_TITLE = "Video bude čoskoro dostupné";
+const VIDEO_TEXT = "Lekcia je zatiaľ dostupná len v textovej forme";
+const OUTLINE_TITLE = "Čo sa naučíš";
+const CONTENT_TITLE = "Obsah lekcie";
+const NAV_PREV_LABEL = "Predošlá lekcia";
+const NAV_NEXT_LABEL = "Nasledujúca lekcia";
+
 type Props = { params: Promise<{ id: string }> };
 
 const LessonDetailPage = async ({ params }: Props) => {
@@ -74,22 +85,22 @@ const LessonDetailPage = async ({ params }: Props) => {
             href="/kurzy/s/lekcie"
             className="inline-block text-sm mb-4 hover:opacity-80 transition-opacity text-accent"
           >
-            ← Späť na zoznam lekcií
+            {BACK_TO_LIST}
           </Link>
           <div className="flex items-center gap-3 mb-2 flex-wrap">
             <span
               className="text-sm font-bold px-3 py-1 rounded-full bg-accent text-primary"
             >
-              Lekcia {lesson.order}
+              {LESSON_PREFIX} {lesson.order}
             </span>
             {lesson.duration && (
               <span className="text-sm font-semibold px-3 py-1 rounded-full bg-white/10 text-white">
-                {lesson.duration} min
+                {lesson.duration} {DURATION_SUFFIX}
               </span>
             )}
             {isCompleted && (
               <span className="text-sm font-bold px-3 py-1 rounded-full bg-success text-white">
-                ✓ Dokončené
+                {BADGE_COMPLETED}
               </span>
             )}
           </div>
@@ -118,10 +129,10 @@ const LessonDetailPage = async ({ params }: Props) => {
             <p
               className="text-sm font-semibold text-accent"
             >
-              Video bude čoskoro dostupné
+              {VIDEO_TITLE}
             </p>
             <p className="text-xs text-gray-500">
-              Lekcia je zatiaľ dostupná len v textovej forme
+              {VIDEO_TEXT}
             </p>
           </div>
         </div>
@@ -132,7 +143,7 @@ const LessonDetailPage = async ({ params }: Props) => {
             <h2
               className="text-base font-semibold mb-4 text-primary"
             >
-              Čo sa naučíš
+              {OUTLINE_TITLE}
             </h2>
             <ul className="space-y-2">
               {outline.map((item, i) => (
@@ -157,7 +168,7 @@ const LessonDetailPage = async ({ params }: Props) => {
           <h2
             className="text-base font-semibold mb-5 text-primary"
           >
-            Obsah lekcie
+            {CONTENT_TITLE}
           </h2>
           <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
             {lesson.content}
@@ -181,7 +192,7 @@ const LessonDetailPage = async ({ params }: Props) => {
               className="flex-1 bg-white rounded-xl border border-gray-100 shadow-sm px-5 py-4 text-sm font-semibold hover:shadow-md transition-shadow text-primary"
             >
               <span className="block text-xs text-gray-400 mb-0.5">
-                Predošlá lekcia
+                {NAV_PREV_LABEL}
               </span>
               ← {prevLesson.title}
             </Link>
@@ -195,7 +206,7 @@ const LessonDetailPage = async ({ params }: Props) => {
               className="flex-1 bg-white rounded-xl border border-gray-100 shadow-sm px-5 py-4 text-sm font-semibold hover:shadow-md transition-shadow text-right text-primary"
             >
               <span className="block text-xs text-gray-400 mb-0.5">
-                Nasledujúca lekcia
+                {NAV_NEXT_LABEL}
               </span>
               {nextLesson.title} →
             </Link>
@@ -204,7 +215,7 @@ const LessonDetailPage = async ({ params }: Props) => {
               href="/kurzy/s/lekcie"
               className="flex-1 text-center bg-white rounded-xl border border-gray-100 shadow-sm px-5 py-4 text-sm font-semibold hover:shadow-md transition-shadow text-primary"
             >
-              ← Späť na zoznam lekcií
+              {BACK_TO_LIST}
             </Link>
           )}
         </div>
