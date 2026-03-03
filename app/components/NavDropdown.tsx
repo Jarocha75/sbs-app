@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useState, useRef } from "react";
-import { COLORS } from "@/data/colors";
 import { type NavItem } from "@/data/navbar";
 import ChevronIcon from "@/app/components/icons/ChevronIcon";
 
@@ -41,26 +40,11 @@ const NavDropdown = ({ label, items }: Props) => {
             <Link
               key={item.href}
               href={item.href}
-              className="flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium transition-all duration-150 border-l-2 border-transparent hover:border-l-2"
-              style={{ color: COLORS.primary }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderLeftColor = COLORS.accent;
-                e.currentTarget.style.backgroundColor = COLORS.subtleBg;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderLeftColor = "transparent";
-                e.currentTarget.style.backgroundColor = "";
-              }}
+              className="flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium transition-all duration-150 border-l-2 border-l-transparent text-primary hover:border-l-accent hover:bg-subtle-bg"
               onClick={() => setOpen(false)}
             >
               {item.badge && (
-                <span
-                  className="w-6 h-6 rounded-full text-xs font-bold flex items-center justify-center shrink-0"
-                  style={{
-                    backgroundColor: COLORS.primary,
-                    color: COLORS.accent,
-                  }}
-                >
+                <span className="w-6 h-6 rounded-full text-xs font-bold flex items-center justify-center shrink-0 bg-primary text-accent">
                   {item.badge}
                 </span>
               )}

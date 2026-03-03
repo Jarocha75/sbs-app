@@ -1,12 +1,11 @@
-import { COLORS } from "@/data/colors";
 import { dalsiePravneNormy, legalNorms, zakonContent } from "@/data/zakon";
 import LegalNormCard from "../components/zakon/LegalNormCard";
 
 const ZakonPage = () => {
   return (
-    <main className="min-h-screen" style={{ backgroundColor: COLORS.pageBg }}>
+    <main className="min-h-screen bg-page-bg">
       {/* Hero */}
-      <div style={{ backgroundColor: COLORS.primary }} className="py-12 px-4">
+      <div className="bg-primary py-12 px-4">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl font-bold text-white">
             {zakonContent.hero.title}
@@ -21,8 +20,7 @@ const ZakonPage = () => {
         {/* Hlavné právne normy */}
         <section>
           <h2
-            className="text-lg font-semibold mb-4"
-            style={{ color: COLORS.primary }}
+            className="text-lg font-semibold mb-4 text-primary"
           >
             {zakonContent.sections.main}
           </h2>
@@ -36,8 +34,7 @@ const ZakonPage = () => {
         {/* Ďalšie právne normy */}
         <section>
           <h2
-            className="text-lg font-semibold mb-4"
-            style={{ color: COLORS.primary }}
+            className="text-lg font-semibold mb-4 text-primary"
           >
             {zakonContent.sections.other}
           </h2>

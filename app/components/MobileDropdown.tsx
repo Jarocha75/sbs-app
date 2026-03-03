@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { COLORS } from "@/data/colors";
 import { type NavItem } from "@/data/navbar";
 import ChevronIcon from "@/app/components/icons/ChevronIcon";
 
@@ -36,18 +35,11 @@ const MobileDropdown = ({
             <Link
               key={item.href}
               href={item.href}
-              className="py-2 px-2 rounded-md text-sm font-medium flex items-center gap-2 transition-all duration-150 hover:bg-white/10 hover:text-white"
-              style={{ color: COLORS.accent }}
+              className="py-2 px-2 rounded-md text-sm font-medium flex items-center gap-2 transition-all duration-150 hover:bg-white/10 hover:text-white text-accent"
               onClick={onClose}
             >
               {item.badge && (
-                <span
-                  className="w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center shrink-0"
-                  style={{
-                    backgroundColor: COLORS.accent,
-                    color: COLORS.primary,
-                  }}
-                >
+                <span className="w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center shrink-0 bg-accent text-primary">
                   {item.badge}
                 </span>
               )}

@@ -1,5 +1,3 @@
-import { COLORS } from "@/data/colors";
-
 export type Phase = "quiz" | "results";
 
 const NavButton = ({
@@ -28,15 +26,15 @@ const NavButton = ({
   const styles: Record<string, React.CSSProperties> = {
     primary: {
       ...base,
-      backgroundColor: COLORS.primary,
+      backgroundColor: "var(--color-primary)",
       color: "white",
       boxShadow: "0 2px 8px rgba(30,58,95,0.25)",
     },
     outline: {
       ...base,
       backgroundColor: "white",
-      color: COLORS.primary,
-      borderColor: COLORS.primary,
+      color: "var(--color-primary)",
+      borderColor: "var(--color-primary)",
     },
     ghost: {
       ...base,

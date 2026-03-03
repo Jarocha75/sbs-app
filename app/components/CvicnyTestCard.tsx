@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { COLORS } from "@/data/colors";
 
 const CvicnyTestCard = () => {
   const [open, setOpen] = useState(false);
@@ -10,24 +9,15 @@ const CvicnyTestCard = () => {
   return (
     <>
       {/* Card */}
-      <div className="col-span-1 sm:col-span-2 bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+      <article className="col-span-1 sm:col-span-2 bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
         <div className="px-6 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span
-                className="text-xs font-bold px-2 py-0.5 rounded-full"
-                style={{
-                  backgroundColor: COLORS.accent,
-                  color: COLORS.primary,
-                }}
-              >
+              <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-accent text-primary">
                 CVIČNÝ TEST
               </span>
             </div>
-            <h3
-              className="font-bold text-base"
-              style={{ color: COLORS.primary }}
-            >
+            <h3 className="font-bold text-base text-primary">
               Cvičný test SBS — Typ S
             </h3>
             <p className="text-sm text-gray-400 mt-0.5">
@@ -36,19 +26,17 @@ const CvicnyTestCard = () => {
           </div>
           <button
             onClick={() => setOpen(true)}
-            className="shrink-0 py-2.5 px-6 rounded-lg font-semibold hover:opacity-90 transition-opacity text-white"
-            style={{ backgroundColor: COLORS.primary }}
+            className="shrink-0 py-2.5 px-6 rounded-lg font-semibold hover:opacity-90 transition-opacity text-white bg-primary"
           >
             Spustiť test
           </button>
         </div>
-      </div>
+      </article>
 
       {/* Modal overlay */}
       {open && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
           onClick={() => setOpen(false)}
         >
           <div
@@ -56,17 +44,14 @@ const CvicnyTestCard = () => {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal header */}
-            <div
-              className="py-6 px-7 text-center"
-              style={{ backgroundColor: COLORS.primary }}
-            >
+            <header className="py-6 px-7 text-center bg-primary">
               <h2 className="text-xl font-bold text-white">
                 Cvičný test SBS — Typ S
               </h2>
-              <p className="text-sm mt-1" style={{ color: COLORS.accent }}>
+              <p className="text-sm mt-1 text-accent">
                 Cvičný test na skúšku odbornej spôsobilosti
               </p>
-            </div>
+            </header>
 
             {/* Modal body */}
             <div className="px-7 py-6">
@@ -75,19 +60,13 @@ const CvicnyTestCard = () => {
                 ktoré je možné dosiahnuť je <strong>80</strong>. Na hodnotenie{" "}
                 <strong>&quot;VYHOVEL&quot;</strong> potrebuje skúšaná osoba
                 dosiahnuť najmenej 80&nbsp;% z celkového súčtu bodov, t.&nbsp;j.{" "}
-                <strong style={{ color: COLORS.primary }}>
+                <strong className="text-primary">
                   64 bodov (32 správnych odpovedí)
                 </strong>
                 .
               </p>
 
-              <div
-                className="flex items-center gap-3 rounded-xl px-4 py-3 mb-6 text-sm font-medium"
-                style={{
-                  backgroundColor: COLORS.subtleBg,
-                  color: COLORS.primary,
-                }}
-              >
+              <div className="flex items-center gap-3 rounded-xl px-4 py-3 mb-6 text-sm font-medium bg-subtle-bg text-primary">
                 <svg
                   width="18"
                   height="18"
@@ -99,12 +78,12 @@ const CvicnyTestCard = () => {
                     cx="12"
                     cy="12"
                     r="10"
-                    stroke={COLORS.primary}
+                    stroke="var(--color-primary)"
                     strokeWidth="2"
                   />
                   <path
                     d="M12 6v6l4 2"
-                    stroke={COLORS.primary}
+                    stroke="var(--color-primary)"
                     strokeWidth="2"
                     strokeLinecap="round"
                   />
@@ -115,15 +94,13 @@ const CvicnyTestCard = () => {
               <div className="flex gap-3">
                 <button
                   onClick={() => setOpen(false)}
-                  className="flex-1 py-3 rounded-xl font-semibold border-2 text-sm"
-                  style={{ borderColor: "#e5e7eb", color: "#6b7280" }}
+                  className="flex-1 py-3 rounded-xl font-semibold border-2 border-gray-200 text-gray-500 text-sm"
                 >
                   Zrušiť
                 </button>
                 <Link
                   href="/testy/s/cvicny-test"
-                  className="flex-1 py-3 rounded-xl font-bold text-white text-sm text-center hover:opacity-90 transition-opacity"
-                  style={{ backgroundColor: COLORS.primary }}
+                  className="flex-1 py-3 rounded-xl font-bold text-white text-sm text-center hover:opacity-90 transition-opacity bg-primary"
                 >
                   Štart
                 </Link>

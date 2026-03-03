@@ -1,6 +1,5 @@
 import Link from "next/link";
 import KontaktFormular from "@/app/components/KontaktFormular";
-import { COLORS } from "@/data/colors";
 import {
   HERO,
   TERMINY_SECTION,
@@ -15,9 +14,8 @@ const HomePage = () => {
     <main>
       {/* ── HERO ── */}
       <section
-        className="relative flex min-h-[90vh] items-center justify-center overflow-hidden"
+        className="relative flex min-h-[90vh] items-center justify-center overflow-hidden bg-primary"
         style={{
-          backgroundColor: COLORS.primary,
           backgroundImage: `linear-gradient(rgba(30,58,95,0.72), rgba(30,58,95,0.72)), url('/images/background%20Security-001.jpg')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -25,26 +23,23 @@ const HomePage = () => {
       >
         {/* Dekoratívne kruhy */}
         <div
-          className="pointer-events-none absolute -left-40 -top-40 h-125 w-125 rounded-full opacity-10"
-          style={{ backgroundColor: COLORS.accent }}
+          className="pointer-events-none absolute -left-40 -top-40 h-125 w-125 rounded-full opacity-10 bg-accent"
         />
         <div
-          className="pointer-events-none absolute -bottom-32 -right-32 h-100 w-100 rounded-full opacity-10"
-          style={{ backgroundColor: COLORS.accent }}
+          className="pointer-events-none absolute -bottom-32 -right-32 h-100 w-100 rounded-full opacity-10 bg-accent"
         />
 
         <div className="relative z-10 mx-auto max-w-4xl px-6 py-24 text-center">
           {/* Badge */}
           <span
-            className="mb-6 inline-block rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest"
-            style={{ backgroundColor: COLORS.accent, color: COLORS.primary }}
+            className="mb-6 inline-block rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest bg-accent text-primary"
           >
             {HERO.badge}
           </span>
 
           <h1 className="mb-6 text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
             {HERO.title}{" "}
-            <span style={{ color: COLORS.accent }}>{HERO.titleHighlight}</span>
+            <span className="text-accent">{HERO.titleHighlight}</span>
           </h1>
 
           <p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-gray-300 sm:text-xl">
@@ -56,8 +51,7 @@ const HomePage = () => {
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <a
               href="#terminy"
-              className="w-full rounded-xl px-8 py-4 text-base font-bold tracking-wide transition-opacity hover:opacity-90 sm:w-auto"
-              style={{ backgroundColor: COLORS.accent, color: COLORS.primary }}
+              className="w-full rounded-xl px-8 py-4 text-base font-bold tracking-wide transition-opacity hover:opacity-90 sm:w-auto bg-accent text-primary"
             >
               {HERO.ctaTerminy}
             </a>
@@ -82,14 +76,14 @@ const HomePage = () => {
           >
             <path
               d="M0 60 L0 30 Q360 0 720 30 Q1080 60 1440 30 L1440 60 Z"
-              fill={COLORS.pageBg}
+              fill="var(--color-page-bg)"
             />
           </svg>
         </div>
       </section>
 
       {/* ── VÝHODY ── */}
-      <section style={{ backgroundColor: COLORS.pageBg }} className="py-16">
+      <section className="bg-page-bg py-16">
         <div className="mx-auto max-w-5xl px-6">
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
             {vyhody.map((item) => (
@@ -99,8 +93,7 @@ const HomePage = () => {
               >
                 <div className="mb-3 text-4xl">{item.icon}</div>
                 <h3
-                  className="mb-2 text-base font-bold"
-                  style={{ color: COLORS.primary }}
+                  className="mb-2 text-base font-bold text-primary"
                 >
                   {item.title}
                 </h3>
@@ -116,13 +109,11 @@ const HomePage = () => {
       {/* ── TERMÍNY ── */}
       <section
         id="terminy"
-        style={{ backgroundColor: COLORS.pageBg }}
-        className="pb-20 pt-4"
+        className="bg-page-bg pb-20 pt-4"
       >
         <div className="mx-auto max-w-5xl px-6">
           <h2
-            className="mb-2 text-center text-3xl font-extrabold"
-            style={{ color: COLORS.primary }}
+            className="mb-2 text-center text-3xl font-extrabold text-primary"
           >
             {TERMINY_SECTION.title}
           </h2>
@@ -135,15 +126,11 @@ const HomePage = () => {
               <div
                 key={kurz.typ}
                 className="flex flex-col items-start justify-between gap-5 rounded-2xl border bg-white p-7 shadow-sm sm:flex-row sm:items-center"
-                style={{ borderColor: COLORS.accent + "40" }}
+                style={{ borderColor: "var(--color-accent)" + "40" }}
               >
                 {/* Typ kurzu */}
                 <div
-                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl text-xl font-black"
-                  style={{
-                    backgroundColor: COLORS.primary,
-                    color: COLORS.accent,
-                  }}
+                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl text-xl font-black bg-primary text-accent"
                 >
                   {kurz.typ}
                 </div>
@@ -151,8 +138,7 @@ const HomePage = () => {
                 {/* Info */}
                 <div className="flex-1">
                   <p
-                    className="mb-1 text-base font-bold"
-                    style={{ color: COLORS.primary }}
+                    className="mb-1 text-base font-bold text-primary"
                   >
                     {kurz.nazov}
                   </p>
@@ -166,8 +152,7 @@ const HomePage = () => {
                 <div className="text-right">
                   <p className="text-xs text-gray-400">Voľné miesta</p>
                   <p
-                    className="text-2xl font-extrabold"
-                    style={{ color: COLORS.accent }}
+                    className="text-2xl font-extrabold text-accent"
                   >
                     {kurz.miesta}
                   </p>
@@ -176,11 +161,7 @@ const HomePage = () => {
                 {/* CTA */}
                 <a
                   href="#kontakt"
-                  className="shrink-0 rounded-xl px-6 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-90"
-                  style={{
-                    backgroundColor: COLORS.accent,
-                    color: COLORS.primary,
-                  }}
+                  className="shrink-0 rounded-xl px-6 py-3 text-sm font-bold tracking-wide transition-opacity hover:opacity-90 bg-accent text-primary"
                 >
                   {TERMINY_SECTION.ctaPrihlasit}
                 </a>
@@ -197,13 +178,11 @@ const HomePage = () => {
       {/* ── KONTAKT ── */}
       <section
         id="kontakt"
-        className="py-12"
-        style={{ backgroundColor: COLORS.subtleBg }}
+        className="py-12 bg-subtle-bg"
       >
         <div className="mx-auto max-w-2xl px-6">
           <h2
-            className="mb-2 text-center text-3xl font-extrabold"
-            style={{ color: COLORS.primary }}
+            className="mb-2 text-center text-3xl font-extrabold text-primary"
           >
             {KONTAKT_SECTION.title}
           </h2>
@@ -223,8 +202,7 @@ const HomePage = () => {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="font-medium underline underline-offset-2 transition-colors hover:opacity-80"
-                  style={{ color: COLORS.primary }}
+                  className="font-medium underline underline-offset-2 transition-colors hover:opacity-80 text-primary"
                 >
                   {link.label}
                 </Link>

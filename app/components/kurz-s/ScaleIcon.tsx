@@ -1,5 +1,3 @@
-import { COLORS } from "@/data/colors";
-
 const ScaleIcon = () => {
   return (
     <svg
@@ -12,14 +10,14 @@ const ScaleIcon = () => {
     >
       <path
         d="M12 3v18M3 9l9-6 9 6M5 21h14"
-        stroke={COLORS.primary}
+        stroke="var(--color-primary)"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M3 9l4 8H3M21 9l-4 8h4"
-        stroke={COLORS.primary}
+        stroke="var(--color-primary)"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"

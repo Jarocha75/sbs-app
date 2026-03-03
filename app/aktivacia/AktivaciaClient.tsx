@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { COLORS } from "@/data/colors";
 import { SITE } from "@/data/site";
 import ShieldIcon from "@/app/components/icons/ShieldIcon";
 
@@ -53,14 +52,13 @@ const AktivaciaClient = ({ token }: Props) => {
   if (success) {
     return (
       <div
-        className="min-h-screen flex items-center justify-center px-4"
-        style={{ backgroundColor: COLORS.pageBg }}
+        className="min-h-screen flex items-center justify-center px-4 bg-page-bg"
       >
         <div className="bg-white rounded-xl shadow-md w-full max-w-md p-8 text-center">
-          <div className="text-5xl mb-4" style={{ color: COLORS.accent }}>
+          <div className="text-5xl mb-4 text-accent">
             ✓
           </div>
-          <h1 className="text-xl font-bold" style={{ color: COLORS.primary }}>
+          <h1 className="text-xl font-bold text-primary">
             Účet bol aktivovaný!
           </h1>
           <p className="text-gray-500 mt-2 text-sm">
@@ -73,15 +71,13 @@ const AktivaciaClient = ({ token }: Props) => {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-4"
-      style={{ backgroundColor: COLORS.pageBg }}
+      className="min-h-screen flex items-center justify-center px-4 bg-page-bg"
     >
       <div className="bg-white rounded-xl shadow-md w-full max-w-md p-8">
         <div className="text-center mb-8">
           <ShieldIcon size={48} centered />
           <h1
-            className="text-2xl font-bold mt-3"
-            style={{ color: COLORS.primary }}
+            className="text-2xl font-bold mt-3 text-primary"
           >
             Nastavte si heslo
           </h1>
@@ -97,8 +93,7 @@ const AktivaciaClient = ({ token }: Props) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label
-              className="block text-sm font-medium mb-1.5"
-              style={{ color: COLORS.primary }}
+              className="block text-sm font-medium mb-1.5 text-primary"
             >
               Nové heslo <span className="text-red-500">*</span>
             </label>
@@ -115,8 +110,7 @@ const AktivaciaClient = ({ token }: Props) => {
 
           <div>
             <label
-              className="block text-sm font-medium mb-1.5"
-              style={{ color: COLORS.primary }}
+              className="block text-sm font-medium mb-1.5 text-primary"
             >
               Potvrdenie hesla <span className="text-red-500">*</span>
             </label>
@@ -133,8 +127,7 @@ const AktivaciaClient = ({ token }: Props) => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 rounded-lg font-semibold text-white hover:opacity-90 transition-opacity disabled:opacity-60 mt-2"
-            style={{ backgroundColor: COLORS.primary }}
+            className="w-full py-2.5 rounded-lg font-semibold text-white hover:opacity-90 transition-opacity disabled:opacity-60 mt-2 bg-primary"
           >
             {loading ? "Aktivujem..." : "Aktivovať účet"}
           </button>

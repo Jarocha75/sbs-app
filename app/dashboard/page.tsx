@@ -1,6 +1,5 @@
 import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
-import { COLORS } from '@/data/colors'
 import UserHeader from '@/app/components/dashboard/UserHeader'
 import CourseProgressCard from '@/app/components/dashboard/CourseProgressCard'
 import StatsCard from '@/app/components/dashboard/StatsCard'
@@ -78,7 +77,7 @@ export default async function DashboardPage() {
   }))
 
   return (
-    <main className="min-h-screen" style={{ backgroundColor: COLORS.pageBg }}>
+    <main className="min-h-screen bg-page-bg">
       <UserHeader
         name={user.name}
         email={user.email}
@@ -90,7 +89,7 @@ export default async function DashboardPage() {
           /* Žiadny enrollment */
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-10 text-center max-w-lg mx-auto mt-8">
             <p className="text-4xl mb-4">📚</p>
-            <h2 className="text-xl font-bold mb-2" style={{ color: COLORS.primary }}>
+            <h2 className="text-xl font-bold mb-2 text-primary">
               Zatiaľ nemáte zakúpený žiadny kurz
             </h2>
             <p className="text-gray-500 text-sm mb-6">
@@ -98,8 +97,7 @@ export default async function DashboardPage() {
             </p>
             <Link
               href="/kurzy/s"
-              className="inline-block px-6 py-3 rounded-xl font-bold text-white hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: COLORS.primary }}
+              className="inline-block px-6 py-3 rounded-xl font-bold text-white hover:opacity-90 transition-opacity bg-primary"
             >
               Pozrieť kurzy →
             </Link>

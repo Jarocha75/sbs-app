@@ -1,5 +1,3 @@
-import { COLORS } from "@/data/colors";
-
 const PlayIcon = () => {
   return (
     <svg
@@ -9,7 +7,7 @@ const PlayIcon = () => {
       fill="none"
       aria-hidden="true"
     >
-      <path d="M8 5v14l11-7L8 5z" fill={COLORS.accent} />
+      <path d="M8 5v14l11-7L8 5z" fill="var(--color-accent)" />
     </svg>
   );
 };

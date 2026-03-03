@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { COLORS } from '@/data/colors'
 import ShieldIcon from '@/app/components/icons/ShieldIcon'
 
 interface Props {
@@ -10,8 +9,7 @@ interface Props {
 const AktivaciaError = ({ message, showLogin }: Props) => {
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-4"
-      style={{ backgroundColor: COLORS.pageBg }}
+      className="min-h-screen flex items-center justify-center px-4 bg-page-bg"
     >
       <div className="bg-white rounded-xl shadow-md w-full max-w-md p-8 text-center">
         <ShieldIcon size={48} centered />
@@ -20,8 +18,7 @@ const AktivaciaError = ({ message, showLogin }: Props) => {
         {showLogin && (
           <Link
             href="/prihlasenie"
-            className="mt-6 inline-block font-semibold underline text-sm"
-            style={{ color: COLORS.primary }}
+            className="mt-6 inline-block font-semibold underline text-sm text-primary"
           >
             Prihlásiť sa
           </Link>

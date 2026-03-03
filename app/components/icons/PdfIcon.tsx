@@ -1,7 +1,5 @@
-import { COLORS } from "@/data/colors";
-
 const PdfIcon = ({ muted = false }: { muted?: boolean }) => {
-  const color = muted ? "#9ca3af" : COLORS.primary;
+  const color = muted ? "#9ca3af" : "var(--color-primary)";
   return (
     <svg
       width="16"

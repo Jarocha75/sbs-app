@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { COLORS } from "@/data/colors";
 import { SITE } from "@/data/site";
 import ShieldIcon from "@/app/components/icons/ShieldIcon";
 import { checkoutSchema, type CheckoutFormErrors } from "@/validation/checkout";
@@ -61,15 +60,13 @@ const ObjednavkaPage = () => {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-4"
-      style={{ backgroundColor: COLORS.pageBg }}
+      className="min-h-screen flex items-center justify-center px-4 bg-page-bg"
     >
       <div className="bg-white rounded-xl shadow-md w-full max-w-md p-8">
         <div className="text-center mb-8">
           <ShieldIcon size={48} centered />
           <h1
-            className="text-2xl font-bold mt-3"
-            style={{ color: COLORS.primary }}
+            className="text-2xl font-bold mt-3 text-primary"
           >
             Objednávka kurzu
           </h1>
@@ -86,8 +83,7 @@ const ObjednavkaPage = () => {
           {/* Typ kurzu */}
           <div>
             <label
-              className="block text-sm font-medium mb-2"
-              style={{ color: COLORS.primary }}
+              className="block text-sm font-medium mb-2 text-primary"
             >
               Typ kurzu <span className="text-red-500">*</span>
             </label>
@@ -100,7 +96,7 @@ const ObjednavkaPage = () => {
                   }`}
                   style={{
                     borderColor:
-                      selectedType === type ? undefined : COLORS.primary + "40",
+                      selectedType === type ? undefined : "var(--color-primary)" + "40",
                   }}
                 >
                   <input
@@ -122,8 +118,7 @@ const ObjednavkaPage = () => {
           {/* Email */}
           <div>
             <label
-              className="block text-sm font-medium mb-1.5"
-              style={{ color: COLORS.primary }}
+              className="block text-sm font-medium mb-1.5 text-primary"
             >
               Email <span className="text-red-500">*</span>
             </label>
@@ -146,8 +141,7 @@ const ObjednavkaPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 rounded-lg font-semibold text-white hover:opacity-90 transition-opacity disabled:opacity-60 mt-2"
-            style={{ backgroundColor: COLORS.primary }}
+            className="w-full py-2.5 rounded-lg font-semibold text-white hover:opacity-90 transition-opacity disabled:opacity-60 mt-2 bg-primary"
           >
             {loading ? "Presmerovávam..." : "Pokračovať k platbe →"}
           </button>

@@ -1,5 +1,3 @@
-import { COLORS } from '@/data/colors'
-
 type Props = {
   size?: number
   /**
@@ -12,8 +10,8 @@ type Props = {
 }
 
 const ShieldIcon = ({ size = 48, variant = 'default', centered = false }: Props) => {
-  const outerFill = variant === 'inverted' ? COLORS.accent : COLORS.primary
-  const innerFill = variant === 'inverted' ? COLORS.primary : COLORS.accent
+  const outerFill = variant === 'inverted' ? 'var(--color-accent)' : 'var(--color-primary)'
+  const innerFill = variant === 'inverted' ? 'var(--color-primary)' : 'var(--color-accent)'
 
   const svg = (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">

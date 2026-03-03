@@ -1,4 +1,3 @@
-import { COLORS } from "@/data/colors";
 import type { ResultItem } from "@/types/dashboard";
 
 const CARD_TITLE = "Posledné výsledky";
@@ -24,13 +23,8 @@ const formatDate = (date: Date): string => {
 };
 
 const ResultsCard = ({ results }: Props) => (
-  <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-    <h3
-      className="text-sm font-semibold mb-3"
-      style={{ color: COLORS.primary }}
-    >
-      {CARD_TITLE}
-    </h3>
+  <article className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+    <h3 className="text-sm font-semibold mb-3 text-primary">{CARD_TITLE}</h3>
 
     {results.length === 0 ? (
       <p className="text-sm text-gray-400">{EMPTY_TEXT}</p>
@@ -43,11 +37,7 @@ const ResultsCard = ({ results }: Props) => (
           >
             {/* Score badge */}
             <span
-              className="shrink-0 w-12 text-center text-sm font-bold rounded-lg py-1"
-              style={{
-                backgroundColor: r.passed ? COLORS.successBg : COLORS.dangerBg,
-                color: r.passed ? COLORS.success : COLORS.danger,
-              }}
+              className={`shrink-0 w-12 text-center text-sm font-bold rounded-lg py-1 ${r.passed ? "bg-success-bg text-success" : "bg-danger-bg text-danger"}`}
             >
               {r.score}%
             </span>
@@ -64,7 +54,7 @@ const ResultsCard = ({ results }: Props) => (
         ))}
       </ul>
     )}
-  </div>
+  </article>
 );
 
 export default ResultsCard;

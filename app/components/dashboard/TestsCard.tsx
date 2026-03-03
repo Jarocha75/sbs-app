@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { COLORS } from "@/data/colors";
 import type { TestItem } from "@/types/dashboard";
 
 const CARD_TITLE = "Moje testy";
@@ -12,26 +11,16 @@ interface Props {
 const TestsCard = ({ tests }: Props) => {
   if (tests.length === 0) {
     return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-        <h3
-          className="text-sm font-semibold mb-3"
-          style={{ color: COLORS.primary }}
-        >
-          {CARD_TITLE}
-        </h3>
+      <article className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <h3 className="text-sm font-semibold mb-3 text-primary">{CARD_TITLE}</h3>
         <p className="text-sm text-gray-400">{EMPTY_TEXT}</p>
-      </div>
+      </article>
     );
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-      <h3
-        className="text-sm font-semibold mb-3"
-        style={{ color: COLORS.primary }}
-      >
-        {CARD_TITLE}
-      </h3>
+    <article className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+      <h3 className="text-sm font-semibold mb-3 text-primary">{CARD_TITLE}</h3>
       <ul className="space-y-1.5">
         {tests.map((test) => (
           <li key={test.id}>
@@ -49,7 +38,7 @@ const TestsCard = ({ tests }: Props) => {
           </li>
         ))}
       </ul>
-    </div>
+    </article>
   );
 };
 

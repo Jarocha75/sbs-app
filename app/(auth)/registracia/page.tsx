@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { COLORS } from '@/data/colors'
 import { SITE } from '@/data/site'
 import ShieldIcon from '@/app/components/icons/ShieldIcon'
 
@@ -50,13 +49,13 @@ const RegistraciaPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-10" style={{ backgroundColor: COLORS.pageBg }}>
+    <div className="min-h-screen flex items-center justify-center px-4 py-10 bg-page-bg">
       <div className="bg-white rounded-xl shadow-md w-full max-w-md p-8">
 
         {/* Hlavička */}
         <div className="text-center mb-8">
           <ShieldIcon size={48} centered />
-          <h1 className="text-2xl font-bold mt-3" style={{ color: COLORS.primary }}>Registrácia</h1>
+          <h1 className="text-2xl font-bold mt-3 text-primary">Registrácia</h1>
           <p className="text-gray-400 text-sm mt-1">Vytvorte si účet v {SITE.name}</p>
         </div>
 
@@ -70,7 +69,7 @@ const RegistraciaPage = () => {
         {/* Formulár */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: COLORS.primary }}>
+            <label className="block text-sm font-medium mb-1.5 text-primary">
               Meno a priezvisko
             </label>
             <input
@@ -83,7 +82,7 @@ const RegistraciaPage = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: COLORS.primary }}>
+            <label className="block text-sm font-medium mb-1.5 text-primary">
               Email <span className="text-red-500">*</span>
             </label>
             <input
@@ -97,7 +96,7 @@ const RegistraciaPage = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: COLORS.primary }}>
+            <label className="block text-sm font-medium mb-1.5 text-primary">
               Heslo <span className="text-red-500">*</span>
             </label>
             <input
@@ -112,7 +111,7 @@ const RegistraciaPage = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: COLORS.primary }}>
+            <label className="block text-sm font-medium mb-1.5 text-primary">
               Potvrdenie hesla <span className="text-red-500">*</span>
             </label>
             <input
@@ -128,8 +127,7 @@ const RegistraciaPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 rounded-lg font-semibold text-white hover:opacity-90 transition-opacity disabled:opacity-60 mt-2"
-            style={{ backgroundColor: COLORS.primary }}
+            className="w-full py-2.5 rounded-lg font-semibold text-white hover:opacity-90 transition-opacity disabled:opacity-60 mt-2 bg-primary"
           >
             {loading ? 'Registrujem...' : 'Zaregistrovať sa'}
           </button>
@@ -137,7 +135,7 @@ const RegistraciaPage = () => {
 
         <p className="text-center text-sm text-gray-400 mt-6">
           Máte už účet?{' '}
-          <Link href="/prihlasenie" className="font-semibold hover:underline" style={{ color: COLORS.primary }}>
+          <Link href="/prihlasenie" className="font-semibold hover:underline text-primary">
             Prihláste sa
           </Link>
         </p>

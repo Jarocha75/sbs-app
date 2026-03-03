@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { COLORS } from "@/data/colors";
 
 type Props = {
   lessonId: string;
@@ -53,13 +52,7 @@ const MarkCompleteButton = ({ lessonId, nextLessonId, completed }: Props) => {
       <button
         onClick={handleClick}
         disabled={isDone || loading}
-        className="w-full py-3.5 rounded-xl font-bold text-base transition-opacity"
-        style={{
-          backgroundColor: isDone ? "#16a34a" : COLORS.primary,
-          color: "white",
-          opacity: loading ? 0.7 : 1,
-          cursor: isDone ? "default" : loading ? "wait" : "pointer",
-        }}
+        className={`w-full py-3.5 rounded-xl font-bold text-base transition-opacity text-white ${isDone ? "bg-success cursor-default" : loading ? "bg-primary opacity-70 cursor-wait" : "bg-primary cursor-pointer"}`}
       >
         {loading
           ? "Ukladám…"

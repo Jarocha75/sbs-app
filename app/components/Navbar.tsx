@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useSession, signOut } from "next-auth/react";
-import { COLORS } from "@/data/colors";
 import { SITE } from "@/data/site";
 import ShieldIcon from "@/app/components/icons/ShieldIcon";
 import HamburgerIcon from "@/app/components/icons/HamburgerIcon";
@@ -34,19 +33,13 @@ const Navbar = () => {
   };
 
   return (
-    <nav
-      className="sticky top-0 z-50 shadow-lg"
-      style={{ backgroundColor: COLORS.primary }}
-    >
+    <nav className="sticky top-0 z-50 shadow-lg bg-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <ShieldIcon size={30} variant="inverted" />
-            <span
-              className="font-bold text-xl tracking-wide"
-              style={{ color: COLORS.accent }}
-            >
+            <span className="font-bold text-xl tracking-wide text-accent">
               {SITE.name}
             </span>
           </Link>
@@ -93,11 +86,7 @@ const Navbar = () => {
             ) : (
               <Link
                 href={NAV.signInHref}
-                className="font-semibold px-4 py-2 rounded-md hover:opacity-90 transition-opacity"
-                style={{
-                  backgroundColor: COLORS.accent,
-                  color: COLORS.primary,
-                }}
+                className="font-semibold px-4 py-2 rounded-md hover:opacity-90 transition-opacity bg-accent text-primary"
               >
                 {NAV.signIn}
               </Link>
@@ -117,10 +106,7 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div
-          className="md:hidden px-4 pb-4 flex flex-col gap-2"
-          style={{ backgroundColor: COLORS.navMobileBg }}
-        >
+        <div className="md:hidden px-4 pb-4 flex flex-col gap-2 bg-nav-mobile-bg">
           <Link
             href={navLinks[0].href}
             className="text-gray-200 py-2.5 border-b border-white/10 font-medium"
@@ -181,8 +167,7 @@ const Navbar = () => {
           ) : (
             <Link
               href={NAV.signInHref}
-              className="mt-2 font-semibold px-4 py-2.5 rounded-md text-center"
-              style={{ backgroundColor: COLORS.accent, color: COLORS.primary }}
+              className="mt-2 font-semibold px-4 py-2.5 rounded-md text-center bg-accent text-primary"
               onClick={closeMobile}
             >
               {NAV.signIn}

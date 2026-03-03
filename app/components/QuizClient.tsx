@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { COLORS } from "@/data/colors";
 import { useShuffledQuestions } from "@/hooks/useShuffledQuestions";
 import NavButton, { type Phase } from "@/app/components/NavButton";
 
@@ -98,15 +97,13 @@ const QuizClient = ({
     const passed = score >= result.passMark;
     return (
       <main
-        className="min-h-screen flex flex-col"
-        style={{ backgroundColor: COLORS.pageBg }}
+        className="min-h-screen flex flex-col bg-page-bg"
       >
-        <div style={{ backgroundColor: COLORS.primary }} className="py-10 px-4">
+        <div className="bg-primary py-10 px-4">
           <div className="max-w-2xl mx-auto">
             <Link
               href={backHref}
-              className="inline-block text-sm mb-4 hover:opacity-80 transition-opacity"
-              style={{ color: COLORS.accent }}
+              className="inline-block text-sm mb-4 hover:opacity-80 transition-opacity text-accent"
             >
               {backLabel}
             </Link>
@@ -134,8 +131,7 @@ const QuizClient = ({
               {shuffledQuestions.some((q) => answers[q.id] !== q.correct) && (
                 <div className="mb-6">
                   <p
-                    className="text-sm font-semibold mb-3"
-                    style={{ color: COLORS.primary }}
+                    className="text-sm font-semibold mb-3 text-primary"
                   >
                     Nesprávne odpovede:
                   </p>
@@ -171,8 +167,7 @@ const QuizClient = ({
 
               <button
                 onClick={reset}
-                className="w-full py-4 rounded-xl font-bold text-white text-base"
-                style={{ backgroundColor: COLORS.primary }}
+                className="w-full py-4 rounded-xl font-bold text-white text-base bg-primary"
               >
                 Zopakovať test
               </button>
@@ -180,8 +175,7 @@ const QuizClient = ({
               {showDashboardLink && (
                 <Link
                   href="/dashboard"
-                  className="block w-full text-center py-4 rounded-xl font-bold text-base mt-3 border-2 hover:bg-gray-50 transition-colors"
-                  style={{ borderColor: COLORS.primary, color: COLORS.primary }}
+                  className="block w-full text-center py-4 rounded-xl font-bold text-base mt-3 border-2 hover:bg-gray-50 transition-colors border-primary text-primary"
                 >
                   ← Späť na dashboard
                 </Link>
@@ -195,25 +189,23 @@ const QuizClient = ({
 
   return (
     <main
-      className="flex flex-col"
+      className="flex flex-col bg-page-bg"
       style={{
-        backgroundColor: COLORS.pageBg,
         minHeight: "100vh",
         paddingBottom: "5rem",
       }}
     >
       {/* Hero */}
-      <div style={{ backgroundColor: COLORS.primary }} className="py-10 px-4">
+      <div className="bg-primary py-10 px-4">
         <div className="max-w-2xl mx-auto">
           <Link
             href={backHref}
-            className="inline-block text-sm mb-4 hover:opacity-80 transition-opacity"
-            style={{ color: COLORS.accent }}
+            className="inline-block text-sm mb-4 hover:opacity-80 transition-opacity text-accent"
           >
             {backLabel}
           </Link>
           <h1 className="text-2xl font-bold text-white">{hero.title}</h1>
-          <p className="text-sm mt-1" style={{ color: COLORS.accent }}>
+          <p className="text-sm mt-1 text-accent">
             {hero.subtitle}
           </p>
         </div>
@@ -223,7 +215,7 @@ const QuizClient = ({
       <div className="w-full h-1.5" style={{ backgroundColor: "#d1d5db" }}>
         <div
           className="h-full transition-all duration-500"
-          style={{ width: `${progress}%`, backgroundColor: COLORS.accent }}
+          style={{ width: `${progress}%`, backgroundColor: "var(--color-accent)" }}
         />
       </div>
 
@@ -233,8 +225,7 @@ const QuizClient = ({
           {/* Counter + dots */}
           <div className="flex items-center justify-between mb-5">
             <span
-              className="text-lg font-bold"
-              style={{ color: COLORS.primary }}
+              className="text-lg font-bold text-primary"
             >
               Otázka {currentIndex + 1}{" "}
               <span
@@ -261,7 +252,7 @@ const QuizClient = ({
                           ? "#16a34a"
                           : "#dc2626"
                         : i === currentIndex
-                          ? COLORS.accent
+                          ? "var(--color-accent)"
                           : "#d1d5db",
                   }}
                 />
@@ -274,8 +265,7 @@ const QuizClient = ({
             {/* Question text */}
             <div className="px-7 py-7 border-b border-gray-100">
               <p
-                className="text-lg font-semibold leading-relaxed"
-                style={{ color: COLORS.primary }}
+                className="text-lg font-semibold leading-relaxed text-primary"
               >
                 {question.text}
               </p>
@@ -311,9 +301,9 @@ const QuizClient = ({
                   labelColor = "white";
                 } else if (!isAnswered && isSelected) {
                   bg = "#eff6ff";
-                  border = COLORS.primary;
-                  textColor = COLORS.primary;
-                  labelBg = COLORS.primary;
+                  border = "var(--color-primary)";
+                  textColor = "var(--color-primary)";
+                  labelBg = "var(--color-primary)";
                   labelColor = "white";
                 } else if (isDimmed) {
                   opacity = 0.45;

@@ -1,7 +1,6 @@
 import PlayIcon from "@/app/components/icons/PlayIcon";
 import MarkCompleteButton from "@/app/components/MarkCompleteButton";
 import { auth } from "@/auth";
-import { COLORS } from "@/data/colors";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
@@ -62,21 +61,19 @@ const LessonDetailPage = async ({ params }: Props) => {
     : null;
 
   return (
-    <main className="min-h-screen" style={{ backgroundColor: COLORS.pageBg }}>
+    <main className="min-h-screen bg-page-bg">
       {/* Hero */}
-      <div style={{ backgroundColor: COLORS.primary }} className="py-10 px-4">
+      <div className="bg-primary py-10 px-4">
         <div className="max-w-3xl mx-auto">
           <Link
             href="/kurzy/s/lekcie"
-            className="inline-block text-sm mb-4 hover:opacity-80 transition-opacity"
-            style={{ color: COLORS.accent }}
+            className="inline-block text-sm mb-4 hover:opacity-80 transition-opacity text-accent"
           >
             ← Späť na zoznam lekcií
           </Link>
           <div className="flex items-center gap-3 mb-2 flex-wrap">
             <span
-              className="text-sm font-bold px-3 py-1 rounded-full"
-              style={{ backgroundColor: COLORS.accent, color: COLORS.primary }}
+              className="text-sm font-bold px-3 py-1 rounded-full bg-accent text-primary"
             >
               Lekcia {lesson.order}
             </span>
@@ -108,14 +105,13 @@ const LessonDetailPage = async ({ params }: Props) => {
               className="w-16 h-16 rounded-full flex items-center justify-center"
               style={{
                 backgroundColor: "rgba(201,168,76,0.15)",
-                border: `2px solid ${COLORS.accent}`,
+                border: `2px solid var(--color-accent)`,
               }}
             >
               <PlayIcon />
             </div>
             <p
-              className="text-sm font-semibold"
-              style={{ color: COLORS.accent }}
+              className="text-sm font-semibold text-accent"
             >
               Video bude čoskoro dostupné
             </p>
@@ -129,8 +125,7 @@ const LessonDetailPage = async ({ params }: Props) => {
         {outline && outline.length > 0 && (
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm px-8 py-6">
             <h2
-              className="text-base font-semibold mb-4"
-              style={{ color: COLORS.primary }}
+              className="text-base font-semibold mb-4 text-primary"
             >
               Čo sa naučíš
             </h2>
@@ -141,11 +136,7 @@ const LessonDetailPage = async ({ params }: Props) => {
                   className="flex items-start gap-3 text-sm text-gray-700"
                 >
                   <span
-                    className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-xs font-bold"
-                    style={{
-                      backgroundColor: COLORS.subtleBg,
-                      color: COLORS.primary,
-                    }}
+                    className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-xs font-bold bg-subtle-bg text-primary"
                   >
                     {i + 1}
                   </span>
@@ -159,8 +150,7 @@ const LessonDetailPage = async ({ params }: Props) => {
         {/* Obsah lekcie */}
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm px-8 py-8">
           <h2
-            className="text-base font-semibold mb-5"
-            style={{ color: COLORS.primary }}
+            className="text-base font-semibold mb-5 text-primary"
           >
             Obsah lekcie
           </h2>
@@ -183,8 +173,7 @@ const LessonDetailPage = async ({ params }: Props) => {
           {prevLesson ? (
             <Link
               href={`/kurzy/s/lekcie/${prevLesson.id}`}
-              className="flex-1 bg-white rounded-xl border border-gray-100 shadow-sm px-5 py-4 text-sm font-semibold hover:shadow-md transition-shadow"
-              style={{ color: COLORS.primary }}
+              className="flex-1 bg-white rounded-xl border border-gray-100 shadow-sm px-5 py-4 text-sm font-semibold hover:shadow-md transition-shadow text-primary"
             >
               <span className="block text-xs text-gray-400 mb-0.5">
                 Predošlá lekcia
@@ -198,8 +187,7 @@ const LessonDetailPage = async ({ params }: Props) => {
           {nextLesson ? (
             <Link
               href={`/kurzy/s/lekcie/${nextLesson.id}`}
-              className="flex-1 bg-white rounded-xl border border-gray-100 shadow-sm px-5 py-4 text-sm font-semibold hover:shadow-md transition-shadow text-right"
-              style={{ color: COLORS.primary }}
+              className="flex-1 bg-white rounded-xl border border-gray-100 shadow-sm px-5 py-4 text-sm font-semibold hover:shadow-md transition-shadow text-right text-primary"
             >
               <span className="block text-xs text-gray-400 mb-0.5">
                 Nasledujúca lekcia
@@ -209,8 +197,7 @@ const LessonDetailPage = async ({ params }: Props) => {
           ) : (
             <Link
               href="/kurzy/s/lekcie"
-              className="flex-1 text-center bg-white rounded-xl border border-gray-100 shadow-sm px-5 py-4 text-sm font-semibold hover:shadow-md transition-shadow"
-              style={{ color: COLORS.primary }}
+              className="flex-1 text-center bg-white rounded-xl border border-gray-100 shadow-sm px-5 py-4 text-sm font-semibold hover:shadow-md transition-shadow text-primary"
             >
               ← Späť na zoznam lekcií
             </Link>

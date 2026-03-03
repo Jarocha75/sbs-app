@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { COLORS } from "@/data/colors";
 
 type CourseCardProps = {
   type: string;
@@ -21,27 +20,17 @@ const CourseCard = ({
   href,
 }: CourseCardProps) => {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
+    <article className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
       {/* Header */}
-      <div
-        className="px-6 py-4 flex items-center gap-4"
-        style={{ backgroundColor: COLORS.primary }}
-      >
-        <span
-          className="text-2xl font-bold w-12 h-12 rounded-full flex items-center justify-center shrink-0"
-          style={{ backgroundColor: COLORS.accent, color: COLORS.primary }}
-        >
+      <header className="px-6 py-4 flex items-center gap-4 bg-primary">
+        <span className="text-2xl font-bold w-12 h-12 rounded-full flex items-center justify-center shrink-0 bg-accent text-primary">
           {type}
         </span>
         <div>
-          <h3 className="text-white font-bold text-lg leading-tight">
-            {title}
-          </h3>
-          <p className="text-sm" style={{ color: COLORS.accent }}>
-            {subtitle}
-          </p>
+          <h3 className="text-white font-bold text-lg leading-tight">{title}</h3>
+          <p className="text-sm text-accent">{subtitle}</p>
         </div>
-      </div>
+      </header>
 
       {/* Body */}
       <div className="px-6 py-5">
@@ -54,13 +43,12 @@ const CourseCard = ({
         </div>
         <Link
           href={href}
-          className="block text-center py-2.5 rounded-lg font-semibold hover:opacity-90 transition-opacity"
-          style={{ backgroundColor: COLORS.primary, color: "white" }}
+          className="block text-center py-2.5 rounded-lg font-semibold hover:opacity-90 transition-opacity bg-primary text-white"
         >
           Začať kurz
         </Link>
       </div>
-    </div>
+    </article>
   );
 };
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { COLORS } from "@/data/colors";
 import {
   kontaktSchema,
   type KontaktFormData,
@@ -97,8 +96,7 @@ const KontaktFormular = () => {
         </p>
         <button
           onClick={() => setStatus("idle")}
-          className="mt-6 text-sm font-medium underline"
-          style={{ color: COLORS.primary }}
+          className="mt-6 text-sm font-medium underline text-primary"
         >
           Odoslať ďalšiu správu
         </button>
@@ -192,11 +190,7 @@ const KontaktFormular = () => {
       <button
         type="submit"
         disabled={status === "loading"}
-        className="w-full rounded-lg py-3.5 text-base font-bold tracking-wide transition-opacity hover:opacity-90 disabled:opacity-60"
-        style={{
-          backgroundColor: COLORS.accent,
-          color: COLORS.primary,
-        }}
+        className="w-full rounded-lg py-3.5 text-base font-bold tracking-wide transition-opacity hover:opacity-90 disabled:opacity-60 bg-accent text-primary"
       >
         {status === "loading" ? "Odosiela sa..." : "Odoslať správu"}
       </button>

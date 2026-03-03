@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { COLORS } from "@/data/colors";
 
 const CvicnyTestCardP = () => {
   const [open, setOpen] = useState(false);
@@ -15,18 +14,13 @@ const CvicnyTestCardP = () => {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span
-                className="text-xs font-bold px-2 py-0.5 rounded-full"
-                style={{
-                  backgroundColor: COLORS.accent,
-                  color: COLORS.primary,
-                }}
+                className="text-xs font-bold px-2 py-0.5 rounded-full bg-accent text-primary"
               >
                 CVIČNÉ OTÁZKY
               </span>
             </div>
             <h3
-              className="font-bold text-base"
-              style={{ color: COLORS.primary }}
+              className="font-bold text-base text-primary"
             >
               Cvičné otázky — Okruh 1
             </h3>
@@ -34,8 +28,7 @@ const CvicnyTestCardP = () => {
           </div>
           <button
             onClick={() => setOpen(true)}
-            className="shrink-0 py-2.5 px-6 rounded-lg font-semibold hover:opacity-90 transition-opacity text-white"
-            style={{ backgroundColor: COLORS.primary }}
+            className="shrink-0 py-2.5 px-6 rounded-lg font-semibold hover:opacity-90 transition-opacity text-white bg-primary"
           >
             Spustiť test
           </button>
@@ -55,13 +48,12 @@ const CvicnyTestCardP = () => {
           >
             {/* Modal header */}
             <div
-              className="py-6 px-7 text-center"
-              style={{ backgroundColor: COLORS.primary }}
+              className="py-6 px-7 text-center bg-primary"
             >
               <h2 className="text-xl font-bold text-white">
                 Cvičné otázky — Okruh 1
               </h2>
-              <p className="text-sm mt-1" style={{ color: COLORS.accent }}>
+              <p className="text-sm mt-1 text-accent">
                 Preukaz typu P · Okruh 1
               </p>
             </div>
@@ -73,7 +65,7 @@ const CvicnyTestCardP = () => {
                 ktoré je možné dosiahnuť je <strong>80</strong>. Na hodnotenie{" "}
                 <strong>&quot;VYHOVEL&quot;</strong> potrebuje skúšaná osoba
                 dosiahnuť najmenej 90&nbsp;% z celkového súčtu bodov, t.&nbsp;j.{" "}
-                <strong style={{ color: COLORS.primary }}>
+                <strong className="text-primary">
                   72 bodov (36 správnych odpovedí)
                 </strong>
                 .
@@ -89,8 +81,7 @@ const CvicnyTestCardP = () => {
                 </button>
                 <Link
                   href="/testy/p/okruh-1"
-                  className="flex-1 py-3 rounded-xl font-bold text-white text-sm text-center hover:opacity-90 transition-opacity"
-                  style={{ backgroundColor: COLORS.primary }}
+                  className="flex-1 py-3 rounded-xl font-bold text-white text-sm text-center hover:opacity-90 transition-opacity bg-primary"
                 >
                   Štart
                 </Link>

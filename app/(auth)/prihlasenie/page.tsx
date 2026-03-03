@@ -4,7 +4,6 @@ import { signIn } from 'next-auth/react'
 import { useState, Suspense } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { COLORS } from '@/data/colors'
 import { SITE } from '@/data/site'
 import ShieldIcon from '@/app/components/icons/ShieldIcon'
 import AktivovanyBanner from '@/app/components/AktivovanyBanner'
@@ -40,13 +39,13 @@ const PrihlaseniePage = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: COLORS.pageBg }}>
+    <div className="min-h-screen flex items-center justify-center px-4 bg-page-bg">
       <div className="bg-white rounded-xl shadow-md w-full max-w-md p-8">
 
         {/* Hlavička */}
         <div className="text-center mb-8">
           <ShieldIcon size={48} centered />
-          <h1 className="text-2xl font-bold mt-3" style={{ color: COLORS.primary }}>Prihlásiť sa</h1>
+          <h1 className="text-2xl font-bold mt-3 text-primary">Prihlásiť sa</h1>
           <p className="text-gray-400 text-sm mt-1">{SITE.name}</p>
         </div>
 
@@ -65,7 +64,7 @@ const PrihlaseniePage = () => {
         {/* Formulár */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: COLORS.primary }}>
+            <label className="block text-sm font-medium mb-1.5 text-primary">
               Email
             </label>
             <input
@@ -79,7 +78,7 @@ const PrihlaseniePage = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1.5" style={{ color: COLORS.primary }}>
+            <label className="block text-sm font-medium mb-1.5 text-primary">
               Heslo
             </label>
             <input
@@ -95,8 +94,7 @@ const PrihlaseniePage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 rounded-lg font-semibold text-white hover:opacity-90 transition-opacity disabled:opacity-60 mt-2"
-            style={{ backgroundColor: COLORS.primary }}
+            className="w-full py-2.5 rounded-lg font-semibold text-white hover:opacity-90 transition-opacity disabled:opacity-60 mt-2 bg-primary"
           >
             {loading ? 'Prihlasujem...' : 'Prihlásiť sa'}
           </button>
@@ -104,7 +102,7 @@ const PrihlaseniePage = () => {
 
         <p className="text-center text-sm text-gray-400 mt-6">
           Nemáte účet?{' '}
-          <Link href="/registracia" className="font-semibold hover:underline" style={{ color: COLORS.primary }}>
+          <Link href="/registracia" className="font-semibold hover:underline text-primary">
             Zaregistrujte sa
           </Link>
         </p>

@@ -12,6 +12,23 @@
   --font-mono: var(--font-geist-mono);
 }
 
+@theme {
+  --color-primary: #1e3a5f;
+  --color-accent: #c9a84c;
+  --color-page-bg: #f0f4f8;
+  --color-card-header-bg: #f8fafc;
+  --color-row-hover-bg: #fafbfc;
+  --color-nav-mobile-bg: #16305a;
+  --color-subtle-bg: #eef2f7;
+  --color-success: #16a34a;
+  --color-success-bg: #dcfce7;
+  --color-danger: #dc2626;
+  --color-danger-bg: #fee2e2;
+  --color-warning: #b45309;
+  --color-muted: #e5e7eb;
+  --color-muted-text: #9ca3af;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
