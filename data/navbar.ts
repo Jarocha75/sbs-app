@@ -25,7 +25,7 @@ export const NAV = {
   signIn: 'Prihlásiť sa',
   signInHref: '/prihlasenie',
   signOut: 'Odhlásiť sa',
-  signOutCallbackUrl: '/prihlasenie',
+  signOutCallbackUrl: '/',
   adminBadge: 'ADMIN',
   mobileMenuAriaLabel: 'Otvoriť menu',
 } as const
