@@ -6,7 +6,25 @@ import Link from 'next/link'
 import { SITE } from '@/data/site'
 import ShieldIcon from '@/app/components/icons/ShieldIcon'
 
-const inputClass = 'w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors'
+const INPUT_CLASS = 'w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors'
+const TITLE = 'Registrácia'
+const SUBTITLE = `Vytvorte si účet v ${SITE.name}`
+const LABEL_NAME = 'Meno a priezvisko'
+const LABEL_EMAIL = 'Email'
+const LABEL_PASSWORD = 'Heslo'
+const LABEL_CONFIRM = 'Potvrdenie hesla'
+const PLACEHOLDER_NAME = 'Ján Novák'
+const PLACEHOLDER_EMAIL = 'vas@email.sk'
+const PLACEHOLDER_PASSWORD = 'min. 8 znakov'
+const PLACEHOLDER_CONFIRM = '••••••••'
+const BTN_LOADING = 'Registrujem...'
+const BTN_SUBMIT = 'Zaregistrovať sa'
+const ERROR_PASSWORDS_MISMATCH = 'Heslá sa nezhodujú'
+const ERROR_DEFAULT = 'Nastala chyba pri registrácii'
+const FOOTER_TEXT = 'Máte už účet?'
+const FOOTER_LINK = 'Prihláste sa'
+const REDIRECT_SUCCESS = '/prihlasenie?registered=1'
+const REDIRECT_LOGIN = '/prihlasenie'
 
 const RegistraciaPage = () => {
   const [error, setError] = useState('')
@@ -22,7 +40,7 @@ const RegistraciaPage = () => {
     const confirm = formData.get('confirm') as string
 
     if (password !== confirm) {
-      setError('Heslá sa nezhodujú')
+      setError(ERROR_PASSWORDS_MISMATCH)
       return
     }
 
@@ -42,9 +60,9 @@ const RegistraciaPage = () => {
     setLoading(false)
 
     if (!res.ok) {
-      setError(data.error || 'Nastala chyba pri registrácii')
+      setError(data.error || ERROR_DEFAULT)
     } else {
-      router.push('/prihlasenie?registered=1')
+      router.push(REDIRECT_SUCCESS)
     }
   }
 
@@ -55,8 +73,8 @@ const RegistraciaPage = () => {
         {/* Hlavička */}
         <div className="text-center mb-8">
           <ShieldIcon size={48} centered />
-          <h1 className="text-2xl font-bold mt-3 text-primary">Registrácia</h1>
-          <p className="text-gray-400 text-sm mt-1">Vytvorte si účet v {SITE.name}</p>
+          <h1 className="text-2xl font-bold mt-3 text-primary">{TITLE}</h1>
+          <p className="text-gray-400 text-sm mt-1">{SUBTITLE}</p>
         </div>
 
         {/* Chyba */}
@@ -70,34 +88,34 @@ const RegistraciaPage = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium mb-1.5 text-primary">
-              Meno a priezvisko
+              {LABEL_NAME}
             </label>
             <input
               name="name"
               type="text"
               autoComplete="name"
-              placeholder="Ján Novák"
-              className={inputClass}
+              placeholder={PLACEHOLDER_NAME}
+              className={INPUT_CLASS}
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium mb-1.5 text-primary">
-              Email <span className="text-red-500">*</span>
+              {LABEL_EMAIL} <span className="text-red-500">*</span>
             </label>
             <input
               name="email"
               type="email"
               required
               autoComplete="email"
-              placeholder="vas@email.sk"
-              className={inputClass}
+              placeholder={PLACEHOLDER_EMAIL}
+              className={INPUT_CLASS}
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium mb-1.5 text-primary">
-              Heslo <span className="text-red-500">*</span>
+              {LABEL_PASSWORD} <span className="text-red-500">*</span>
             </label>
             <input
               name="password"
@@ -105,22 +123,22 @@ const RegistraciaPage = () => {
               required
               minLength={8}
               autoComplete="new-password"
-              placeholder="min. 8 znakov"
-              className={inputClass}
+              placeholder={PLACEHOLDER_PASSWORD}
+              className={INPUT_CLASS}
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium mb-1.5 text-primary">
-              Potvrdenie hesla <span className="text-red-500">*</span>
+              {LABEL_CONFIRM} <span className="text-red-500">*</span>
             </label>
             <input
               name="confirm"
               type="password"
               required
               autoComplete="new-password"
-              placeholder="••••••••"
-              className={inputClass}
+              placeholder={PLACEHOLDER_CONFIRM}
+              className={INPUT_CLASS}
             />
           </div>
 
@@ -129,14 +147,14 @@ const RegistraciaPage = () => {
             disabled={loading}
             className="w-full py-2.5 rounded-lg font-semibold text-white hover:opacity-90 transition-opacity disabled:opacity-60 mt-2 bg-primary"
           >
-            {loading ? 'Registrujem...' : 'Zaregistrovať sa'}
+            {loading ? BTN_LOADING : BTN_SUBMIT}
           </button>
         </form>
 
         <p className="text-center text-sm text-gray-400 mt-6">
-          Máte už účet?{' '}
-          <Link href="/prihlasenie" className="font-semibold hover:underline text-primary">
-            Prihláste sa
+          {FOOTER_TEXT}{' '}
+          <Link href={REDIRECT_LOGIN} className="font-semibold hover:underline text-primary">
+            {FOOTER_LINK}
           </Link>
         </p>
       </div>
