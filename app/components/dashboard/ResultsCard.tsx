@@ -1,5 +1,10 @@
 import { COLORS } from '@/data/colors'
 
+const CARD_TITLE = 'Posledné výsledky'
+const EMPTY_TEXT = 'Zatiaľ žiadne výsledky. Vyskúšaj niektorý test!'
+const ICON_PASS = '🟢'
+const ICON_FAIL = '🔴'
+
 type ResultItem = {
   id: string
   score: number
@@ -12,7 +17,7 @@ type Props = {
   results: ResultItem[]
 }
 
-function formatDate(date: Date): string {
+const formatDate = (date: Date): string => {
   const now = new Date()
   const diff = Math.floor((now.getTime() - date.getTime()) / 1000)
 
@@ -25,41 +30,38 @@ function formatDate(date: Date): string {
   return date.toLocaleDateString('sk-SK', { day: 'numeric', month: 'short' })
 }
 
-export default function ResultsCard({ results }: Props) {
-  return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-      <h3 className="text-sm font-semibold mb-3" style={{ color: COLORS.primary }}>
-        Posledné výsledky
-      </h3>
+const ResultsCard = ({ results }: Props) => (
+  <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+    <h3 className="text-sm font-semibold mb-3" style={{ color: COLORS.primary }}>
+      {CARD_TITLE}
+    </h3>
 
-      {results.length === 0 ? (
-        <p className="text-sm text-gray-400">Zatiaľ žiadne výsledky. Vyskúšaj niektorý test!</p>
-      ) : (
-        <ul className="space-y-2">
-          {results.map((r) => (
-            <li
-              key={r.id}
-              className="flex items-center gap-3 rounded-lg px-3 py-2 bg-gray-50"
+    {results.length === 0 ? (
+      <p className="text-sm text-gray-400">{EMPTY_TEXT}</p>
+    ) : (
+      <ul className="space-y-2">
+        {results.map((r) => (
+          <li key={r.id} className="flex items-center gap-3 rounded-lg px-3 py-2 bg-gray-50">
+            {/* Score badge */}
+            <span
+              className="shrink-0 w-12 text-center text-sm font-bold rounded-lg py-1"
+              style={{
+                backgroundColor: r.passed ? COLORS.successBg : COLORS.dangerBg,
+                color: r.passed ? COLORS.success : COLORS.danger,
+              }}
             >
-              {/* Score badge */}
-              <span
-                className="shrink-0 w-12 text-center text-sm font-bold rounded-lg py-1"
-                style={{
-                  backgroundColor: r.passed ? '#dcfce7' : '#fee2e2',
-                  color: r.passed ? '#16a34a' : '#dc2626',
-                }}
-              >
-                {r.score}%
-              </span>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-medium text-gray-700 truncate">{r.testTitle}</p>
-                <p className="text-xs text-gray-400">{formatDate(r.createdAt)}</p>
-              </div>
-              <span className="shrink-0 text-base">{r.passed ? '🟢' : '🔴'}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  )
-}
+              {r.score}%
+            </span>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-medium text-gray-700 truncate">{r.testTitle}</p>
+              <p className="text-xs text-gray-400">{formatDate(r.createdAt)}</p>
+            </div>
+            <span className="shrink-0 text-base">{r.passed ? ICON_PASS : ICON_FAIL}</span>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+)
+
+export default ResultsCard

@@ -1,6 +1,9 @@
 import Link from 'next/link'
 import { COLORS } from '@/data/colors'
 
+const LABEL_CONTINUE = 'Pokračovať →'
+const LABEL_COMPLETED = '✓ Kurz dokončený!'
+
 type Lesson = {
   id: string
   title: string
@@ -14,12 +17,12 @@ type Props = {
   completedLessonIds: Set<string>
 }
 
-export default function CourseProgressCard({
+const CourseProgressCard = ({
   courseType,
   courseTitle,
   lessons,
   completedLessonIds,
-}: Props) {
+}: Props) => {
   const total = lessons.length
   const completed = lessons.filter((l) => completedLessonIds.has(l.id)).length
   const percent = total > 0 ? Math.round((completed / total) * 100) : 0
@@ -71,15 +74,15 @@ export default function CourseProgressCard({
                   <span
                     className="w-6 h-6 rounded-full flex items-center justify-center shrink-0 text-xs font-bold"
                     style={{
-                      backgroundColor: done ? '#16a34a' : '#e5e7eb',
-                      color: done ? 'white' : '#9ca3af',
+                      backgroundColor: done ? COLORS.success : COLORS.muted,
+                      color: done ? 'white' : COLORS.mutedText,
                     }}
                   >
                     {done ? '✓' : lesson.order}
                   </span>
                   <span
                     className="font-medium truncate"
-                    style={{ color: done ? '#16a34a' : COLORS.primary }}
+                    style={{ color: done ? COLORS.success : COLORS.primary }}
                   >
                     {lesson.title}
                   </span>
@@ -95,17 +98,19 @@ export default function CourseProgressCard({
             className="block text-center py-3 rounded-xl font-bold text-white text-sm hover:opacity-90 transition-opacity"
             style={{ backgroundColor: COLORS.primary }}
           >
-            Pokračovať → {nextLesson.title}
+            {LABEL_CONTINUE} {nextLesson.title}
           </Link>
         ) : total > 0 ? (
           <div
             className="text-center py-3 rounded-xl font-bold text-sm"
-            style={{ backgroundColor: '#dcfce7', color: '#16a34a' }}
+            style={{ backgroundColor: COLORS.successBg, color: COLORS.success }}
           >
-            ✓ Kurz dokončený!
+            {LABEL_COMPLETED}
           </div>
         ) : null}
       </div>
     </div>
   )
 }
+
+export default CourseProgressCard

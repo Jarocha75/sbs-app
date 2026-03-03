@@ -6,4 +6,11 @@ export const COLORS = {
   rowHoverBg: '#fafbfc',
   navMobileBg: '#16305a',
   subtleBg: '#eef2f7',
+  success: '#16a34a',
+  successBg: '#dcfce7',
+  danger: '#dc2626',
+  dangerBg: '#fee2e2',
+  warning: '#b45309',
+  muted: '#e5e7eb',
+  mutedText: '#9ca3af',
 } as const

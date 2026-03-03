@@ -1,12 +1,16 @@
 import { COLORS } from '@/data/colors'
 
+const STATUS_ACTIVE = 'ACTIVE'
+const LABEL_ACTIVE = '● AKTÍVNY'
+const LABEL_PENDING = '● ČAKÁ NA AKTIVÁCIU'
+
 type Props = {
   name: string | null
   email: string
   status: 'PENDING' | 'ACTIVE'
 }
 
-function getInitials(name: string | null, email: string): string {
+const getInitials = (name: string | null, email: string): string => {
   if (name) {
     const parts = name.trim().split(/\s+/)
     if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase()
@@ -15,9 +19,9 @@ function getInitials(name: string | null, email: string): string {
   return email.slice(0, 2).toUpperCase()
 }
 
-export default function UserHeader({ name, email, status }: Props) {
+const UserHeader = ({ name, email, status }: Props) => {
   const initials = getInitials(name, email)
-  const isActive = status === 'ACTIVE'
+  const isActive = status === STATUS_ACTIVE
 
   return (
     <div style={{ backgroundColor: COLORS.primary }} className="py-8 px-4">
@@ -44,13 +48,15 @@ export default function UserHeader({ name, email, status }: Props) {
         <span
           className="shrink-0 text-xs font-bold px-3 py-1.5 rounded-full"
           style={{
-            backgroundColor: isActive ? '#16a34a' : '#b45309',
+            backgroundColor: isActive ? COLORS.success : COLORS.warning,
             color: 'white',
           }}
         >
-          {isActive ? '● AKTÍVNY' : '● ČAKÁ NA AKTIVÁCIU'}
+          {isActive ? LABEL_ACTIVE : LABEL_PENDING}
         </span>
       </div>
     </div>
   )
 }
+
+export default UserHeader

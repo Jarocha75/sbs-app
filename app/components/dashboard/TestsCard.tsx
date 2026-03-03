@@ -1,6 +1,9 @@
 import Link from 'next/link'
 import { COLORS } from '@/data/colors'
 
+const CARD_TITLE = 'Moje testy'
+const EMPTY_TEXT = 'Žiadne testy nie sú k dispozícii.'
+
 type TestItem = {
   id: string
   title: string
@@ -11,14 +14,14 @@ type Props = {
   tests: TestItem[]
 }
 
-export default function TestsCard({ tests }: Props) {
+const TestsCard = ({ tests }: Props) => {
   if (tests.length === 0) {
     return (
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
         <h3 className="text-sm font-semibold mb-3" style={{ color: COLORS.primary }}>
-          Moje testy
+          {CARD_TITLE}
         </h3>
-        <p className="text-sm text-gray-400">Žiadne testy nie sú k dispozícii.</p>
+        <p className="text-sm text-gray-400">{EMPTY_TEXT}</p>
       </div>
     )
   }
@@ -26,7 +29,7 @@ export default function TestsCard({ tests }: Props) {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
       <h3 className="text-sm font-semibold mb-3" style={{ color: COLORS.primary }}>
-        Moje testy
+        {CARD_TITLE}
       </h3>
       <ul className="space-y-1.5">
         {tests.map((test) => (
@@ -48,3 +51,5 @@ export default function TestsCard({ tests }: Props) {
     </div>
   )
 }
+
+export default TestsCard
