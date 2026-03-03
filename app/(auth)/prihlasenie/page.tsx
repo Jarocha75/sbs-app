@@ -8,7 +8,19 @@ import { SITE } from '@/data/site'
 import ShieldIcon from '@/app/components/icons/ShieldIcon'
 import AktivovanyBanner from '@/app/components/AktivovanyBanner'
 
-const inputClass = 'w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors'
+const INPUT_CLASS = 'w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors'
+const TITLE = 'Prihlásiť sa'
+const LABEL_EMAIL = 'Email'
+const LABEL_PASSWORD = 'Heslo'
+const PLACEHOLDER_EMAIL = 'vas@email.sk'
+const PLACEHOLDER_PASSWORD = '••••••••'
+const BTN_LOADING = 'Prihlasujem...'
+const BTN_SUBMIT = 'Prihlásiť sa'
+const ERROR_INVALID = 'Nesprávny email alebo heslo'
+const FOOTER_TEXT = 'Nemáte účet?'
+const FOOTER_LINK = 'Zaregistrujte sa'
+const REDIRECT_SUCCESS = '/dashboard'
+const REDIRECT_REGISTER = '/registracia'
 
 const PrihlaseniePage = () => {
   const [error, setError] = useState('')
@@ -31,9 +43,9 @@ const PrihlaseniePage = () => {
     setLoading(false)
 
     if (result?.error) {
-      setError('Nesprávny email alebo heslo')
+      setError(ERROR_INVALID)
     } else {
-      router.push('/dashboard')
+      router.push(REDIRECT_SUCCESS)
       router.refresh()
     }
   }
@@ -45,7 +57,7 @@ const PrihlaseniePage = () => {
         {/* Hlavička */}
         <div className="text-center mb-8">
           <ShieldIcon size={48} centered />
-          <h1 className="text-2xl font-bold mt-3 text-primary">Prihlásiť sa</h1>
+          <h1 className="text-2xl font-bold mt-3 text-primary">{TITLE}</h1>
           <p className="text-gray-400 text-sm mt-1">{SITE.name}</p>
         </div>
 
@@ -65,29 +77,29 @@ const PrihlaseniePage = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium mb-1.5 text-primary">
-              Email
+              {LABEL_EMAIL}
             </label>
             <input
               name="email"
               type="email"
               required
               autoComplete="email"
-              placeholder="vas@email.sk"
-              className={inputClass}
+              placeholder={PLACEHOLDER_EMAIL}
+              className={INPUT_CLASS}
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium mb-1.5 text-primary">
-              Heslo
+              {LABEL_PASSWORD}
             </label>
             <input
               name="password"
               type="password"
               required
               autoComplete="current-password"
-              placeholder="••••••••"
-              className={inputClass}
+              placeholder={PLACEHOLDER_PASSWORD}
+              className={INPUT_CLASS}
             />
           </div>
 
@@ -96,14 +108,14 @@ const PrihlaseniePage = () => {
             disabled={loading}
             className="w-full py-2.5 rounded-lg font-semibold text-white hover:opacity-90 transition-opacity disabled:opacity-60 mt-2 bg-primary"
           >
-            {loading ? 'Prihlasujem...' : 'Prihlásiť sa'}
+            {loading ? BTN_LOADING : BTN_SUBMIT}
           </button>
         </form>
 
         <p className="text-center text-sm text-gray-400 mt-6">
-          Nemáte účet?{' '}
-          <Link href="/registracia" className="font-semibold hover:underline text-primary">
-            Zaregistrujte sa
+          {FOOTER_TEXT}{' '}
+          <Link href={REDIRECT_REGISTER} className="font-semibold hover:underline text-primary">
+            {FOOTER_LINK}
           </Link>
         </p>
       </div>

@@ -9,8 +9,22 @@ interface Props {
   token: string;
 }
 
-const inputClass =
+const INPUT_CLASS =
   "w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors";
+const TITLE = "Nastavte si heslo";
+const LABEL_PASSWORD = "Nové heslo";
+const LABEL_CONFIRM = "Potvrdenie hesla";
+const PLACEHOLDER_PASSWORD = "min. 8 znakov";
+const PLACEHOLDER_CONFIRM = "••••••••";
+const BTN_LOADING = "Aktivujem...";
+const BTN_SUBMIT = "Aktivovať účet";
+const ERROR_PASSWORDS_MISMATCH = "Heslá sa nezhodujú";
+const ERROR_DEFAULT = "Nastala chyba. Skúste to znova.";
+const SUCCESS_TITLE = "Účet bol aktivovaný!";
+const SUCCESS_TEXT = "Presmerovávame vás na prihlásenie...";
+const SUCCESS_ICON = "✓";
+const REDIRECT_SUCCESS = "/prihlasenie?aktivovany=1";
+const REDIRECT_DELAY = 2000;
 
 const AktivaciaClient = ({ token }: Props) => {
   const [loading, setLoading] = useState(false);
@@ -32,7 +46,7 @@ const AktivaciaClient = ({ token }: Props) => {
     const confirm = formData.get("confirm") as string;
 
     if (password !== confirm) {
-      setError("Heslá sa nezhodujú");
+      setError(ERROR_PASSWORDS_MISMATCH);
       return;
     }
 
@@ -46,28 +60,26 @@ const AktivaciaClient = ({ token }: Props) => {
     setLoading(false);
 
     if (!res.ok) {
-      setError(data.error ?? "Nastala chyba. Skúste to znova.");
+      setError(data.error ?? ERROR_DEFAULT);
       return;
     }
 
     setSuccess(true);
-    redirectTimeout.current = window.setTimeout(() => router.push("/prihlasenie?aktivovany=1"), 2000);
+    redirectTimeout.current = window.setTimeout(() => router.push(REDIRECT_SUCCESS), REDIRECT_DELAY);
   };
 
   if (success) {
     return (
-      <div
-        className="min-h-screen flex items-center justify-center px-4 bg-page-bg"
-      >
+      <div className="min-h-screen flex items-center justify-center px-4 bg-page-bg">
         <div className="bg-white rounded-xl shadow-md w-full max-w-md p-8 text-center">
           <div className="text-5xl mb-4 text-accent">
-            ✓
+            {SUCCESS_ICON}
           </div>
           <h1 className="text-xl font-bold text-primary">
-            Účet bol aktivovaný!
+            {SUCCESS_TITLE}
           </h1>
           <p className="text-gray-500 mt-2 text-sm">
-            Presmerovávame vás na prihlásenie...
+            {SUCCESS_TEXT}
           </p>
         </div>
       </div>
@@ -75,16 +87,12 @@ const AktivaciaClient = ({ token }: Props) => {
   }
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center px-4 bg-page-bg"
-    >
+    <div className="min-h-screen flex items-center justify-center px-4 bg-page-bg">
       <div className="bg-white rounded-xl shadow-md w-full max-w-md p-8">
         <div className="text-center mb-8">
           <ShieldIcon size={48} centered />
-          <h1
-            className="text-2xl font-bold mt-3 text-primary"
-          >
-            Nastavte si heslo
+          <h1 className="text-2xl font-bold mt-3 text-primary">
+            {TITLE}
           </h1>
           <p className="text-gray-400 text-sm mt-1">{SITE.name}</p>
         </div>
@@ -97,10 +105,8 @@ const AktivaciaClient = ({ token }: Props) => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label
-              className="block text-sm font-medium mb-1.5 text-primary"
-            >
-              Nové heslo <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium mb-1.5 text-primary">
+              {LABEL_PASSWORD} <span className="text-red-500">*</span>
             </label>
             <input
               name="password"
@@ -108,24 +114,22 @@ const AktivaciaClient = ({ token }: Props) => {
               required
               minLength={8}
               autoComplete="new-password"
-              placeholder="min. 8 znakov"
-              className={inputClass}
+              placeholder={PLACEHOLDER_PASSWORD}
+              className={INPUT_CLASS}
             />
           </div>
 
           <div>
-            <label
-              className="block text-sm font-medium mb-1.5 text-primary"
-            >
-              Potvrdenie hesla <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium mb-1.5 text-primary">
+              {LABEL_CONFIRM} <span className="text-red-500">*</span>
             </label>
             <input
               name="confirm"
               type="password"
               required
               autoComplete="new-password"
-              placeholder="••••••••"
-              className={inputClass}
+              placeholder={PLACEHOLDER_CONFIRM}
+              className={INPUT_CLASS}
             />
           </div>
 
@@ -134,7 +138,7 @@ const AktivaciaClient = ({ token }: Props) => {
             disabled={loading}
             className="w-full py-2.5 rounded-lg font-semibold text-white hover:opacity-90 transition-opacity disabled:opacity-60 mt-2 bg-primary"
           >
-            {loading ? "Aktivujem..." : "Aktivovať účet"}
+            {loading ? BTN_LOADING : BTN_SUBMIT}
           </button>
         </form>
       </div>
