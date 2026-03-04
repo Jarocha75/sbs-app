@@ -17,7 +17,7 @@ const STATUS_LOCKED = "Zamknuté";
 const STATUS_AVAILABLE = "Dostupné";
 const DONE_BADGE = "✓";
 const DURATION_SUFFIX = "min";
-const BACK_LINK = "← Späť na prehľad kurzu";
+const BACK_LINK = "← Späť na dashboard";
 
 const LekcieListPage = async () => {
   const session = await auth();
@@ -197,7 +197,7 @@ const LekcieListPage = async () => {
 
         <div className="mt-8">
           <Link
-            href="/kurzy/s"
+            href="/dashboard"
             className="text-sm font-semibold hover:opacity-80 transition-opacity text-primary"
           >
             {BACK_LINK}
