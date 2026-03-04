@@ -2,6 +2,8 @@ export type Lesson = {
   id: string
   title: string
   order: number
+  videoUrl: string | null
+  duration: number | null
 }
 
 export type TestItem = {

@@ -6,6 +6,7 @@ import CourseProgressCard from "@/app/components/dashboard/CourseProgressCard";
 import StatsCard from "@/app/components/dashboard/StatsCard";
 import TestsCard from "@/app/components/dashboard/TestsCard";
 import ResultsCard from "@/app/components/dashboard/ResultsCard";
+import LastLessonCard from "@/app/components/dashboard/LastLessonCard";
 import Link from "next/link";
 
 const EMPTY_ICON = "📚";
@@ -119,13 +120,18 @@ const DashboardPage = async () => {
             {/* Ľavý stĺpec – kurzy */}
             <div className="lg:col-span-2 space-y-6">
               {enrollments.map((enrollment) => (
-                <CourseProgressCard
-                  key={enrollment.id}
-                  courseType={enrollment.course.type as "S" | "P"}
-                  courseTitle={enrollment.course.title}
-                  lessons={enrollment.course.lessons}
-                  completedLessonIds={completedLessonIds}
-                />
+                <div key={enrollment.id} className="space-y-6">
+                  <CourseProgressCard
+                    courseType={enrollment.course.type as "S" | "P"}
+                    courseTitle={enrollment.course.title}
+                    lessons={enrollment.course.lessons}
+                    completedLessonIds={completedLessonIds}
+                  />
+                  <LastLessonCard
+                    lessons={enrollment.course.lessons}
+                    completedIds={[...completedLessonIds]}
+                  />
+                </div>
               ))}
             </div>
 
