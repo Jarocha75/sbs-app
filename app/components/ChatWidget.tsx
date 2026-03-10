@@ -12,7 +12,13 @@ const ARIA_OPEN = "Otvoriť chat";
 const ARIA_CLOSE = "Zatvoriť chat";
 
 const AvatarIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="text-primary">
+  <svg
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className="text-primary"
+  >
     <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" />
   </svg>
 );
@@ -102,14 +108,16 @@ const ChatWidget = () => {
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
       {/* Chat panel */}
       {open && (
-        <div className="w-[360px] max-h-[520px] bg-white rounded-2xl shadow-2xl border border-gray-100 flex flex-col overflow-hidden">
+        <div className="w-90 max-h-130 bg-white rounded-2xl shadow-2xl border border-gray-100 flex flex-col overflow-hidden">
           {/* Header */}
           <div className="bg-primary px-4 py-3 flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <span className="w-8 h-8 rounded-full bg-accent flex items-center justify-center shrink-0">
                 <AvatarIcon />
               </span>
-              <span className="font-bold text-white text-sm">{WIDGET_TITLE}</span>
+              <span className="font-bold text-white text-sm">
+                {WIDGET_TITLE}
+              </span>
             </div>
             <button
               onClick={() => setOpen(false)}
@@ -135,9 +143,12 @@ const ChatWidget = () => {
                   }`}
                 >
                   {msg.content}
-                  {loading && i === messages.length - 1 && msg.role === "assistant" && msg.content === "" && (
-                    <span className="inline-block w-2 h-2 bg-gray-400 rounded-full animate-pulse" />
-                  )}
+                  {loading &&
+                    i === messages.length - 1 &&
+                    msg.role === "assistant" &&
+                    msg.content === "" && (
+                      <span className="inline-block w-2 h-2 bg-gray-400 rounded-full animate-pulse" />
+                    )}
                 </div>
               </div>
             ))}
@@ -161,7 +172,12 @@ const ChatWidget = () => {
               disabled={!input.trim() || loading}
               className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 bg-primary text-white hover:opacity-90 transition-opacity disabled:opacity-40"
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
               </svg>
             </button>

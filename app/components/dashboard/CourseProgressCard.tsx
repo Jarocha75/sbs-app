@@ -1,8 +1,14 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import type { Lesson } from "@/types/dashboard";
 
 const LABEL_CONTINUE = "Pokračovať →";
 const LABEL_COMPLETED = "✓ Kurz dokončený!";
+const LABEL_SHOW_ALL = "Zobraziť všetky lekcie";
+const LABEL_HIDE = "Skryť lekcie";
+const VISIBLE_COUNT = 3;
 
 interface Props {
   courseType: "S" | "P";
@@ -17,12 +23,20 @@ const CourseProgressCard = ({
   lessons,
   completedLessonIds,
 }: Props) => {
+  const [showAll, setShowAll] = useState(false);
+
   const total = lessons.length;
   const completed = lessons.filter((l) => completedLessonIds.has(l.id)).length;
   const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
   const courseSlug = courseType.toLowerCase();
 
   const nextLesson = lessons.find((l) => !completedLessonIds.has(l.id));
+
+  const upcomingLessons = lessons
+    .filter((l) => !completedLessonIds.has(l.id))
+    .slice(0, VISIBLE_COUNT);
+  const visibleLessons = showAll ? lessons : upcomingLessons;
+  const hasMore = total > VISIBLE_COUNT;
 
   return (
     <article className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
@@ -54,8 +68,8 @@ const CourseProgressCard = ({
 
       {/* Lesson list */}
       <section className="px-6 py-5">
-        <ul className="space-y-2 mb-6">
-          {lessons.map((lesson) => {
+        <ul className="space-y-2 mb-4">
+          {visibleLessons.map((lesson) => {
             const done = completedLessonIds.has(lesson.id);
             return (
               <li key={lesson.id}>
@@ -78,6 +92,15 @@ const CourseProgressCard = ({
             );
           })}
         </ul>
+
+        {hasMore && (
+          <button
+            onClick={() => setShowAll((prev) => !prev)}
+            className="w-full text-center py-2 mb-4 text-sm font-medium text-muted-text hover:text-primary transition-colors"
+          >
+            {showAll ? LABEL_HIDE : `${LABEL_SHOW_ALL} (${total})`}
+          </button>
+        )}
 
         {nextLesson ? (
           <Link
